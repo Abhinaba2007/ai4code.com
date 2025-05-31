@@ -1011,8 +1011,9 @@
                 <!-- UPI QR Code Container -->
                 <div id="upiQrContainer" style="display: none; text-align: center; margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 10px;">
                     <h4 style="margin-bottom: 15px; color: var(--primary-color);">Scan to Pay</h4>
-                    <div id="upiQrCode" style="width: 200px; height: 200px; margin: 0 auto; background: white; padding: 10px;"></div>
-                    <p style="margin-top: 15px; font-size: 0.9rem;">Scan this QR code using any UPI app to complete payment</p>
+                    <img src="qr phonepay.jpg" 
+                        alt="UPI QR Code" 
+                        style="width: 200px; height: 200px; border: 1px solid #ddd; padding: 10px; background: white;">
                     <button id="openUpiAppBtn" class="btn" style="margin-top: 15px; padding: 10px 20px; font-size: 0.9rem;">
                         Open UPI App
                     </button>
@@ -1355,7 +1356,7 @@
             
             // Set up UPI app opening
             openUpiAppBtn.addEventListener('click', function() {
-                window.location.href = upiLink;
+                window.location.href = googlepsa;
             });
         });
     }
