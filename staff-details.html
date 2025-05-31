@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI4CODE - Staff Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+    <style>
+        :root {
+            --primary: #6c63ff;
+            --secondary: #4a42e8;
+            --accent: #ff6584;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --danger: #f56565;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .header {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+        
+        .header h1 {
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
+            color: var(--dark);
+        }
+        
+        .header .actions {
+            display: flex;
+            gap: 1rem;
+            width: 100%;
+        }
+        
+        .btn {
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 99, 255, 0.2);
+        }
+        
+        .search-filter {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+        
+        .search-bar {
+            width: 100%;
+            position: relative;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+        }
+        
+        .search-bar i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .filter-group::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+        
+        .filter-select {
+            padding: 0.7rem 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: white;
+            color: var(--dark);
+            font-size: 0.9rem;
+            cursor: pointer;
+            min-width: max-content;
+        }
+        
+        /* 3D Staff Cards */
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            perspective: 1000px;
+        }
+        
+        .staff-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: perspective(1000px) rotateY(0deg);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .staff-card:hover {
+            transform: perspective(1000px) rotateY(5deg) translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .staff-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+        
+        .staff-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .staff-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            margin-right: 1rem;
+            overflow: hidden;
+            border: 3px solid white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        
+        .staff-card:hover .staff-avatar {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .staff-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .staff-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+            color: var(--dark);
+            line-height: 1.3;
+        }
+        
+        .staff-info p {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        
+        .staff-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .staff-details {
+            margin-top: 1rem;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.6rem;
+            font-size: 0.8rem;
+        }
+        
+        .detail-label {
+            color: #718096;
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            color: var(--dark);
+            font-weight: 600;
+            text-align: right;
+            word-break: break-all;
+            padding-left: 0.5rem;
+        }
+        
+        .staff-skills {
+            margin-top: 1rem;
+        }
+        
+        .skills-title {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-bottom: 0.5rem;
+        }
+        
+        .skills-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+        
+        .skill-tag {
+            background: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .staff-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            gap: 0.5rem;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            min-width: 0;
+        }
+        
+        .action-btn i {
+            font-size: 0.8rem;
+        }
+        
+        .btn-view {
+            background: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(108, 99, 255, 0.3);
+            width: 100%;
+        }
+        
+        .btn-view:hover {
+            background: rgba(108, 99, 255, 0.2);
+        }
+        
+        /* Stats Overview */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-title {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1.2;
+        }
+        
+        .stat-change {
+            display: flex;
+            align-items: center;
+            font-size: 0.7rem;
+            margin-top: 0.3rem;
+            gap: 0.3rem;
+        }
+        
+        .stat-change i {
+            font-size: 0.7rem;
+        }
+        
+        .stat-change.up {
+            color: var(--success);
+        }
+        
+        .stat-change.down {
+            color: var(--danger);
+        }
+        
+        /* 3D Flip Card for Detailed View */
+        .flip-card {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            padding: 1rem;
+            backdrop-filter: blur(5px);
+        }
+        
+        .flip-card.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .flip-card-inner {
+            width: 100%;
+            max-width: 800px;
+            height: 90vh;
+            max-height: 700px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            transform: rotateY(0deg);
+        }
+        
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+        
+        .close-flip {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .close-flip:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .performance-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.8rem;
+            }
+            
+            .header {
+                margin-bottom: 1rem;
+            }
+            
+            .btn {
+                padding: 0.6rem 0.8rem;
+            }
+            
+            .stats-overview {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.8rem;
+            }
+            
+            .stat-card {
+                padding: 0.8rem;
+            }
+            
+            .stat-value {
+                font-size: 1.2rem;
+            }
+            
+            .staff-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .staff-card {
+                padding: 1rem;
+            }
+            
+            .staff-avatar {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .flip-card-inner {
+                height: 95vh;
+                max-height: none;
+            }
+            
+            .filter-select {
+                padding: 0.6rem 0.7rem;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-group {
+                flex-wrap: wrap;
+                overflow-x: visible;
+            }
+            
+            .filter-select {
+                flex: 1;
+                min-width: calc(50% - 0.5rem);
+            }
+            
+            .staff-info h3 {
+                font-size: 1rem;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+                gap: 0.2rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .detail-label, .detail-value {
+                text-align: left;
+                width: 100%;
+                padding: 0;
+            }
+            
+            .flip-card {
+                padding: 0.5rem;
+            }
+        }
+        
+        /* Animation for mobile tap feedback */
+        @media (hover: none) {
+            .staff-card:active {
+                transform: perspective(1000px) rotateY(5deg) translateY(-5px) scale(0.98);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            .btn:active, .action-btn:active {
+                transform: translateY(1px);
+                opacity: 0.9;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Staff Management</h1>
+            <div class="actions">
+                <button class="btn btn-primary">
+                    <i class="fas fa-users"></i> AI4CODE Staff
+                </button>
+            </div>
+        </div>
+        
+        <!-- Stats Overview -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-title">Total Staff</div>
+                <div class="stat-value">42</div>
+                <div class="stat-change up">
+                    <i class="fas fa-arrow-up"></i> 12% from last month
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-title">Active Teachers</div>
+                <div class="stat-value">28</div>
+                <div class="stat-change up">
+                    <i class="fas fa-arrow-up"></i> 5% from last month
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-title">Support Staff</div>
+                <div class="stat-value">8</div>
+                <div class="stat-change">
+                    <i class="fas fa-equals"></i> No change
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-title">New Hires</div>
+                <div class="stat-value">6</div>
+                <div class="stat-change down">
+                    <i class="fas fa-arrow-down"></i> 2% from last month
+                </div>
+            </div>
+        </div>
+        
+        <!-- Search and Filter -->
+        <div class="search-filter">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search staff...">
+            </div>
+            
+            <div class="filter-group">
+                <select class="filter-select">
+                    <option>All Departments</option>
+                    <option>Teaching</option>
+                    <option>Administration</option>
+                    <option>Technical Support</option>
+                    <option>Content Development</option>
+                </select>
+                
+                <select class="filter-select">
+                    <option>All Roles</option>
+                    <option>Teacher</option>
+                    <option>Manager</option>
+                    <option>Developer</option>
+                    <option>Designer</option>
+                </select>
+                
+                <select class="filter-select">
+                    <option>Sort By</option>
+                    <option>Name (A-Z)</option>
+                    <option>Name (Z-A)</option>
+                    <option>Newest First</option>
+                    <option>Experience</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- 3D Staff Cards Grid -->
+        <div class="staff-grid">
+            <!-- Staff Card 1 -->
+            <div class="staff-card">
+                <div class="staff-badge">Senior</div>
+                <div class="staff-header">
+                    <div class="staff-avatar">
+                        <img src="soumo sir.png" alt="Soumyajit Ghosh">
+                    </div>
+                    <div class="staff-info">
+                        <h3>Soumyajit Ghosh</h3>
+                        <p>AI Department</p>
+                    </div>
+                </div>
+                
+                <div class="staff-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value">soumyag@ai4code.com</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Phone:</span>
+                        <span class="detail-value">+91 9732374538</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Experience:</span>
+                        <span class="detail-value">7 years</span>
+                    </div>
+                </div>
+                
+                <div class="staff-skills">
+                    <div class="skills-title">Expertise:</div>
+                    <div class="skills-tags">
+                        <span class="skill-tag">Machine Learning</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Neural Networks</span>
+                    </div>
+                </div>
+                
+                <div class="staff-actions">
+                    <button class="action-btn btn-view view-detail" data-id="1">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Staff Card 2 -->
+            <div class="staff-card">
+                <div class="staff-badge">Lead</div>
+                <div class="staff-header">
+                    <div class="staff-avatar">
+                        <img src="abhisekh sir.jpg" alt="Abhisekh">
+                    </div>
+                    <div class="staff-info">
+                        <h3>Abhisekh</h3>
+                        <p>Senior CS Instructor</p>
+                    </div>
+                </div>
+                
+                <div class="staff-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value">abhisekh@ai4code.com</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Phone:</span>
+                        <span class="detail-value">+91 87654 32109</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Experience:</span>
+                        <span class="detail-value">5 years</span>
+                    </div>
+                </div>
+                
+                <div class="staff-skills">
+                    <div class="skills-title">Expertise:</div>
+                    <div class="skills-tags">
+                        <span class="skill-tag">Data Structures</span>
+                        <span class="skill-tag">Algorithms</span>
+                        <span class="skill-tag">Java</span>
+                    </div>
+                </div>
+                
+                <div class="staff-actions">
+                    <button class="action-btn btn-view view-detail" data-id="2">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Staff Card 3 -->
+            <div class="staff-card">
+                <div class="staff-header">
+                    <div class="staff-avatar">
+                        <img src="sourab sir.jpg" alt="Sourab">
+                    </div>
+                    <div class="staff-info">
+                        <h3>Saurabh Bandhopadhay</h3>
+                        <p>AI Curriculum Developer</p>
+                    </div>
+                </div>
+                
+                <div class="staff-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value">saurabhbandhopadhay@ai4code.com</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Phone:</span>
+                        <span class="detail-value">+91 76543 21098</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Experience:</span>
+                        <span class="detail-value">6 years</span>
+                    </div>
+                </div>
+                
+                <div class="staff-skills">
+                    <div class="skills-title">Expertise:</div>
+                    <div class="skills-tags">
+                        <span class="skill-tag">Curriculum Design</span>
+                        <span class="skill-tag">Pedagogy</span>
+                        <span class="skill-tag">Python</span>
+                    </div>
+                </div>
+                
+                <div class="staff-actions">
+                    <button class="action-btn btn-view view-detail" data-id="3">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Staff Card 4 -->
+            <div class="staff-card">
+                <div class="staff-badge">New</div>
+                <div class="staff-header">
+                    <div class="staff-avatar">
+                        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Vikram Singh">
+                    </div>
+                    <div class="staff-info">
+                        <h3>Vikram Singh</h3>
+                        <p>Technical Support</p>
+                    </div>
+                </div>
+                
+                <div class="staff-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value">vikram.singh@ai4code.com</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Phone:</span>
+                        <span class="detail-value">+91 65432 10987</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Experience:</span>
+                        <span class="detail-value">2 years</span>
+                    </div>
+                </div>
+                
+                <div class="staff-skills">
+                    <div class="skills-title">Expertise:</div>
+                    <div class="skills-tags">
+                        <span class="skill-tag">Troubleshooting</span>
+                        <span class="skill-tag">System Admin</span>
+                        <span class="skill-tag">Networking</span>
+                    </div>
+                </div>
+                
+                <div class="staff-actions">
+                    <button class="action-btn btn-view view-detail" data-id="4">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Staff Card 5 -->
+            <div class="staff-card">
+                <div class="staff-header">
+                    <div class="staff-avatar">
+                        <img src="https://randomuser.me/api/portraits/women/63.jpg" alt="Meera Desai">
+                    </div>
+                    <div class="staff-info">
+                        <h3>Meera Desai</h3>
+                        <p>Student Success</p>
+                    </div>
+                </div>
+                
+                <div class="staff-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value">meera.desai@ai4code.com</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Phone:</span>
+                        <span class="detail-value">+91 94321 09876</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Experience:</span>
+                        <span class="detail-value">6 years</span>
+                    </div>
+                </div>
+                
+                <div class="staff-skills">
+                    <div class="skills-title">Expertise:</div>
+                    <div class="skills-tags">
+                        <span class="skill-tag">Counseling</span>
+                        <span class="skill-tag">Mentoring</span>
+                        <span class="skill-tag">Communication</span>
+                    </div>
+                </div>
+                
+                <div class="staff-actions">
+                    <button class="action-btn btn-view view-detail" data-id="5">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Staff Card 6 -->
+            <div class="staff-card">
+                <div class="staff-badge">Lead</div>
+                <div class="staff-header">
+                    <div class="staff-avatar">
+                        <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="Arjun Mehta">
+                    </div>
+                    <div class="staff-info">
+                        <h3>Arjun Mehta</h3>
+                        <p>Full Stack Developer</p>
+                    </div>
+                </div>
+                
+                <div class="staff-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value">arjun.mehta@ai4code.com</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Phone:</span>
+                        <span class="detail-value">+91 83210 98765</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Experience:</span>
+                        <span class="detail-value">7 years</span>
+                    </div>
+                </div>
+                
+                <div class="staff-skills">
+                    <div class="skills-title">Expertise:</div>
+                    <div class="skills-tags">
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Node.js</span>
+                    </div>
+                </div>
+                
+                <div class="staff-actions">
+                    <button class="action-btn btn-view view-detail" data-id="6">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 3D Flip Card for Detailed View -->
+    <div class="flip-card" id="flipCard">
+        <div class="flip-card-inner">
+            <div class="flip-card-front">
+                <div class="close-flip" id="closeFlip">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="performance-content" id="frontContent">
+                    <!-- Front content will be populated by JavaScript -->
+                </div>
+            </div>
+            <div class="flip-card-back">
+                <div class="back-button" id="backButton">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+                <div class="close-flip" id="closeFlipBack">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="performance-content" id="backContent">
+                    <!-- Back content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Sample staff data
+        const staffData = [
+            {
+                id: 1,
+                name: "Soumyajit Ghosh",
+                role: "AI Department",
+                email: "soumyag@ai4code.com",
+                phone: "+91 9732374538",
+                experience: "7 years",
+                skills: ["Machine Learning", "Python", "Neural Networks", "Deep Learning", "Research"],
+                bio: "Experience in Artificial Intelligence with 7+ years and experience in teaching and research also. Specializes in machine learning algorithms and AI curriculum development.",
+                courses: ["AI Class 10", "Advanced ML", "AI Projects"],
+                joinDate: "15/03/2016",
+                status: "Senior",
+                performance: "Excellent",
+                avatar: "soumo sir.png"
+            },
+            {
+                id: 2,
+                name: "Abhisekh",
+                role: "Senior CS Instructor",
+                email: "abhisekh@ai4code.com",
+                phone: "+91 87654 32109",
+                experience: "5 years",
+                skills: ["Data Structures", "Algorithms", "Java", "Python", "Competitive Programming"],
+                bio: "M.Tech in Computer Science with expertise in competitive programming. Mentored 50+ students for national level coding competitions.",
+                courses: ["CS Class 11", "CS Class 12", "Advanced DSA"],
+                joinDate: "22/07/2018",
+                status: "Lead",
+                performance: "Excellent",
+                avatar: "abhisekh sir.jpg"
+            },
+            {
+                id: 3,
+                name: "Saurabh Bandhopadhay",
+                role: "AI Curriculum Developer",
+                email: "saurabhbandhopadhay@ai4code.com",
+                phone: "+91 76543 21098",
+                experience: "6 years",
+                skills: ["Curriculum Design", "Pedagogy", "Python", "Educational Research", "Content Creation"],
+                bio: "Specializes in creating engaging and effective AI curriculum for school students. Focuses on project-based learning approaches.",
+                courses: ["AI Class 9", "AI Class 10", "Python Basics"],
+                joinDate: "10/11/2017",
+                status: "Regular",
+                performance: "Very Good",
+                avatar: "sourab sir.jpg"
+            },
+            {
+                id: 4,
+                name: "Vikram Singh",
+                role: "Technical Support Engineer",
+                email: "vikram.singh@ai4code.com",
+                phone: "+91 65432 10987",
+                experience: "2 years",
+                skills: ["Troubleshooting", "System Admin", "Networking", "Hardware", "Customer Support"],
+                bio: "Provides technical support for both students and staff. Ensures smooth operation of all learning platforms and tools.",
+                courses: ["Tech Support", "System Setup"],
+                joinDate: "05/01/2021",
+                status: "New",
+                performance: "Good",
+                avatar: "https://randomuser.me/api/portraits/men/75.jpg"
+            },
+            {
+                id: 5,
+                name: "Meera Desai",
+                role: "Student Success Manager",
+                email: "meera.desai@ai4code.com",
+                phone: "+91 94321 09876",
+                experience: "6 years",
+                skills: ["Counseling", "Mentoring", "Communication", "Psychology", "Education"],
+                bio: "Helps students achieve their learning goals through personalized support and guidance. Tracks student progress and intervenes when needed.",
+                courses: ["Student Mentorship"],
+                joinDate: "18/09/2017",
+                status: "Regular",
+                performance: "Excellent",
+                avatar: "https://randomuser.me/api/portraits/women/63.jpg"
+            },
+            {
+                id: 6,
+                name: "Arjun Mehta",
+                role: "Full Stack Developer",
+                email: "arjun.mehta@ai4code.com",
+                phone: "+91 83210 98765",
+                experience: "7 years",
+                skills: ["JavaScript", "React", "Node.js", "MongoDB", "AWS"],
+                bio: "Develops and maintains the AI4CODE learning platform. Creates interactive learning tools and maintains system infrastructure.",
+                courses: ["Web Development"],
+                joinDate: "03/04/2016",
+                status: "Lead",
+                performance: "Excellent",
+                avatar: "https://randomuser.me/api/portraits/men/81.jpg"
+            }
+        ];
+        
+        // DOM Elements
+        const flipCard = document.getElementById('flipCard');
+        const flipCardInner = document.querySelector('.flip-card-inner');
+        const frontContent = document.getElementById('frontContent');
+        const backContent = document.getElementById('backContent');
+        const closeFlip = document.getElementById('closeFlip');
+        const closeFlipBack = document.getElementById('closeFlipBack');
+        const backButton = document.getElementById('backButton');
+        const viewDetailBtns = document.querySelectorAll('.view-detail');
+        
+        // View Detail Button Click
+        viewDetailBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const staffId = parseInt(this.getAttribute('data-id'));
+                const staff = staffData.find(s => s.id === staffId);
+                
+                if (staff) {
+                    renderStaffDetail(staff);
+                    flipCard.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+        
+        // Close Flip Card
+        closeFlip.addEventListener('click', closeDetailView);
+        closeFlipBack.addEventListener('click', closeDetailView);
+        
+        // Back Button
+        backButton.addEventListener('click', function() {
+            flipCard.classList.remove('flipped');
+        });
+        
+        function closeDetailView() {
+            flipCard.classList.remove('active');
+            flipCard.classList.remove('flipped');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Flip Card
+        flipCardInner.addEventListener('click', function(e) {
+            // Only flip if clicking on the flip button (handled in render function)
+            if (e.target.closest('#flipToBack')) {
+                flipCard.classList.add('flipped');
+                backContent.scrollTop = 0;
+            }
+        });
+        
+        // Render Staff Detail
+        function renderStaffDetail(staff) {
+            // Front side content
+            frontContent.innerHTML = `
+                <div style="display: flex; flex-direction: column; height: 100%;">
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 1.5rem;">
+                            <div style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid white; box-shadow: 0 3px 10px rgba(0,0,0,0.1); flex-shrink: 0;">
+                                <img src="${staff.avatar}" alt="${staff.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div>
+                                <h2 style="color: var(--dark); margin-bottom: 0.3rem;">${staff.name}</h2>
+                                <p style="color: var(--primary); font-weight: 600; margin-bottom: 0.5rem;">${staff.role}</p>
+                                <div style="background: rgba(108, 99, 255, 0.1); padding: 0.3rem 0.8rem; border-radius: 50px; display: inline-block;">
+                                    <span style="color: var(--primary); font-weight: 600; font-size: 0.8rem;">${staff.status} Staff</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span style="color: #718096;">Performance:</span>
+                                <span style="font-weight: 600; color: ${staff.performance === 'Excellent' ? 'var(--success)' : staff.performance === 'Very Good' ? 'var(--warning)' : 'var(--danger)'}">${staff.performance}</span>
+                            </div>
+                            <div style="height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden;">
+                                <div style="height: 100%; width: ${staff.performance === 'Excellent' ? '100%' : staff.performance === 'Very Good' ? '80%' : '60%'}; background: ${staff.performance === 'Excellent' ? 'var(--success)' : staff.performance === 'Very Good' ? 'var(--warning)' : 'var(--danger)'};"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="flex: 1; overflow-y: auto; margin-bottom: 1.5rem;">
+                        <h3 style="color: var(--dark); margin-bottom: 1rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; display: inline-block;">Bio</h3>
+                        <p style="color: #4a5568; line-height: 1.6; margin-bottom: 1.5rem;">${staff.bio}</p>
+                        
+                        <h3 style="color: var(--dark); margin-bottom: 1rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; display: inline-block;">Courses</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+                            ${staff.courses.map(course => `
+                                <span style="background: rgba(108, 99, 255, 0.1); color: var(--primary); padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.8rem;">${course}</span>
+                            `).join('')}
+                        </div>
+                        
+                        <h3 style="color: var(--dark); margin-bottom: 1rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; display: inline-block;">Contact</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div>
+                                <p style="color: #718096; font-size: 0.8rem; margin-bottom: 0.3rem;">Email</p>
+                                <p style="color: var(--dark); font-weight: 600; font-size: 0.9rem; word-break: break-all;">${staff.email}</p>
+                            </div>
+                            <div>
+                                <p style="color: #718096; font-size: 0.8rem; margin-bottom: 0.3rem;">Phone</p>
+                                <p style="color: var(--dark); font-weight: 600; font-size: 0.9rem;">${staff.phone}</p>
+                            </div>
+                            <div>
+                                <p style="color: #718096; font-size: 0.8rem; margin-bottom: 0.3rem;">Joined</p>
+                                <p style="color: var(--dark); font-weight: 600; font-size: 0.9rem;">${staff.joinDate}</p>
+                            </div>
+                            <div>
+                                <p style="color: #718096; font-size: 0.8rem; margin-bottom: 0.3rem;">Experience</p>
+                                <p style="color: var(--dark); font-weight: 600; font-size: 0.9rem;">${staff.experience}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button style="padding: 0.7rem; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%;" id="flipToBack">
+                        View Performance Details <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Back side content
+            backContent.innerHTML = `
+                <div style="display: flex; flex-direction: column; height: 100%;">
+                    <h2 style="color: var(--dark); margin-bottom: 1.5rem; text-align: center;">${staff.name}'s Performance</h2>
+                    
+                    <div style="flex: 1; overflow-y: auto; margin-bottom: 1.5rem;">
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
+                            <div>
+                                <h3 style="color: var(--dark); margin-bottom: 1rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; display: inline-block;">Skills Matrix</h3>
+                                
+                                ${staff.skills.map(skill => `
+                                    <div style="margin-bottom: 1rem;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                                            <span style="font-weight: 600; font-size: 0.9rem;">${skill}</span>
+                                            <span style="font-size: 0.9rem;">${Math.floor(Math.random() * 20) + 80}%</span>
+                                        </div>
+                                        <div style="height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
+                                            <div style="height: 100%; width: ${Math.floor(Math.random() * 20) + 80}%; background: var(--primary);"></div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                                
+                                <h3 style="color: var(--dark); margin-top: 1.5rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; display: inline-block;">Recent Feedback</h3>
+                                <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                                    <p style="font-style: italic; color: #4a5568; margin-bottom: 0.5rem; font-size: 0.9rem;">"${getRandomFeedback()}"</p>
+                                    <p style="text-align: right; font-size: 0.8rem; color: #718096;">- Student</p>
+                                </div>
+                                <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                                    <p style="font-style: italic; color: #4a5568; margin-bottom: 0.5rem; font-size: 0.9rem;">"${getRandomFeedback()}"</p>
+                                    <p style="text-align: right; font-size: 0.8rem; color: #718096;">- Colleague</p>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 style="color: var(--dark); margin-bottom: 1rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; display: inline-block;">Performance Stats</h3>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.5rem;">
+                                    <div style="background: #f8fafc; padding: 0.8rem; border-radius: 8px; text-align: center;">
+                                        <p style="color: #718096; font-size: 0.8rem; margin-bottom: 0.3rem;">Classes Taken</p>
+                                        <p style="font-size: 1.4rem; font-weight: 700; color: var(--primary);">${Math.floor(Math.random() * 200) + 50}</p>
+                                    </div>
+                                    <div style="background: #f8fafc; padding: 0.8rem; border-radius: 8px; text-align: center;">
+                                        <p style="color: #718096; font-size: 0.8rem; margin-bottom: 0.3rem;">Student Rating</p>
+                                        <p style="font-size: 1.4rem; font-weight: 700; color: var(--primary);">${(Math.random() * 1 + 4).toFixed(1)}/5</p>
+                                    </div>
+                                    <div style="background: #f8fafc; padding: 0.8rem; border-radius: 8px; text-align: center;">
+                                        <p style="color: #718096; font-size: 0.8rem; margin-bottom: 0.3rem;">Completion Rate</p>
+                                        <p style="font-size: 1.4rem; font-weight: 700; color: var(--primary);">${Math.floor(Math.random() * 20) + 80}%</p>
+                                    </div>
+                                    <div style="background: #f8fafc; padding: 0.8rem; border-radius: 8px; text-align: center;">
+                                        <p style="color: #718096; font-size: 0.8rem; margin-bottom: 0.3rem;">Attendance</p>
+                                        <p style="font-size: 1.4rem; font-weight: 700; color: var(--primary);">${Math.floor(Math.random() * 10) + 90}%</p>
+                                    </div>
+                                </div>
+                                
+                                <h3 style="color: var(--dark); margin-bottom: 1rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; display: inline-block;">Upcoming Schedule</h3>
+                                <div style="background: #f8fafc; padding: 0.8rem; border-radius: 8px; margin-top: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #edf2f7;">
+                                        <div>
+                                            <p style="font-weight: 600; font-size: 0.9rem;">${staff.courses[0]} Class</p>
+                                            <p style="font-size: 0.8rem; color: #718096;">Tomorrow, 10:00 AM</p>
+                                        </div>
+                                        <button style="padding: 0.3rem 0.6rem; background: var(--primary); color: white; border: none; border-radius: 6px; font-size: 0.8rem;">View</button>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0;">
+                                        <div>
+                                            <p style="font-weight: 600; font-size: 0.9rem;">Team Meeting</p>
+                                            <p style="font-size: 0.8rem; color: #718096;">Friday, 3:00 PM</p>
+                                        </div>
+                                        <button style="padding: 0.3rem 0.6rem; background: var(--primary); color: white; border: none; border-radius: 6px; font-size: 0.8rem;">View</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="color: var(--dark); margin: 1.5rem 0 1rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; display: inline-block;">Performance History</h3>
+                        <div style="background: #f8fafc; padding: 0.8rem; border-radius: 8px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem;">
+                                <div>
+                                    <p style="font-weight: 600; font-size: 0.9rem;">Quarter 1 2023</p>
+                                    <p style="font-size: 0.8rem; color: #718096;">Jan - Mar 2023</p>
+                                </div>
+                                <div style="text-align: right;">
+                                    <p style="font-weight: 600; color: var(--success); font-size: 0.9rem;">Excellent</p>
+                                    <p style="font-size: 0.8rem; color: #718096;">Rating: 4.8/5</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem;">
+                                <div>
+                                    <p style="font-weight: 600; font-size: 0.9rem;">Quarter 4 2022</p>
+                                    <p style="font-size: 0.8rem; color: #718096;">Oct - Dec 2022</p>
+                                </div>
+                                <div style="text-align: right;">
+                                    <p style="font-weight: 600; color: var(--success); font-size: 0.9rem;">Excellent</p>
+                                    <p style="font-size: 0.8rem; color: #718096;">Rating: 4.7/5</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <div>
+                                    <p style="font-weight: 600; font-size: 0.9rem;">Quarter 3 2022</p>
+                                    <p style="font-size: 0.8rem; color: #718096;">Jul - Sep 2022</p>
+                                </div>
+                                <div style="text-align: right;">
+                                    <p style="font-weight: 600; color: var(--success); font-size: 0.9rem;">Very Good</p>
+                                    <p style="font-size: 0.8rem; color: #718096;">Rating: 4.5/5</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Random feedback generator
+        function getRandomFeedback() {
+            const feedbacks = [
+                "Excellent teaching methodology, explains complex concepts in simple terms.",
+                "Very patient with students and always available for doubt resolution.",
+                "The projects assigned were challenging but helped me learn a lot.",
+                "Classes are engaging and interactive. Never felt bored.",
+                "Provides excellent study material and references.",
+                "Gives personalized attention to each student's learning needs.",
+                "The practical examples made the concepts very clear.",
+                "Encourages critical thinking and problem-solving approach.",
+                "Feedback on assignments is very detailed and helpful.",
+                "Creates a positive learning environment in the class.",
+                "Always goes above and beyond to help students succeed.",
+                "Excellent communication skills and clear explanations.",
+                "Very knowledgeable and passionate about the subject.",
+                "Well-organized lessons with clear objectives.",
+                "Provides valuable real-world examples and applications."
+            ];
+            return feedbacks[Math.floor(Math.random() * feedbacks.length)];
+        }
+        
+        // Handle mobile viewport height
+        function setViewportHeight() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        
+        setViewportHeight();
+        window.addEventListener('resize', setViewportHeight);
+    </script>
+</body>
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sample Coding & AI Projects | AI4CODE</title>
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    /* CYBER LAB 3D INTERFACE */
+    :root {
+      --neon-blue: #00f7ff;
+      --neon-pink: #ff00ff;
+      --neon-green: #00ff9d;
+      --matrix-dark: #0a0f12;
+      --panel-bg: rgba(18, 26, 32, 0.8);
+      --text-glow: #e0f7ff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Orbitron', 'Rajdhani', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(ellipse at bottom, #05080a, var(--matrix-dark));
+      min-height: 100vh;
+      perspective: 1200px;
+      overflow-x: hidden;
+      color: var(--text-glow);
+    }
+
+    /* GLITCHING HEADER */
+    .header {
+      background: linear-gradient(135deg, #05080a, var(--matrix-dark));
+      text-align: center;
+      padding: 6rem 2rem 12rem;
+      position: relative;
+      transform-style: preserve-3d;
+      margin-bottom: -8rem;
+      clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        linear-gradient(90deg, 
+          transparent, 
+          rgba(0, 247, 255, 0.05) 50%, 
+          transparent);
+      animation: glitch 5s infinite;
+    }
+
+    @keyframes glitch {
+      0%, 100% { transform: translateX(0); opacity: 0.3; }
+      20% { transform: translateX(-5px); opacity: 0.5; }
+      40% { transform: translateX(5px); opacity: 0.3; }
+      60% { transform: translateX(-3px); opacity: 0.5; }
+      80% { transform: translateX(3px); opacity: 0.3; }
+    }
+
+    .header h1 {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 20px var(--neon-blue), 0 0 40px rgba(0, 247, 255, 0.3);
+      transform: translateZ(60px);
+      background: linear-gradient(to right, var(--neon-blue), var(--neon-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+      position: relative;
+    }
+
+    .header h1::after {
+      content: '💻';
+      position: absolute;
+      left: -30px;
+      top: -10px;
+      font-size: 2rem;
+      filter: drop-shadow(0 0 10px var(--neon-blue));
+    }
+
+    .header p {
+      font-size: 1.5rem;
+      transform: translateZ(40px);
+      max-width: 700px;
+      margin: 0 auto;
+      text-shadow: 0 0 15px var(--neon-blue);
+      opacity: 0.9;
+    }
+
+    /* HOLOGRAPHIC PROJECT GRID */
+    .projects-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 3rem;
+      max-width: 1300px;
+      margin: 0 auto 8rem;
+      padding: 0 2rem;
+      transform-style: preserve-3d;
+      position: relative;
+      z-index: 2;
+    }
+
+    .project-card {
+      background: var(--panel-bg);
+      border-radius: 15px;
+      padding: 2.5rem;
+      border: 1px solid rgba(0, 247, 255, 0.2);
+      box-shadow: 
+        0 0 30px rgba(0, 247, 255, 0.2),
+        inset 0 0 20px rgba(0, 247, 255, 0.1);
+      backdrop-filter: blur(10px);
+      transform-style: preserve-3d;
+      transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(40px);
+      cursor: pointer;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        rgba(0, 247, 255, 0.05) 0%,
+        rgba(255, 0, 255, 0.03) 100%
+      );
+      z-index: -1;
+      transform: translateZ(-30px);
+    }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(to right, var(--neon-blue), var(--neon-pink));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-15px) translateZ(60px);
+      box-shadow: 
+        0 0 50px rgba(0, 247, 255, 0.4),
+        inset 0 0 30px rgba(0, 247, 255, 0.2);
+      border-color: rgba(0, 247, 255, 0.4);
+    }
+
+    .project-card:hover::after {
+      transform: scaleX(1);
+    }
+
+    .project-card h2 {
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+      color: var(--neon-blue);
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+
+    .project-card h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: var(--neon-pink);
+      border-radius: 3px;
+    }
+
+    .project-card p {
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .project-card a {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background: rgba(0, 247, 255, 0.1);
+      color: var(--neon-blue);
+      border: 1px solid var(--neon-blue);
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      transform: translateZ(20px);
+    }
+
+    .project-card:hover a {
+      background: linear-gradient(to right, var(--neon-blue), var(--neon-pink));
+      color: var(--matrix-dark);
+      box-shadow: 0 0 20px var(--neon-blue);
+      border-color: transparent;
+    }
+
+    /* TECH SPHERES BACKGROUND */
+    .tech-sphere {
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle at center, 
+        rgba(0, 247, 255, 0.1) 0%, 
+        rgba(255, 0, 255, 0.05) 50%, 
+        transparent 70%);
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: -1;
+      animation: float-sphere 15s ease-in-out infinite;
+    }
+
+    .sphere-1 {
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .sphere-2 {
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 5s;
+    }
+
+    @keyframes float-sphere {
+      0%, 100% { transform: translate(0, 0) translateZ(0) scale(1); }
+      50% { transform: translate(-40px, -50px) translateZ(40px) scale(1.1); }
+    }
+
+    /* CODE RAIN EFFECT */
+    .code-rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      background: 
+        linear-gradient(transparent 95%, rgba(0, 247, 255, 0.05) 100%),
+        linear-gradient(90deg, rgba(0, 247, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 20px, 20px 100%;
+      opacity: 0.3;
+    }
+
+    /* CYBER FOOTER */
+    .footer {
+      text-align: center;
+      padding: 6rem 2rem 3rem;
+      background: linear-gradient(to top, var(--matrix-dark), #05080a);
+      position: relative;
+      clip-path: polygon(0 30%, 100% 0, 100% 100%, 0% 100%);
+      border-top: 1px solid rgba(0, 247, 255, 0.2);
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(to right, var(--neon-blue), var(--neon-pink));
+    }
+
+    .footer p {
+      transform: translateY(30px);
+      opacity: 0.8;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+    }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 768px) {
+      .header {
+        padding: 4rem 1.5rem 8rem;
+        clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+      }
+      
+      .header h1 {
+        font-size: 2.5rem;
+      }
+      
+      .header p {
+        font-size: 1.2rem;
+      }
+      
+      .projects-container {
+        grid-template-columns: 1fr;
+        padding: 0 1.5rem;
+      }
+      
+      .footer {
+        clip-path: polygon(0 20%, 100% 0, 100% 100%, 0% 100%);
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="code-rain"></div>
+  <div class="tech-sphere sphere-1"></div>
+  <div class="tech-sphere sphere-2"></div>
+
+  <header class="header">
+    <h1>Coding & AI Projects</h1>
+    <p>Explore high-quality samples in Python, Web, and AI development.</p>
+  </header>
+
+  <main class="projects-container">
+    <div class="project-card">
+      <h2>AI Chatbot with Rasa</h2>
+      <p>A conversational bot built using Rasa NLU with Flask frontend. Features natural language understanding and custom actions.</p>
+      <a href="#">View Project</a>
+    </div>
+
+    <div class="project-card">
+      <h2>Portfolio Website</h2>
+      <p>Animated personal website with Three.js animations, GSAP timelines, and responsive design.</p>
+      <a href="#">View Project</a>
+    </div>
+
+    <div class="project-card">
+      <h2>Handwriting Digit Recognition</h2>
+      <p>CNN model achieving 99.2% accuracy on MNIST dataset with TensorFlow/Keras implementation.</p>
+      <a href="#">View Project</a>
+    </div>
+
+    <div class="project-card">
+      <h2>Stock Trend Predictor</h2>
+      <p>LSTM neural network analyzing historical stock data with 85% prediction accuracy.</p>
+      <a href="#">View Project</a>
+    </div>
+
+    <div class="project-card">
+      <h2>3D Object Detection</h2>
+      <p>Point cloud processing with PointNet++ for autonomous vehicle perception.</p>
+      <a href="#">View Project</a>
+    </div>
+
+    <div class="project-card">
+      <h2>Blockchain Explorer</h2>
+      <p>React-based interface for visualizing Ethereum blockchain transactions in real-time.</p>
+      <a href="#">View Project</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 AI4CODE | CYBER LAB v2.1</p>
+  </footer>
+
+  <script>
+    // 3D Card Interaction
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    projectCards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const angleX = (y - centerY) / 20;
+        const angleY = (centerX - x) / 20;
+        
+        card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) translateZ(60px)`;
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0) translateZ(40px)';
+      });
+    });
+
+    // Floating spheres follow mouse
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      
+      document.querySelector('.sphere-1').style.transform = `
+        translate(${(x - 0.5) * 60}px, ${(y - 0.5) * 60}px)
+        translateZ(${x * 30}px)
+      `;
+      
+      document.querySelector('.sphere-2').style.transform = `
+        translate(${(0.5 - x) * 60}px, ${(0.5 - y) * 60}px)
+        translateZ(${y * 30}px)
+      `;
+    });
+
+    // Animate code rain
+    const codeRain = document.querySelector('.code-rain');
+    const chars = "01";
+    
+    function createCodeColumn() {
+      const col = document.createElement('div');
+      col.style.position = 'absolute';
+      col.style.top = '-50px';
+      col.style.left = `${Math.random() * 100}%`;
+      col.style.width = '15px';
+      col.style.fontFamily = 'monospace';
+      col.style.color = 'rgba(0, 247, 255, 0.3)';
+      col.style.fontSize = '18px';
+      col.style.textAlign = 'center';
+      col.style.lineHeight = '20px';
+      col.style.animation = `fall ${Math.random() * 5 + 3}s linear infinite`;
+      col.style.animationDelay = `${Math.random() * 2}s`;
+      
+      let content = '';
+      for (let i = 0; i < 30; i++) {
+        content += chars[Math.floor(Math.random() * chars.length)] + '<br>';
+      }
+      col.innerHTML = content;
+      
+      codeRain.appendChild(col);
+      
+      // Clean up old columns
+      if (codeRain.children.length > 50) {
+        codeRain.removeChild(codeRain.children[0]);
+      }
+    }
+    
+    // Create initial columns
+    for (let i = 0; i < 30; i++) {
+      setTimeout(createCodeColumn, i * 200);
+    }
+    
+    // Continue adding columns
+    setInterval(createCodeColumn, 300);
+  </script>
+</body>
+</html>

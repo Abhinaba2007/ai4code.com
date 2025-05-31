@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details | AI Class 10</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+    <style>
+        :root {
+            --primary-color: #65baff;
+            --secondary-color: #4a77fc;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .course-header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .course-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        
+        .course-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 15px auto;
+        }
+        
+        .course-price-tag {
+            background: white;
+            color: var(--secondary-color);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-top: 15px;
+        }
+        
+        .course-details-container {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .course-main {
+            flex: 2;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .course-sidebar {
+            flex: 1;
+        }
+        
+        .course-card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        h2, h3 {
+            color: var(--secondary-color);
+        }
+        
+        .btn-enroll {
+            display: block;
+            width: 100%;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-enroll:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(74, 119, 252, 0.3);
+        }
+        
+        .module {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        .module:last-child {
+            border-bottom: none;
+        }
+        
+        .lesson-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .lesson-list li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .lesson-list li i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-item i {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        .stars {
+            color: var(--warning-color);
+            margin-right: 10px;
+        }
+        
+        .review {
+            margin-bottom: 20px;
+        }
+        
+        .review-author {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .review-date {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 15px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: #333;
+        }
+        
+        /* Payment Form Styles */
+        .pricing-options {
+            margin: 20px 0;
+        }
+        
+        .pricing-option {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .pricing-option:hover {
+            border-color: var(--secondary-color);
+            background-color: #f5f8ff;
+        }
+        
+        .pricing-option.selected {
+            border: 2px solid var(--secondary-color);
+            background-color: #f0f5ff;
+        }
+        
+        .payment-methods {
+            margin: 20px 0;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .payment-method.selected {
+            border-color: var(--secondary-color);
+            background-color: #f0f5ff;
+        }
+        
+        .payment-method img {
+            width: 50px;
+            margin-right: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .btn-pay {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn-pay:hover {
+            opacity: 0.9;
+        }
+        
+        /* Error Styles */
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+        
+        .form-group input.error {
+            border-color: var(--danger-color) !important;
+        }
+        
+        /* Spinner Animation */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--secondary-color);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Success Message */
+        .success-message {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .success-message i {
+            color: var(--success-color);
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .course-details-container {
+                flex-direction: column;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 90%;
+                margin: 10% auto;
+            }
+        }
+        .pay-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #3399cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="course-header">
+            <h1>Artificial Intelligence - Class 10</h1>
+            <p>Complete course covering AI basics, Python programming, and real-world applications designed specifically for CBSE students.</p>
+            <div class="course-price-tag">₹5,999/year</div>
+        </div>
+        
+        <div class="course-details-container">
+            <div class="course-main">
+                <h2>Course Description</h2>
+                <p>This comprehensive Artificial Intelligence course for Class 10 students introduces the fundamental concepts of AI through engaging, hands-on projects and real-world applications. Aligned with the CBSE curriculum, the course covers Python programming, AI ethics, machine learning basics, and problem-solving techniques.</p>
+                
+                <h2>What You'll Learn</h2>
+                <div class="module">
+                    <h3>Module 1: Introduction to AI</h3>
+                    <ul class="lesson-list">
+                        <li><i class="fas fa-check-circle"></i> Understanding Artificial Intelligence</li>
+                        <li><i class="fas fa-check-circle"></i> History and Evolution of AI</li>
+                        <li><i class="fas fa-check-circle"></i> AI Applications in Daily Life</li>
+                        <li><i class="fas fa-check-circle"></i> AI Ethics and Responsible Use</li>
+                    </ul>
+                </div>
+                
+                <div class="module">
+                    <h3>Module 2: Python Programming Basics</h3>
+                    <ul class="lesson-list">
+                        <li><i class="fas fa-check-circle"></i> Introduction to Python</li>
+                        <li><i class="fas fa-check-circle"></i> Variables, Data Types, and Operators</li>
+                        <li><i class="fas fa-check-circle"></i> Control Structures (If-else, Loops)</li>
+                        <li><i class="fas fa-check-circle"></i> Functions and Modules</li>
+                    </ul>
+                </div>
+                
+                <div class="module">
+                    <h3>Module 3: AI Concepts and Tools</h3>
+                    <ul class="lesson-list">
+                        <li><i class="fas fa-check-circle"></i> Machine Learning Fundamentals</li>
+                        <li><i class="fas fa-check-circle"></i> Neural Networks Simplified</li>
+                        <li><i class="fas fa-check-circle"></i> Working with Data</li>
+                        <li><i class="fas fa-check-circle"></i> AI Project Development</li>
+                    </ul>
+                </div>
+                
+                <div class="module">
+                    <h3>Module 4: Real-world Applications</h3>
+                    <ul class="lesson-list">
+                        <li><i class="fas fa-check-circle"></i> Chatbots and Natural Language Processing</li>
+                        <li><i class="fas fa-check-circle"></i> Computer Vision Basics</li>
+                        <li><i class="fas fa-check-circle"></i> Predictive Systems</li>
+                        <li><i class="fas fa-check-circle"></i> Final Capstone Project</li>
+                    </ul>
+                </div>
+                
+                <h2>Course Features</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-video"></i>
+                        <div>
+                            <h4>120+ Video Lectures</h4>
+                            <p>High-quality, engaging video content</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-book"></i>
+                        <div>
+                            <h4>Downloadable Resources</h4>
+                            <p>PDFs, code samples, and cheat sheets</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-tasks"></i>
+                        <div>
+                            <h4>50+ Practice Exercises</h4>
+                            <p>Hands-on coding challenges</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-certificate"></i>
+                        <div>
+                            <h4>Certificate of Completion</h4>
+                            <p>Recognized by educational institutions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="course-sidebar">
+                <div class="course-card">
+                    <h3>Course Details</h3>
+                    <p><i class="far fa-clock"></i> <strong>Duration:</strong> 60+ Hours</p>
+                    <p><i class="fas fa-language"></i> <strong>Language:</strong> English/Hindi</p>
+                    <p><i class="fas fa-layer-group"></i> <strong>Level:</strong> Beginner</p>
+                    <p><i class="fas fa-calendar-alt"></i> <strong>Start Date:</strong> Anytime (Self-paced)</p>
+                    <p><i class="fas fa-mobile-alt"></i> <strong>Access:</strong> Mobile & Desktop</p>
+                    
+                    <button id="enrollBtn" class="btn-enroll">Enroll Now</button>
+                    <button id="demoBtn" onclick="window.location.href='learnif10ai.html'" class="btn-enroll" style="margin-top: 10px;">View Demo</button>
+                    
+                    <div class="secure-checkout">
+                        <i class="fas fa-lock"></i>
+                        <span>Secure Payment</span>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <h3>Student Reviews</h3>
+                    <div class="rating">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span>4.8 (1,245 reviews)</span>
+                    </div>
+                    
+                    <div class="review">
+                        <div class="review-author">Shivan Shamanta</div>
+                        <div class="review-date">2 months ago</div>
+                        <p>"This course made AI concepts so easy to understand. The projects were really fun to work on!"</p>
+                    </div>
+                    
+                    <div class="review">
+                        <div class="review-author">Abhinaba Roy</div>
+                        <div class="review-date">1 month ago</div>
+                        <p>"Excellent for CBSE students. The Python section was especially helpful for my school exams."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div id="purchaseModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalContent">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<!-- Razorpay Checkout -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBITF0Fh_vCJddNeyURWWyprLCOYB2h7Cc",
+        authDomain: "sign-up-page-fe4f7.firebaseapp.com",
+        projectId: "sign-up-page-fe4f7",
+        storageBucket: "sign-up-page-fe4f7.appspot.com",
+        messagingSenderId: "339652230724",
+        appId: "1:339652230724:web:ba50630f42259219a8c611"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Configuration
+        const COURSE_ID = 'vd10ai.html';
+        const COURSE_PRICE = 5999;
+        const COURSE_ACCESS_PAGE = 'learnif10ai.html';
+        const LOGIN_PAGE = 'login.html';
+        const DEMO_PAGE = 'learnif10ai.html';
+        
+        // DOM Elements
+        const modal = document.getElementById("purchaseModal");
+        const modalContent = document.getElementById("modalContent");
+        const enrollBtn = document.getElementById("enrollBtn");
+        const demoBtn = document.getElementById("demoBtn");
+        const closeBtn = document.querySelector(".close");
+        
+        // Merchant details
+        const MERCHANT_DETAILS = {
+            name: "AI4Code Academy",
+            upiId: "abhinaba33@ybl",
+            bankAccount: "539902010012098",
+            ifsc: "UBIN0553999",
+            bankName: "Union Bank of India"
+        };
+
+        // 1. Authentication Functions
+        function checkAuthState() {
+            return new Promise((resolve) => {
+                auth.onAuthStateChanged((user) => {
+                    if (user) {
+                        resolve({
+                            uid: user.uid,
+                            email: user.email,
+                            displayName: user.displayName || 'Customer',
+                            phone: user.phoneNumber || '9999999999'
+                        });
+                    } else {
+                        resolve(null);
+                    }
+                });
+            });
+        }
+
+        function redirectToLogin() {
+            localStorage.setItem('redirectAfterLogin', window.location.href);
+            localStorage.setItem('redirectCourse', COURSE_ID);
+            window.location.href = `${LOGIN_PAGE}?redirect=true&course=${COURSE_ID}`;
+        }
+
+        // 2. Payment Verification Functions
+        async function checkPaymentStatus(userId) {
+            try {
+                const doc = await db.collection('payments').doc(userId).get();
+                if (doc.exists) {
+                    const paymentData = doc.data();
+                    if (paymentData.courseId === COURSE_ID) {
+                        const paymentDate = paymentData.timestamp.toDate();
+                        const expiryDate = new Date(paymentDate);
+                        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+                        
+                        if (new Date() < expiryDate) {
+                            return { hasPaid: true, expiryDate: expiryDate };
+                        }
+                    }
+                }
+                return { hasPaid: false };
+            } catch (error) {
+                console.error("Error checking payment status:", error);
+                return { hasPaid: false };
+            }
+        }
+
+        async function recordPayment(userId, paymentMethod, transactionId, reference = '') {
+            try {
+                await db.collection('payments').doc(userId).set({
+                    courseId: COURSE_ID,
+                    amount: COURSE_PRICE,
+                    paymentMethod: paymentMethod,
+                    transactionId: transactionId,
+                    reference: reference,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    validUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+                });
+                return true;
+            } catch (error) {
+                console.error("Error recording payment:", error);
+                return false;
+            }
+        }
+
+        // 3. Modal Functions
+        function openModal(content = '') {
+            modalContent.innerHTML = content;
+            modal.style.display = "block";
+        }
+
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
+        // 4. UPI Payment Functions
+        function validateUpiId(upiId) {
+            const upiRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+$/;
+            if (!upiRegex.test(upiId)) {
+                return { valid: false, message: "Invalid UPI ID format" };
+            }
+            
+            const providers = ['okicici', 'ybl', 'paytm', 'axisbank', 'okhdfcbank', 'oksbi'];
+            const provider = upiId.split('@')[1];
+            if (!providers.includes(provider)) {
+                return { valid: false, message: "Unsupported UPI provider" };
+            }
+            
+            return { valid: true };
+        }
+
+        function initiateUpiPayment(amount, upiId, merchantName, transactionNote) {
+            const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(merchantName)}&am=${amount}&tn=${encodeURIComponent(transactionNote)}&cu=INR`;
+            
+            window.location.href = upiUrl;
+            
+            setTimeout(() => {
+                alert("Couldn't open UPI app. Please ensure you have a UPI app installed.");
+                window.open(`https://upayi.vercel.app/pay?upiId=${upiId}&amount=${amount}`);
+            }, 500);
+        }
+
+        function generateUpiQrString() {
+            return encodeURIComponent(
+                `upi://pay?pa=${MERCHANT_DETAILS.upiId}&pn=${MERCHANT_DETAILS.name}&am=${COURSE_PRICE}&tn=Course Payment&cu=INR`
+            );
+        }
+
+        async function checkUpiPaymentStatus(transactionId) {
+            try {
+                // In a real implementation, this would call your backend
+                // to verify the payment with your payment processor
+                const response = await fetch(`/api/verify-payment?txnId=${transactionId}`);
+                const data = await response.json();
+                return data.status === 'success' 
+                    ? { success: true, data } 
+                    : { success: false, message: data.message || 'Payment failed' };
+            } catch (error) {
+                return { success: false, message: 'Verification error' };
+            }
+        }
+
+        function showPaymentPendingScreen(transactionId, paymentMethod) {
+            const content = `
+                <div style="text-align: center; padding: 30px;">
+                    <div class="spinner"></div>
+                    <h3>Payment Processing</h3>
+                    <p>Transaction ID: ${transactionId}</p>
+                    <p>Method: ${paymentMethod}</p>
+                    <p>Please complete the payment in your UPI app</p>
+                </div>
+            `;
+            
+            openModal(content);
+            
+            const interval = setInterval(async () => {
+                const result = await checkUpiPaymentStatus(transactionId);
+                if (result.success) {
+                    clearInterval(interval);
+                    showPaymentSuccess(transactionId, paymentMethod);
+                } else if (result.message !== 'Pending') {
+                    clearInterval(interval);
+                    showPaymentError(result.message);
+                }
+            }, 5000);
+        }
+
+        // 5. Card Payment Functions
+        function validateCardDetails(cardDetails) {
+            const { number, name, expiry, cvv } = cardDetails;
+            
+            if (!number || !/^\d{16}$/.test(number.replace(/\s/g, ''))) {
+                return { isValid: false, message: "Invalid card number" };
+            }
+            
+            if (!name || name.trim().length < 3) {
+                return { isValid: false, message: "Invalid cardholder name" };
+            }
+            
+            if (!expiry || !/^\d{2}\/\d{2}$/.test(expiry)) {
+                return { isValid: false, message: "Invalid expiry date (MM/YY)" };
+            }
+            
+            if (!cvv || !/^\d{3,4}$/.test(cvv)) {
+                return { isValid: false, message: "Invalid CVV" };
+            }
+            
+            // Check expiry date
+            const [month, year] = expiry.split('/');
+            const expiryDate = new Date(`20${year}`, month - 1);
+            const currentDate = new Date();
+            
+            if (expiryDate < currentDate) {
+                return { isValid: false, message: "Card has expired" };
+            }
+            
+            return { isValid: true };
+        }
+
+        async function processCardPayment() {
+            const cardDetails = {
+                number: document.getElementById('cardNumber').value,
+                name: document.getElementById('cardName').value,
+                expiry: document.getElementById('cardExpiry').value,
+                cvv: document.getElementById('cardCvv').value
+            };
+            
+            const validation = validateCardDetails(cardDetails);
+            if (!validation.isValid) {
+                showPaymentError(validation.message);
+                return;
+            }
+            
+            const transactionId = 'CARD' + Date.now();
+            showPaymentPendingScreen(transactionId, 'Card');
+            
+            // Simulate card payment processing
+            setTimeout(async () => {
+                const isSuccess = Math.random() > 0.2; // 80% success rate
+                
+                if (isSuccess) {
+                    const userData = await checkAuthState();
+                    if (userData) {
+                        const recorded = await recordPayment(
+                            userData.uid,
+                            'Card',
+                            transactionId,
+                            'AUTH' + Math.floor(Math.random() * 10000)
+                        );
+                        
+                        if (recorded) {
+                            showPaymentSuccess(transactionId, 'Card');
+                        } else {
+                            showPaymentError("Failed to record payment");
+                        }
+                    } else {
+                        showPaymentError("User session expired");
+                    }
+                } else {
+                    showPaymentError("Card payment declined by bank");
+                }
+            }, 3000);
+        }
+
+        // 6. Payment Options Display
+        function showPaymentOptions() {
+            const content = `
+                <div style="padding: 20px;">
+                    <h2 style="text-align: center; margin-bottom: 20px;">Complete Payment</h2>
+                    <p style="text-align: center; margin-bottom: 30px;">Amount to pay: ₹${COURSE_PRICE}</p>
+                    
+                    <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <h3 style="margin-top: 0;">Payment To:</h3>
+                        <p><strong>${MERCHANT_DETAILS.name}</strong></p>
+                        <p>UPI ID: ${MERCHANT_DETAILS.upiId}</p>
+                        <p>Bank: ${MERCHANT_DETAILS.bankName}</p>
+                    </div>
+                    
+                    <div class="payment-tabs">
+                        <button class="tab-btn active" data-tab="card">Card</button>
+                        <button class="tab-btn" data-tab="upi">UPI</button>
+                        <button class="tab-btn" data-tab="netbanking">Net Banking</button>
+                    </div>
+                    
+                    <div id="card-tab" class="tab-content active">
+                        <div style="margin: 20px 0;">
+                            <input type="text" id="cardNumber" placeholder="Card Number" class="payment-input" maxlength="19">
+                            <input type="text" id="cardName" placeholder="Name on Card" class="payment-input">
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="cardExpiry" placeholder="MM/YY" class="payment-input" style="flex: 1;" maxlength="5">
+                                <input type="text" id="cardCvv" placeholder="CVV" class="payment-input" style="flex: 1;" maxlength="4">
+                            </div>
+                        </div>
+                        <button id="payWithCardBtn" class="pay-btn">Pay ₹${COURSE_PRICE}</button>
+                    </div>
+                    
+                    <div id="upi-tab" class="tab-content">
+                        <div style="margin: 20px 0; text-align: center;">
+                            <input type="text" id="upiId" placeholder="yourname@upi" class="payment-input">
+                            <p style="font-size: 14px; color: #666; margin: 15px 0;">OR scan QR code:</p>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${generateUpiQrString()}" 
+                                 alt="UPI QR Code" style="width: 150px; height: 150px; display: block; margin: 10px auto;">
+                        </div>
+                        <button id="payWithUpiBtn" class="pay-btn">Pay via UPI</button>
+                        
+                        <div style="margin-top: 20px; text-align: center;">
+                            <p style="font-size: 14px; color: #666;">Pay using:</p>
+                            <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
+                                <div class="upi-app" onclick="window.openUpiApp('${MERCHANT_DETAILS.upiId}', ${COURSE_PRICE}, 'googlepay')">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Google_Pay_%28GPay%29_Logo.svg/512px-Google_Pay_%28GPay%29_Logo.svg.png" 
+                                         alt="Google Pay" style="height: 40px;">
+                                </div>
+                                <div class="upi-app" onclick="window.openUpiApp('${MERCHANT_DETAILS.upiId}', ${COURSE_PRICE}, 'phonepe')">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/PhonePe_Logo.svg/2560px-PhonePe_Logo.svg.png" 
+                                         alt="PhonePe" style="height: 40px;">
+                                </div>
+                                <div class="upi-app" onclick="window.openUpiApp('${MERCHANT_DETAILS.upiId}', ${COURSE_PRICE}, 'paytm')">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Paytm_logo.png/640px-Paytm_logo.png" 
+                                         alt="Paytm" style="height: 40px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="netbanking-tab" class="tab-content">
+                        <div style="margin: 20px 0;">
+                            <select id="bankSelect" class="payment-input">
+                                <option value="">Select your bank</option>
+                                <option value="SBI">State Bank of India</option>
+                                <option value="HDFC">HDFC Bank</option>
+                                <option value="ICICI">ICICI Bank</option>
+                                <option value="Axis">Axis Bank</option>
+                                <option value="Kotak">Kotak Mahindra Bank</option>
+                            </select>
+                        </div>
+                        <button id="payWithNetBankingBtn" class="pay-btn">Pay via Net Banking</button>
+                    </div>
+                    
+                    <style>
+                        .payment-tabs { display: flex; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
+                        .tab-btn { flex: 1; padding: 10px; background: none; border: none; cursor: pointer; }
+                        .tab-btn.active { border-bottom: 2px solid #3399cc; font-weight: bold; }
+                        .tab-content { display: none; }
+                        .tab-content.active { display: block; }
+                        .payment-input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; }
+                        .pay-btn { width: 100%; padding: 12px; background-color: #3399cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
+                        .upi-app { cursor: pointer; padding: 10px; border-radius: 8px; transition: background 0.2s; }
+                        .upi-app:hover { background: #f5f5f5; }
+                        .upi-app img { height: 40px; display: block; margin: 0 auto; }
+                        .spinner {
+                            border: 4px solid rgba(0, 0, 0, 0.1);
+                            border-radius: 50%;
+                            border-top: 4px solid #3399cc;
+                            width: 40px;
+                            height: 40px;
+                            animation: spin 1s linear infinite;
+                            margin: 20px auto;
+                        }
+                        @keyframes spin {
+                            0% { transform: rotate(0deg); }
+                            100% { transform: rotate(360deg); }
+                        }
+                    </style>
+                </div>
+            `;
+            
+            openModal(content);
+            
+            // Tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById(`${this.dataset.tab}-tab`).classList.add('active');
+                });
+            });
+            
+            // Card number formatting
+            document.getElementById('cardNumber')?.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s/g, '');
+                if (value.length > 16) value = value.substring(0, 16);
+                value = value.replace(/(\d{4})/g, '$1 ').trim();
+                e.target.value = value;
+            });
+            
+            // Expiry date formatting
+            document.getElementById('cardExpiry')?.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                e.target.value = value;
+            });
+            
+            // Payment button handlers
+            document.getElementById('payWithCardBtn')?.addEventListener('click', processCardPayment);
+            document.getElementById('payWithUpiBtn')?.addEventListener('click', processUpiPayment);
+            document.getElementById('payWithNetBankingBtn')?.addEventListener('click', processNetBankingPayment);
+        }
+
+        async function processUpiPayment() {
+            const upiId = document.getElementById('upiId').value.trim();
+            const validation = validateUpiId(upiId);
+            
+            if (!validation.valid) {
+                showPaymentError(validation.message);
+                return;
+            }
+            
+            const transactionId = 'UPI' + Date.now();
+            showPaymentPendingScreen(transactionId, 'UPI');
+            
+            // In a real implementation, you would initiate the UPI payment here
+            initiateUpiPayment(COURSE_PRICE, upiId, MERCHANT_DETAILS.name, `Payment for ${COURSE_ID}`);
+            
+            // Simulate payment verification (replace with actual verification)
+            setTimeout(async () => {
+                const isSuccess = Math.random() > 0.2; // 80% success rate
+                
+                if (isSuccess) {
+                    const userData = await checkAuthState();
+                    if (userData) {
+                        const recorded = await recordPayment(
+                            userData.uid,
+                            'UPI',
+                            transactionId,
+                            'UPIREF' + Math.floor(Math.random() * 1000000)
+                        );
+                        
+                        if (recorded) {
+                            showPaymentSuccess(transactionId, 'UPI');
+                        } else {
+                            showPaymentError("Failed to record payment");
+                        }
+                    } else {
+                        showPaymentError("User session expired");
+                    }
+                } else {
+                    showPaymentError("UPI payment failed or was declined");
+                }
+            }, 5000);
+        }
+
+        async function processNetBankingPayment() {
+            const bank = document.getElementById('bankSelect').value;
+            if (!bank) {
+                showPaymentError("Please select your bank");
+                return;
+            }
+            
+            const transactionId = 'NB' + Date.now();
+            showPaymentPendingScreen(transactionId, 'Net Banking');
+            
+            // Simulate net banking payment processing
+            setTimeout(async () => {
+                const isSuccess = Math.random() > 0.2; // 80% success rate
+                
+                if (isSuccess) {
+                    const userData = await checkAuthState();
+                    if (userData) {
+                        const recorded = await recordPayment(
+                            userData.uid,
+                            'Net Banking',
+                            transactionId,
+                            bank
+                        );
+                        
+                        if (recorded) {
+                            showPaymentSuccess(transactionId, 'Net Banking');
+                        } else {
+                            showPaymentError("Failed to record payment");
+                        }
+                    } else {
+                        showPaymentError("User session expired");
+                    }
+                } else {
+                    showPaymentError("Net banking payment failed");
+                }
+            }, 3000);
+        }
+
+        // 7. UI Feedback Functions
+        function showPaymentSuccess(transactionId, paymentMethod) {
+            const content = `
+                <div style="text-align: center; padding: 30px;">
+                    <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 60px;"></i>
+                    <h3>Payment Successful!</h3>
+                    <p>Transaction ID: ${transactionId}</p>
+                    <p>Method: ${paymentMethod}</p>
+                    <p>Amount: ₹${COURSE_PRICE}</p>
+                    <button id="accessCourseBtn" class="pay-btn">Access Course Now</button>
+                </div>
+            `;
+            
+            openModal(content);
+            
+            document.getElementById('accessCourseBtn').addEventListener('click', () => {
+                closeModal();
+                window.location.href = COURSE_ACCESS_PAGE;
+            });
+        }
+
+        function showPaymentError(message = "Payment could not be processed") {
+            const content = `
+                <div style="text-align: center; padding: 30px;">
+                    <i class="fas fa-times-circle" style="color: #f44336; font-size: 60px;"></i>
+                    <h3>Payment Failed</h3>
+                    <p>${message}</p>
+                    <button id="tryAgainBtn" class="pay-btn">Try Again</button>
+                    <button id="contactSupportBtn" style="
+                        background: none;
+                        border: 1px solid #ccc;
+                        color: #333;
+                        padding: 10px 15px;
+                        margin-top: 10px;
+                        cursor: pointer;
+                    ">Contact Support</button>
+                </div>
+            `;
+            
+            openModal(content);
+            
+            document.getElementById('tryAgainBtn').addEventListener('click', showPaymentOptions);
+            document.getElementById('contactSupportBtn').addEventListener('click', () => {
+                window.location.href = `mailto:support@example.com?subject=Payment%20Failed`;
+            });
+        }
+
+        // 8. Event Listeners
+        if (enrollBtn) {
+            enrollBtn.addEventListener('click', async function(e) {
+                e.preventDefault();
+                
+                const userData = await checkAuthState();
+                if (!userData) {
+                    redirectToLogin();
+                    return;
+                }
+                
+                const { hasPaid } = await checkPaymentStatus(userData.uid);
+                if (hasPaid) {
+                    window.location.href = COURSE_ACCESS_PAGE;
+                } else {
+                    showPaymentOptions();
+                }
+            });
+        }
+        
+        if (demoBtn) demoBtn.addEventListener('click', function() {
+            window.location.href = DEMO_PAGE;
+        });
+        
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    });
+
+    // Global function for UPI app buttons
+    window.openUpiApp = function(upiId, amount, appName) {
+        const merchantName = encodeURIComponent("AI4Code Academy");
+        const transactionNote = encodeURIComponent("Course Payment");
+        const transactionId = 'UPI' + Date.now();
+        
+        // Show pending screen
+        const modal = document.getElementById("purchaseModal");
+        const modalContent = document.getElementById("modalContent");
+        if (modal && modalContent) {
+            modalContent.innerHTML = `
+                <div style="text-align: center; padding: 30px;">
+                    <div class="spinner"></div>
+                    <h3>Payment Processing</h3>
+                    <p>Transaction ID: ${transactionId}</p>
+                    <p>Please complete the payment in your UPI app</p>
+                </div>
+            `;
+            modal.style.display = "block";
+        }
+        
+        let deepLink = '';
+        switch(appName.toLowerCase()) {
+            case 'googlepay': deepLink = `tez://upi/pay?pa=${upiId}&pn=${merchantName}&am=${amount}&tn=${transactionNote}`; break;
+            case 'phonepe': deepLink = `phonepe://pay?pa=${upiId}&pn=${merchantName}&am=${amount}&tn=${transactionNote}`; break;
+            case 'paytm': deepLink = `paytmmp://pay?pa=${upiId}&pn=${merchantName}&am=${amount}&tn=${transactionNote}`; break;
+            default: deepLink = `upi://pay?pa=${upiId}&pn=${merchantName}&am=${amount}&tn=${transactionNote}`;
+        }
+        
+        window.location.href = deepLink;
+        setTimeout(() => {
+            window.location.href = `https://upayi.vercel.app/pay?upiId=${upiId}&amount=${amount}`;
+        }, 500);
+    };
+</script>
+<script src="node.js"></script>
+</body>
+</html>

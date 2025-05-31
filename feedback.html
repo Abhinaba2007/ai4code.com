@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feedback | AI4CODE</title>
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    /* Futuristic 3D Feedback Portal */
+    :root {
+      --neon-blue: #00f5ff;
+      --neon-purple: #9d00ff;
+      --neon-pink: #ff00aa;
+      --dark-space: #0a0a1a;
+      --star-light: #e0f7ff;
+      --void: #020210;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Orbitron', 'Rajdhani', sans-serif;
+    }
+
+    body {
+      background: var(--void);
+      min-height: 100vh;
+      perspective: 1200px;
+      overflow-x: hidden;
+      color: var(--star-light);
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--neon-purple), var(--dark-space));
+      color: white;
+      text-align: center;
+      padding: 5rem 2rem 10rem;
+      position: relative;
+      transform-style: preserve-3d;
+      box-shadow: 0 0 60px rgba(157, 0, 255, 0.4);
+      margin-bottom: -6rem;
+      clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+      z-index: 1;
+      border-bottom: 3px solid var(--neon-blue);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="0.5" fill="white" opacity="0.3"/></svg>');
+      opacity: 0.2;
+      transform: translateZ(-50px);
+    }
+
+    .header h1 {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 20px var(--neon-blue), 0 0 40px rgba(0, 245, 255, 0.3);
+      transform: translateZ(50px);
+      font-weight: 700;
+      letter-spacing: 3px;
+      background: linear-gradient(to right, var(--neon-blue), var(--neon-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header p {
+      font-size: 1.5rem;
+      transform: translateZ(40px);
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 300;
+      text-shadow: 0 0 15px var(--neon-blue);
+      opacity: 0.9;
+    }
+
+    .feedback-form {
+      max-width: 700px;
+      margin: 0 auto 6rem;
+      padding: 0 2rem;
+      transform-style: preserve-3d;
+      position: relative;
+      z-index: 2;
+    }
+
+    .holographic-panel {
+      background: rgba(10, 10, 26, 0.6);
+      border-radius: 20px;
+      padding: 3rem;
+      border: 1px solid rgba(0, 245, 255, 0.3);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6),
+                  inset 0 0 20px rgba(0, 245, 255, 0.1),
+                  0 0 30px rgba(157, 0, 255, 0.3);
+      backdrop-filter: blur(15px);
+      transform-style: preserve-3d;
+      transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(30px);
+    }
+
+    .holographic-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        rgba(0, 245, 255, 0.05) 0%,
+        rgba(157, 0, 255, 0.03) 100%
+      );
+      z-index: -1;
+      transform: translateZ(-20px);
+    }
+
+    .holographic-panel::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--neon-blue), var(--neon-pink));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s ease;
+    }
+
+    .holographic-panel:hover {
+      transform: translateY(-10px) translateZ(50px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8),
+                  inset 0 0 30px rgba(0, 245, 255, 0.2),
+                  0 0 50px rgba(157, 0, 255, 0.5);
+    }
+
+    .holographic-panel:hover::after {
+      transform: scaleX(1);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      transform-style: preserve-3d;
+    }
+
+    .form-group {
+      position: relative;
+      transform-style: preserve-3d;
+    }
+
+    .form-group:nth-child(3),
+    .form-group:nth-child(4) {
+      grid-column: span 2;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 1.2rem;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(0, 245, 255, 0.2);
+      border-radius: 8px;
+      color: var(--star-light);
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      transform: translateZ(10px);
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 20px rgba(0, 245, 255, 0.2);
+      transform: translateZ(20px);
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    textarea {
+      min-height: 180px;
+      resize: vertical;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.8rem;
+      color: var(--neon-blue);
+      font-size: 1.1rem;
+      text-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
+      transform: translateZ(15px);
+    }
+
+    button[type="submit"] {
+      background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+      color: var(--dark-space);
+      border: none;
+      padding: 1.2rem 2.5rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 25px rgba(0, 245, 255, 0.4);
+      transform: translateZ(20px);
+      width: 100%;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 1rem;
+    }
+
+    button[type="submit"]:hover {
+      transform: translateY(-5px) translateZ(30px);
+      box-shadow: 0 10px 40px rgba(0, 245, 255, 0.6);
+      background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+    }
+
+    .floating-dots {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+      transform-style: preserve-3d;
+    }
+
+    .dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: var(--neon-blue);
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: float-dot linear infinite;
+      filter: blur(1px);
+    }
+
+    @keyframes float-dot {
+      from { transform: translateY(0) translateZ(0); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      to { transform: translateY(-100vh) translateZ(100px); opacity: 0; }
+    }
+
+    .hologram-effect {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 245, 255, 0.05) 50%,
+        transparent 100%
+      );
+      animation: scan 4s linear infinite;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    .footer {
+      text-align: center;
+      padding: 5rem 2rem 2rem;
+      background: linear-gradient(to top, var(--dark-space), var(--void));
+      color: var(--star-light);
+      position: relative;
+      clip-path: polygon(0 25%, 100% 0, 100% 100%, 0% 100%);
+      margin-top: 5rem;
+      border-top: 1px solid rgba(0, 245, 255, 0.2);
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--neon-blue), var(--neon-pink));
+    }
+
+    .footer p {
+      transform: translateY(20px);
+      opacity: 0.7;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header {
+        padding: 3rem 1.5rem 7rem;
+        clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+      }
+      
+      .header h1 {
+        font-size: 2.5rem;
+      }
+      
+      .header p {
+        font-size: 1.2rem;
+      }
+      
+      .feedback-form {
+        padding: 0 1.5rem;
+      }
+      
+      .holographic-panel {
+        padding: 2rem;
+      }
+      
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-group:nth-child(3),
+      .form-group:nth-child(4) {
+        grid-column: span 1;
+      }
+      
+      .footer {
+        clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-dots" id="floatingDots"></div>
+
+  <header class="header">
+    <h1>Feedback</h1>
+    <p>We value your thoughts!</p>
+  </header>
+
+  <main class="feedback-form">
+    <div class="holographic-panel">
+      <div class="hologram-effect"></div>
+      <form>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" placeholder="Enter your name" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Your Email</label>
+            <input type="email" id="email" placeholder="Enter your email" required />
+          </div>
+          <div class="form-group">
+            <label for="feedback">Your Feedback</label>
+            <textarea id="feedback" placeholder="Share your thoughts with us..." required></textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit">Transmit Feedback</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 AI4CODE | Feedback Portal</p>
+  </footer>
+
+  <script>
+    // Create floating dots
+    const dotsContainer = document.getElementById('floatingDots');
+    const dotCount = 30;
+    
+    for (let i = 0; i < dotCount; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      
+      // Random properties
+      const size = Math.random() * 4 + 2;
+      const posX = Math.random() * 100;
+      const duration = Math.random() * 10 + 5;
+      const delay = Math.random() * -10;
+      const opacity = Math.random() * 0.4 + 0.2;
+      const zDepth = Math.random() * 100;
+      
+      dot.style.width = `${size}px`;
+      dot.style.height = `${size}px`;
+      dot.style.left = `${posX}%`;
+      dot.style.opacity = opacity;
+      dot.style.animationDuration = `${duration}s`;
+      dot.style.animationDelay = `${delay}s`;
+      dot.style.transform = `translateZ(${zDepth}px)`;
+      
+      dotsContainer.appendChild(dot);
+    }
+    
+    // Form interaction effects
+    const inputs = document.querySelectorAll('input, textarea');
+    const panel = document.querySelector('.holographic-panel');
+    
+    inputs.forEach(input => {
+      input.addEventListener('focus', () => {
+        input.parentElement.style.transform = 'translateZ(30px)';
+      });
+      
+      input.addEventListener('blur', () => {
+        input.parentElement.style.transform = 'translateZ(15px)';
+      });
+    });
+    
+    // Panel follows mouse slightly
+    document.addEventListener('mousemove', (e) => {
+      const x = (window.innerWidth / 2 - e.pageX) / 40;
+      const y = (window.innerHeight / 2 - e.pageY) / 40;
+      
+      panel.style.transform = `rotateY(${x}deg) rotateX(${y}deg) translateZ(50px)`;
+    });
+    
+    // Form submission
+    const form = document.querySelector('form');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const submitBtn = form.querySelector('button');
+      submitBtn.textContent = 'Transmitting...';
+      submitBtn.style.background = 'linear-gradient(45deg, var(--neon-pink), var(--neon-purple))';
+      
+      // Simulate transmission
+      setTimeout(() => {
+        submitBtn.textContent = '✓ Transmission Complete';
+        submitBtn.style.background = 'linear-gradient(45deg, #00ff88, #00cc66)';
+        
+        // Reset form
+        setTimeout(() => {
+          form.reset();
+          submitBtn.textContent = 'Transmit Feedback';
+          submitBtn.style.background = 'linear-gradient(45deg, var(--neon-blue), var(--neon-purple))';
+        }, 2000);
+      }, 1500);
+    });
+  </script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<script src="auth.js"></script> <!-- Your config -->
+</body>
+</html>

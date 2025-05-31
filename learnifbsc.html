@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D BSc Learning Portal | BSc</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    :root {
+      --neon-blue: #00f7ff;
+      --neon-pink: #ff00e4;
+      --neon-orange: #ff5e00;
+      --dark-space: #0a0a20;
+      --cyber-purple: #6a00ff;
+      --matrix-green: #00ff9d;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Rajdhani', sans-serif;
+      background: radial-gradient(circle at center, #0a0a30, #000010);
+      color: white;
+      perspective: 1000px;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* 3D Holographic Background */
+    .hologram-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(0, 247, 255, 0.05), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(255, 0, 228, 0.05), transparent 40%);
+      animation: float 15s infinite alternate ease-in-out;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(-20px, -10px); }
+      100% { transform: translate(10px, 15px); }
+    }
+
+    /* Main Container with 3D Perspective */
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      transform-style: preserve-3d;
+    }
+
+    /* Cyberpunk Header */
+    .portal-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+      transform: translateZ(50px);
+    }
+
+    .portal-header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+    }
+
+    /* 3D Card Grid */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      perspective: 1000px;
+    }
+
+    /* 3D Card Styles */
+    .module-card {
+      background: rgba(10, 10, 40, 0.7);
+      border: 1px solid var(--neon-blue);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transform: translateZ(30px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .module-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+    }
+
+    .module-card:hover {
+      transform: translateY(-10px) rotateX(5deg) translateZ(50px);
+      box-shadow: 0 20px 30px rgba(0, 247, 255, 0.3);
+    }
+
+    .module-card h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-blue);
+      margin-bottom: 1rem;
+      transform: translateZ(40px);
+    }
+
+    .module-card p {
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+      transform: translateZ(30px);
+    }
+
+    /* 3D Button Effect */
+    .enter-btn {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+      color: black;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(40px);
+      border: none;
+      cursor: pointer;
+    }
+
+    .enter-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.5s ease;
+    }
+
+    .enter-btn:hover {
+      box-shadow: 0 0 15px var(--neon-blue);
+      transform: translateZ(50px);
+    }
+
+    .enter-btn:hover::before {
+      left: 100%;
+    }
+
+    /* Neural Network Visualization */
+    .ai-visualization {
+      width: 100%;
+      height: 200px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px dashed var(--neon-blue);
+      margin: 2rem 0;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transform: translateZ(20px);
+    }
+
+    .neuron {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--neon-blue);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+      transform: translateZ(30px);
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.3; transform: scale(0.8) translateZ(30px); }
+      50% { opacity: 1; transform: scale(1.1) translateZ(50px); }
+      100% { opacity: 0.3; transform: scale(0.8) translateZ(30px); }
+    }
+
+    /* Connection lines between neurons */
+    .connection {
+      position: absolute;
+      height: 2px;
+      background: var(--neon-blue);
+      transform-origin: 0 0;
+      opacity: 0.3;
+      animation: pulse 3s infinite;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .module-grid {
+        grid-template-columns: 1fr;
+      }
+      .portal-header h1 {
+        font-size: 2rem;
+      }
+    }
+
+    /* Page transition effects */
+    .page {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px) rotateX(10deg); }
+      to { opacity: 1; transform: translateY(0) rotateX(0); }
+    }
+
+    .active-page {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- 3D Holographic Background -->
+  <div class="hologram-bg"></div>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Futuristic Header -->
+    <header class="portal-header">
+      <h1 class="cyber-glow">3D AI LEARNING PORTAL</h1>
+      <p>Immersive cyberpunk interface for Class 12 AI education</p>
+    </header>
+
+    <!-- AI Neural Network Visualization -->
+    <div class="ai-visualization" id="neuralNetwork"></div>
+
+    <!-- 3D Card Modules -->
+    <div class="module-grid">
+      <!-- Live Classes Module -->
+      <div class="module-card" onclick="showPage('live-classes')">
+        <h2>📡 Live AI Classes</h2>
+        <p>Attend real-time AI lectures with interactive 3D simulations.</p>
+        <button class="enter-btn" onclick="window.location.href='live-classes12ai.html'" >Enter Classroom</button>
+      </div>
+
+      <!-- Notes Module -->
+      <div class="module-card" onclick="showPage('smart-notes')">
+        <h2>📝 Smart Notes</h2>
+        <p>Download AI-curated notes for all NCERT chapters.</p>
+        <button class="enter-btn">Access Notes</button>
+      </div>
+
+      <!-- Practice Tests Module -->
+      <div class="module-card" onclick="showPage('practice-tests')">
+        <h2>⚡ AI Practice Tests</h2>
+        <p>Take adaptive tests with instant performance analysis.</p>
+        <button class="enter-btn">Start Test</button>
+      </div>
+
+      <!-- Projects Module -->
+      <div class="module-card" onclick="showPage('projects-lab')">
+        <h2>🛠️ AI Projects Lab</h2>
+        <p>Submit projects & get AI feedback.</p>
+        <button class="enter-btn">Upload Project</button>
+      </div>
+
+      <!-- Doubt Solver Module -->
+      <div class="module-card" onclick="showPage('doubt-solver')">
+        <h2>❓ AI Doubt Solver</h2>
+        <p>Ask questions & get instant AI explanations.</p>
+        <button class="enter-btn">Ask Now</button>
+      </div>
+
+      <!-- Performance Tracker -->
+      <div class="module-card" onclick="showPage('ai-progress')">
+        <h2>📊 My AI Progress</h2>
+        <p>Track learning with neural analytics.</p>
+        <button class="enter-btn">View Stats</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Content Sections -->
+  <div id="live-classes" class="page">
+    <!-- Live Classes Content -->
+    <div class="main-container">
+      <header class="portal-header">
+        <h1 class="cyber-glow">LIVE AI CLASSROOM</h1>
+        <p>Real-time interactive learning with 3D simulations</p>
+      </header>
+      
+      <div style="background: rgba(0,0,0,0.5); border: 1px solid var(--neon-blue); padding: 2rem; border-radius: 8px; transform: translateZ(40px);">
+        <h2 style="color: var(--neon-blue);">Today's Class: Introduction to AI</h2>
+        <div style="height: 400px; background: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; margin: 1rem 0; border: 1px dashed var(--neon-blue);">
+          <h3>3D AI Teacher Simulation</h3>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+          <button class="enter-btn">Join Class</button>
+          <button class="enter-btn" style="background: var(--neon-orange);">View Schedule</button>
+          <button class="enter-btn" style="background: var(--neon-pink);">Open Whiteboard</button>
+        </div>
+      </div>
+      <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
+    </div>
+  </div>
+
+  <div id="smart-notes" class="page">
+    <!-- Smart Notes Content -->
+    <div class="main-container">
+      <header class="portal-header">
+        <h1 class="cyber-glow">SMART NOTES</h1>
+        <p>AI-curated NCERT-aligned learning materials</p>
+      </header>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; transform: translateZ(30px);">
+        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem;">
+          <h3 style="color: var(--neon-blue);">Chapter 1: Intro to AI</h3>
+          <p>Basic concepts and history of AI</p>
+          <button class="enter-btn" style="padding: 0.5rem 1rem; width: 100%; margin-top: 1rem;">Download PDF</button>
+        </div>
+        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem;">
+          <h3 style="color: var(--neon-blue);">Chapter 2: AI Project Cycle</h3>
+          <p>Steps in developing AI projects</p>
+          <button class="enter-btn" style="padding: 0.5rem 1rem; width: 100%; margin-top: 1rem;">Download PDF</button>
+        </div>
+        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem;">
+          <h3 style="color: var(--neon-blue);">Chapter 3: Neural Networks</h3>
+          <p>How AI systems learn</p>
+          <button class="enter-btn" style="padding: 0.5rem 1rem; width: 100%; margin-top: 1rem;">Download PDF</button>
+        </div>
+      </div>
+      <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
+    </div>
+  </div>
+
+  <div id="practice-tests" class="page">
+    <!-- Practice Tests Content -->
+    <div class="main-container">
+      <header class="portal-header">
+        <h1 class="cyber-glow">AI PRACTICE TESTS</h1>
+        <p>Adaptive assessments with instant feedback</p>
+      </header>
+      
+      <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 2rem; transform: translateZ(40px);">
+        <h2 style="color: var(--neon-blue);">Available Tests</h2>
+        <div style="margin-top: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px dashed rgba(0,247,255,0.3);">
+            <div>
+              <h3 style="margin: 0;">Chapter 1 Quiz</h3>
+              <p style="margin: 0.5rem 0 0; opacity: 0.8;">15 Questions | 20 Minutes</p>
+            </div>
+            <button class="enter-btn">Start Test</button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px dashed rgba(0,247,255,0.3);">
+            <div>
+              <h3 style="margin: 0;">Mid-Term Assessment</h3>
+              <p style="margin: 0.5rem 0 0; opacity: 0.8;">30 Questions | 45 Minutes</p>
+            </div>
+            <button class="enter-btn">Start Test</button>
+          </div>
+        </div>
+      </div>
+      <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
+    </div>
+  </div>
+
+  <div id="projects-lab" class="page">
+    <!-- Projects Lab Content -->
+    <div class="main-container">
+      <header class="portal-header">
+        <h1 class="cyber-glow">AI PROJECTS LAB</h1>
+        <p>Submit your work and receive AI-powered feedback</p>
+      </header>
+      
+      <div style="background: rgba(10,10,40,0.7); border: 2px dashed var(--neon-blue); border-radius: 8px; padding: 3rem; text-align: center; transform: translateZ(40px); cursor: pointer;">
+        <div style="font-size: 3rem;">🛠️</div>
+        <h2 style="color: var(--neon-blue);">Drag & Drop Project Files Here</h2>
+        <p>or click to select files from your device</p>
+      </div>
+      
+      <div style="margin-top: 2rem; transform: translateZ(30px);">
+        <h2 style="color: var(--neon-blue);">Recent Submissions</h2>
+        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-pink); border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0;">AI Chatbot Project</h3>
+            <span style="background: rgba(0,255,0,0.2); color: lime; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem;">Reviewed</span>
+          </div>
+          <p style="margin: 0.5rem 0;">Submitted: 2 days ago</p>
+          <button class="enter-btn" style="padding: 0.5rem 1rem; margin-top: 1rem;">View Feedback</button>
+        </div>
+      </div>
+      <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
+    </div>
+  </div>
+
+  <div id="doubt-solver" class="page">
+    <!-- Doubt Solver Content -->
+    <div class="main-container">
+      <header class="portal-header">
+        <h1 class="cyber-glow">AI DOUBT SOLVER</h1>
+        <p>Get instant explanations for your questions</p>
+      </header>
+      
+      <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 2rem; transform: translateZ(40px);">
+        <div style="height: 300px; overflow-y: auto; margin-bottom: 1rem; border: 1px solid rgba(0,247,255,0.3); padding: 1rem; border-radius: 4px;">
+          <div style="background: rgba(0,247,255,0.1); padding: 0.8rem; border-radius: 8px; margin-bottom: 1rem; border-left: 3px solid var(--neon-blue);">
+            <p style="margin: 0;"><strong>AI Tutor:</strong> Hello! I'm your AI tutor. Ask me anything about Class 9 AI concepts.</p>
+          </div>
+          <div style="background: rgba(255,0,228,0.1); padding: 0.8rem; border-radius: 8px; margin-bottom: 1rem; border-left: 3px solid var(--neon-pink); margin-left: auto; max-width: 80%;">
+            <p style="margin: 0;"><strong>You:</strong> What's the difference between AI and machine learning?</p>
+          </div>
+          <div style="background: rgba(0,247,255,0.1); padding: 0.8rem; border-radius: 8px; border-left: 3px solid var(--neon-blue);">
+            <p style="margin: 0;"><strong>AI Tutor:</strong> AI is the broader concept of machines performing tasks intelligently. Machine Learning is a subset of AI where machines learn from data.</p>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <input type="text" placeholder="Type your question..." style="flex-grow: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--neon-blue); color: white; padding: 0.8rem; border-radius: 4px;">
+          <button class="enter-btn">Send</button>
+          <button class="enter-btn" style="background: var(--neon-orange);">🎤</button>
+        </div>
+      </div>
+      <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
+    </div>
+  </div>
+
+  <div id="ai-progress" class="page">
+    <!-- AI Progress Content -->
+    <div class="main-container">
+      <header class="portal-header">
+        <h1 class="cyber-glow">MY AI PROGRESS</h1>
+        <p>Track your learning journey with neural analytics</p>
+      </header>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; transform: translateZ(30px);">
+        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem; text-align: center;">
+          <h3 style="color: var(--neon-blue); margin-top: 0;">Overall Mastery</h3>
+          <div style="width: 150px; height: 150px; margin: 1rem auto; position: relative;">
+            <svg viewBox="0 0 100 100" style="transform: rotate(-90deg); transform-origin: 50% 50%;">
+              <circle cx="50" cy="50" r="45" style="stroke: rgba(0,247,255,0.2); stroke-width: 10; fill: none;"></circle>
+              <circle cx="50" cy="50" r="45" style="stroke: var(--neon-blue); stroke-width: 10; stroke-dasharray: 314; stroke-dashoffset: 125.6; fill: none; transition: stroke-dashoffset 1s ease;"></circle>
+            </svg>
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; font-weight: bold; color: var(--neon-blue);">60%</div>
+          </div>
+        </div>
+        
+        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem;">
+          <h3 style="color: var(--neon-blue); margin-top: 0;">Chapter Progress</h3>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Intro to AI</span>
+              <span>75%</span>
+            </div>
+            <div style="height: 6px; background: rgba(0,247,255,0.2); border-radius: 3px; overflow: hidden;">
+              <div style="height: 100%; width: 75%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>AI Project Cycle</span>
+              <span>60%</span>
+            </div>
+            <div style="height: 6px; background: rgba(0,247,255,0.2); border-radius: 3px; overflow: hidden;">
+              <div style="height: 100%; width: 60%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<script>
+  // Your Firebase config (same as in other pages)
+  const firebaseConfig = {
+    apiKey: "AIzaSyBITF0Fh_vCJddNeyURWWyprLCOYB2h7Cc",
+    authDomain: "sign-up-page-fe4f7.firebaseapp.com",
+    projectId: "sign-up-page-fe4f7",
+    storageBucket: "sign-up-page-fe4f7.firebasestorage.app",
+    messagingSenderId: "339652230724",
+    appId: "1:339652230724:web:ba50630f42259219a8c611"
+  };
+  
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+</script>
+
+<!-- At the BOTTOM of the page, before closing </body> tag -->
+<!-- After Firebase initialization but before other scripts -->
+
+<script>
+  // Check authentication state on page load
+  auth.onAuthStateChanged((user) => {
+    if (!user) {
+      localStorage.setItem('returnUrl', window.location.href);
+      window.location.href = 'signup.html';
+    }
+  });
+
+  // Enroll button handler
+  document.getElementById('enrollBtn')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    checkAuthBeforeAction(() => {
+      document.getElementById('purchaseModal').style.display = "block";
+    });
+  });
+
+  // Demo button handler
+  document.getElementById('demoviewBtn')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    checkAuthBeforeAction(() => {
+      window.location.href = 'learnif9ai.html';
+    }, 'learnif9ai.html');
+  });
+
+  // Reusable auth check function
+  function checkAuthBeforeAction(actionCallback, specificReturnUrl) {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        actionCallback();
+      } else {
+        localStorage.setItem('returnUrl', specificReturnUrl || window.location.href);
+        window.location.href = 'signup.html';
+      }
+    });
+  }
+</script>
+
+  <script>
+    // Initialize Neural Network Visualization
+    function initNeuralNetwork() {
+      const neuralNetwork = document.getElementById('neuralNetwork');
+      
+      // Create neurons
+      for (let i = 0; i < 20; i++) {
+        const neuron = document.createElement('div');
+        neuron.classList.add('neuron');
+        neuron.style.left = `${Math.random() * 100}%`;
+        neuron.style.top = `${Math.random() * 100}%`;
+        neuron.style.animationDelay = `${Math.random() * 2}s`;
+        neuralNetwork.appendChild(neuron);
+      }
+      
+      // Create connections
+      const neurons = document.querySelectorAll('.neuron');
+      neurons.forEach((neuron, index) => {
+        if (index < neurons.length - 1) {
+          const nextNeuron = neurons[index + 1];
+          const x1 = parseFloat(neuron.style.left);
+          const y1 = parseFloat(neuron.style.top);
+          const x2 = parseFloat(nextNeuron.style.left);
+          const y2 = parseFloat(nextNeuron.style.top);
+          
+          const connection = document.createElement('div');
+          connection.classList.add('connection');
+          connection.style.left = `${x1}%`;
+          connection.style.top = `${y1}%`;
+          connection.style.width = `${Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2))}%`;
+          connection.style.transform = `rotate(${Math.atan2(y2-y1, x2-x1)}rad)`;
+          connection.style.animationDelay = `${Math.random() * 2}s`;
+          neuralNetwork.appendChild(connection);
+        }
+      });
+    }
+    
+    // Page Navigation
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active-page');
+      });
+      
+      if (pageId === 'home') {
+        document.querySelector('.main-container').style.display = 'block';
+      } else {
+        document.querySelector('.main-container').style.display = 'none';
+        document.getElementById(pageId).classList.add('active-page');
+      }
+    }
+    
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+      initNeuralNetwork();
+      showPage('home');
+    });
+  </script>
+  <script>
+  auth.onAuthStateChanged((user) => {
+    if (!user) {
+      localStorage.setItem('returnUrl', 'learnif12ai.html');
+      window.location.href = 'signup.html';
+    }
+  });
+</script>
+<script>
+  // auth.js - Include this in all HTML files
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Firebase Auth
+    const auth = firebase.auth();
+    
+    // Handle auth state changes
+    auth.onAuthStateChanged(function(user) {
+        updateAuthUI(user);
+    });
+
+    function updateAuthUI(user) {
+        const loginButtons = document.querySelectorAll('.login-btn');
+        const logoutButtons = document.querySelectorAll('.logout-btn');
+        
+        if (user) {
+            // User is logged in
+            loginButtons.forEach(btn => btn.style.display = 'none');
+            logoutButtons.forEach(btn => btn.style.display = 'block');
+        } else {
+            // User is logged out
+            loginButtons.forEach(btn => btn.style.display = 'block');
+            logoutButtons.forEach(btn => btn.style.display = 'none');
+        }
+    }
+
+    // Logout functionality
+    document.querySelectorAll('.logout-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            auth.signOut().then(() => {
+                window.location.href = 'index.html'; // Redirect to home after logout
+            });
+        });
+    });
+});
+</script>
+</body>
+</html>

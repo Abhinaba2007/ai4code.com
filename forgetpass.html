@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Recovery | AI4CODE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-hover: #3a56d4;
+            --error-color: #ef233c;
+            --success-color: #4cc9f0;
+            --card-bg: rgba(255, 255, 255, 0.95);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            overflow-x: hidden;
+        }
+        
+        .recovery-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 
+                        0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .recovery-container:hover {
+            transform: translateY(-10px) rotateX(3deg);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .recovery-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                rgba(67, 97, 238, 0.05) 0%, 
+                rgba(76, 201, 240, 0.05) 50%, 
+                rgba(239, 35, 60, 0.05) 100%);
+            transform: rotate(45deg) translateZ(-20px);
+            z-index: -1;
+            animation: gradientRotate 15s infinite linear;
+        }
+        
+        @keyframes gradientRotate {
+            0% { transform: rotate(0deg) translateZ(-20px); }
+            100% { transform: rotate(360deg) translateZ(-20px); }
+        }
+        
+        .recovery-header {
+            text-align: center;
+            margin-bottom: 30px;
+            transform: translateZ(20px);
+        }
+        
+        .recovery-header h2 {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .recovery-header p {
+            color: #6c757d;
+        }
+        
+        .recovery-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #495057;
+            transform: translateZ(10px);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            transform-style: preserve-3d;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            transform: translateZ(10px);
+        }
+        
+        .btn-recovery {
+            background: linear-gradient(to right, var(--primary-color), var(--primary-hover));
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+            transform-style: preserve-3d;
+        }
+        
+        .btn-recovery:hover {
+            transform: translateY(-3px) translateZ(10px);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-recovery:active {
+            transform: translateY(1px);
+        }
+        
+        .back-to-login {
+            text-align: center;
+            margin-top: 20px;
+            transform: translateZ(10px);
+        }
+        
+        .back-to-login a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .back-to-login a:hover {
+            text-decoration: underline;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            transform: translateZ(10px);
+            display: none;
+        }
+        
+        .alert-success {
+            background-color: rgba(76, 201, 240, 0.1);
+            border-left: 4px solid var(--success-color);
+            color: #0c5460;
+        }
+        
+        .alert-danger {
+            background-color: rgba(239, 35, 60, 0.1);
+            border-left: 4px solid var(--error-color);
+            color: #721c24;
+        }
+        
+        .resend-timer {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 10px;
+            display: none;
+            transform: translateZ(5px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 576px) {
+            .recovery-container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="recovery-container">
+        <div class="recovery-header">
+            <div class="recovery-icon">
+                <i class="fas fa-key"></i>
+            </div>
+            <h2>Forgot Your Password?</h2>
+            <p>Enter your email to receive a password reset link</p>
+        </div>
+        
+        <div id="errorAlert" class="alert alert-danger"></div>
+        <div id="successAlert" class="alert alert-success"></div>
+        
+        <form id="recoveryForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your registered email" required>
+            </div>
+            
+            <button type="submit" class="btn-recovery" id="submitBtn">
+                Send Reset Link
+            </button>
+            
+            <div class="resend-timer" id="resendTimer">
+                Resend available in: <span id="countdown">02:00</span>
+            </div>
+        </form>
+        
+        <div class="back-to-login">
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Login</a>
+        </div>
+    </div>
+
+    <script>
+        // Firebase configuration (same as your other pages)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBITF0Fh_vCJddNeyURWWyprLCOYB2h7Cc",
+            authDomain: "sign-up-page-fe4f7.firebaseapp.com",
+            projectId: "sign-up-page-fe4f7",
+            storageBucket: "sign-up-page-fe4f7.firebasestorage.app",
+            messagingSenderId: "339652230724",
+            appId: "1:339652230724:web:ba50630f42259219a8c611"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        
+        // DOM Elements
+        const recoveryForm = document.getElementById('recoveryForm');
+        const emailInput = document.getElementById('email');
+        const errorAlert = document.getElementById('errorAlert');
+        const successAlert = document.getElementById('successAlert');
+        const resendTimer = document.getElementById('resendTimer');
+        const countdownDisplay = document.getElementById('countdown');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // Timer variables
+        let countdown = 120; // 2 minutes in seconds
+        let countdownInterval;
+        
+        // Form submission
+        recoveryForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = emailInput.value.trim();
+            
+            // Basic validation
+            if (!email) {
+                showError('Please enter your email address');
+                return;
+            }
+            
+            // Check if email exists in localStorage (from your signup system)
+            const userDatabase = JSON.parse(localStorage.getItem('userDatabase') || '[]');
+            const userExists = userDatabase.some(user => user.email === email);
+            
+            if (!userExists) {
+                showError('No account found with this email address');
+                return;
+            }
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            
+            // In a real app, you would send a password reset email via Firebase:
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    showSuccess('Password reset link sent to your email!');
+                    startCountdown();
+                })
+                .catch(error => {
+                    showError(error.message);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Send Reset Link';
+                });
+            
+            // For demo purposes (since we can't actually send emails with localStorage):
+            setTimeout(() => {
+                showSuccess('Password reset link sent to your email! (Demo)');
+                startCountdown();
+                
+                // Store reset token in localStorage (demo only)
+                localStorage.setItem('resetToken_' + email, generateToken());
+                
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Reset Link';
+            }, 1500);
+        });
+        
+        // Helper functions
+        function showError(message) {
+            errorAlert.textContent = message;
+            errorAlert.style.display = 'block';
+            successAlert.style.display = 'none';
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                errorAlert.style.display = 'none';
+            }, 5000);
+        }
+        
+        function showSuccess(message) {
+            successAlert.textContent = message;
+            successAlert.style.display = 'block';
+            errorAlert.style.display = 'none';
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                successAlert.style.display = 'none';
+            }, 5000);
+        }
+        
+        function startCountdown() {
+            submitBtn.disabled = true;
+            resendTimer.style.display = 'block';
+            
+            countdownInterval = setInterval(() => {
+                countdown--;
+                
+                const minutes = Math.floor(countdown / 60);
+                const seconds = countdown % 60;
+                
+                countdownDisplay.textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    resendTimer.style.display = 'none';
+                    submitBtn.disabled = false;
+                    countdown = 120; // Reset countdown
+                }
+            }, 1000);
+        }
+        
+        function generateToken() {
+            return 'demo-token-' + Math.random().toString(36).substr(2, 10) + 
+                   '-' + Date.now().toString(36);
+        }
+        
+        // Check if coming from password reset link
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            const email = urlParams.get('email');
+            
+            if (token && email) {
+                // Verify token (in a real app, you would verify with your backend)
+                const storedToken = localStorage.getItem('resetToken_' + email);
+                
+                if (storedToken === token) {
+                    showSuccess('Please enter your new password');
+                    // Here you would typically show a password reset form
+                } else {
+                    showError('Invalid or expired reset link');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D CS Learning Portal | CLASS-12</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    :root {
+      --neon-blue: #00f7ff;
+      --neon-pink: #ff00e4;
+      --neon-orange: #ff5e00;
+      --dark-space: #0a0a20;
+      --cyber-purple: #6a00ff;
+      --matrix-green: #00ff9d;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Rajdhani', sans-serif;
+      background: radial-gradient(circle at center, #0a0a30, #000010);
+      color: white;
+      perspective: 1000px;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* 3D Holographic Background */
+    .hologram-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(0, 247, 255, 0.05), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(255, 0, 228, 0.05), transparent 40%);
+      animation: float 15s infinite alternate ease-in-out;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(-20px, -10px); }
+      100% { transform: translate(10px, 15px); }
+    }
+
+    /* Main Container with 3D Perspective */
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      transform-style: preserve-3d;
+    }
+
+    /* Cyberpunk Header */
+    .portal-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+      transform: translateZ(50px);
+    }
+
+    .portal-header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+    }
+
+    /* 3D Card Grid */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      perspective: 1000px;
+    }
+
+    /* 3D Card Styles */
+    .module-card {
+      background: rgba(10, 10, 40, 0.7);
+      border: 1px solid var(--neon-blue);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transform: translateZ(30px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .module-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+    }
+
+    .module-card:hover {
+      transform: translateY(-10px) rotateX(5deg) translateZ(50px);
+      box-shadow: 0 20px 30px rgba(0, 247, 255, 0.3);
+    }
+
+    .module-card h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-blue);
+      margin-bottom: 1rem;
+      transform: translateZ(40px);
+    }
+
+    .module-card p {
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+      transform: translateZ(30px);
+    }
+
+    /* 3D Button Effect */
+    .enter-btn {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+      color: black;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(40px);
+      border: none;
+      cursor: pointer;
+    }
+
+    .enter-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.5s ease;
+    }
+
+    .enter-btn:hover {
+      box-shadow: 0 0 15px var(--neon-blue);
+      transform: translateZ(50px);
+    }
+
+    .enter-btn:hover::before {
+      left: 100%;
+    }
+
+    /* Binary Code Visualization */
+    .cs-visualization {
+      width: 100%;
+      height: 200px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px dashed var(--neon-blue);
+      margin: 2rem 0;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transform: translateZ(20px);
+    }
+
+    .binary-digit {
+      position: absolute;
+      font-family: 'Orbitron', sans-serif;
+      color: var(--matrix-green);
+      animation: floatDown 10s linear infinite;
+      opacity: 0.7;
+      transform: translateZ(30px);
+    }
+
+    @keyframes floatDown {
+      0% { transform: translateY(-50px) translateZ(30px); opacity: 0; }
+      10% { opacity: 0.7; }
+      90% { opacity: 0.7; }
+      100% { transform: translateY(250px) translateZ(30px); opacity: 0; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .module-grid {
+        grid-template-columns: 1fr;
+      }
+      .portal-header h1 {
+        font-size: 2rem;
+      }
+    }
+
+    /* Page transition effects */
+    .page {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px) rotateX(10deg); }
+      to { opacity: 1; transform: translateY(0) rotateX(0); }
+    }
+
+    .active-page {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- 3D Holographic Background -->
+  <div class="hologram-bg"></div>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Futuristic Header -->
+    <header class="portal-header">
+      <h1 class="cyber-glow">3D CS LEARNING PORTAL</h1>
+      <p>Immersive cyberpunk interface for Class 12 Computer Science</p>
+    </header>
+
+    <!-- Binary Code Visualization -->
+    <div class="cs-visualization" id="binaryRain"></div>
+
+    <!-- 3D Card Modules -->
+    <div class="module-grid">
+      <!-- Live Classes Module -->
+      <div class="module-card" onclick="showPage('live-classes')">
+        <h2>📡 Live CS Classes</h2>
+        <p>Attend real-time lectures with interactive coding sessions.</p>
+        <button class="enter-btn" onclick="window.location.href='live-classes12cs.html'">Enter Classroom</button>
+      </div>
+
+      <!-- Notes Module -->
+      <div class="module-card" onclick="showPage('smart-notes')">
+        <h2>📝 CS Study Materials</h2>
+        <p>Download notes for Python, SQL, Networking, and more.</p>
+        <button class="enter-btn">Access Notes</button>
+      </div>
+
+      <!-- Coding Practice Module -->
+      <div class="module-card" onclick="showPage('coding-practice')">
+        <h2>💻 Code Playground</h2>
+        <p>Practice Python, SQL, and other programming concepts.</p>
+        <button class="enter-btn">Start Coding</button>
+      </div>
+
+      <!-- Projects Module -->
+      <div class="module-card" onclick="showPage('projects-lab')">
+        <h2>🛠️ CS Projects Lab</h2>
+        <p>Submit your Python/SQL projects and get feedback.</p>
+        <button class="enter-btn">Upload Project</button>
+      </div>
+
+      <!-- Doubt Solver Module -->
+      <div class="module-card" onclick="showPage('doubt-solver')">
+        <h2>❓ CS Doubt Solver</h2>
+        <p>Ask programming questions & get instant explanations.</p>
+        <button class="enter-btn">Ask Now</button>
+      </div>
+
+      <!-- Exam Prep Module -->
+      <div class="module-card" onclick="showPage('exam-prep')">
+        <h2>📚 Board Exam Prep</h2>
+        <p>Previous year papers and sample questions.</p>
+        <button class="enter-btn">Prepare Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Content Sections -->
+  <div id="live-classes" class="page">
+    <!-- Live Classes Content -->
+    <div class="main-container">
+      <header class="portal-header">
+        <h1 class="cyber-glow">LIVE CS CLASSROOM</h1>
+        <p>Real-time interactive learning with coding demonstrations</p>
+      </header>
+      
+      <div style="background: rgba(0,0,0,0.5); border: 1px solid var(--neon-blue); padding: 2rem; border-radius: 8px; transform: translateZ(40px);">
+        <h2 style="color: var(--neon-blue);">Today's Class: Python - File Handling</h2>
+        <div style="height: 400px; background: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; margin: 1rem 0; border: 1px dashed var(--neon-blue);">
+          <h3>Interactive Coding Environment</h3>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+          <button class="enter-btn">Join Class</button>
+          <button class="enter-btn" style="background: var(--neon-orange);">View Schedule</button>
+          <button class="enter-btn" style="background: var(--neon-pink);">Open IDE</button>
+        </div>
+      </div>
+      <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
+    </div>
+  </div>
+
+  <div id="smart-notes" class="page">
+    <!-- Smart Notes Content -->
+    <div class="main-container">
+      <header class="portal-header">
+        <h1 class="cyber-glow">CS STUDY MATERIALS</h1>
+        <p>Comprehensive resources for Class 12 Computer Science</p>
+      </header>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; transform: translateZ(30px);">
+        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem;">
+          <h3 style="color: var(--neon-blue);">Python Programming</h3>
+          <p>Complete Python notes with examples</p>
+          <button class="enter-btn" style="padding: 0.5rem 1rem; width: 100%; margin-top: 1rem;">Download PDF</button>
+        </div>
+        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem;">
+          <h3 style="color: var(--neon-blue);">SQL & Databases</h3>
+          <p>MySQL notes and practice queries</p>
+          <button class="enter-btn" style="padding: 0.5rem 1rem; width: 100%; margin-top: 1rem;">Download PDF</button>
+        </div>
+        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem;">
+          <h3 style="color: var(--neon-blue);">Computer Networks</h3>
+          <p>Networking concepts and protocols</p>
+          <button class="enter-btn" style="padding: 0.5rem 1rem; width: 100%; margin-top: 1rem;">Download PDF</button>
+        </div>
+      </div>
+      <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
+    </div>
+  </div>
+
+  <div id="coding-practice" class="page">
+    <!-- Coding Practice Content -->
+    <div class="main-container">
+      <header class="portal-header">
+        <h1 class="cyber-glow">CODE PLAYGROUND</h1>
+        <p>Practice Python, SQL, and other programming concepts</p>
+      </header>
+      
+      <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 2rem; transform: translateZ(40px);">
+        <h2 style="color: var(--neon-blue);">Choose Practice Area</h2>
+        <div style="margin-top: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px dashed rgba(0,247,255,0.3);">
+            <div>
+              <h3 style="margin: 0;">Python Programming</h3>
+              <p style="margin: 0.5rem 0 0; opacity: 0.8;">Functions, File Handling, OOP</p>
+            </div>
+            <button class="enter-btn">Start Practice</button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px dashed rgba(0,247,255,0.3);">
+            <div>
+              <h3 style="margin: 0;">SQL Queries</h3>
+              <p style="margin: 0.5rem 0 0; opacity: 0.8;">SELECT, JOIN, Functions</p>
+            </div>
+            <button class="enter-btn">Start Practice</button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem;">
+            <div>
+              <h3 style="margin: 0;">Data Structures</h3>
+              <p style="margin: 0.5rem 0 0; opacity: 0.8;">Stacks, Queues, Lists</p>
+            </div>
+            <button class="enter-btn">Start Practice</button>
+          </div>
+        </div>
+      </div>
+      <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
+    </div>
+  </div>
+
+  <div id="projects-lab" class="page">
+    <!-- Projects Lab Content -->
+    <div class="main-container">
+      <header class="portal-header">
+        <h1 class="cyber-glow">CS PROJECTS LAB</h1>
+        <p>Submit your Python/SQL projects and receive feedback</p>
+      </header>
+      
+      <div style="background: rgba(10,10,40,0.7); border: 2px dashed var(--neon-blue); border-radius: 8px; padding: 3rem; text-align: center; transform: translateZ(40px); cursor: pointer;">
+        <div style="font-size: 3rem;">🖥️</div>
+        <h2 style="color: var(--neon-blue);">Drag & Drop Project Files Here</h2>
+        <p>or click to select files from your device</p>
+      </div>
+      
+      <div style="margin-top: 2rem; transform: translateZ(30px);">
+        <h2 style="color: var(--neon-blue);">Recent Submissions</h2>
+        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-pink); border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0;">Library Management System</h3>
+            <span style="background: rgba(0,255,0,0.2); color: lime; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem;">Reviewed</span>
+          </div>
+          <p style="margin: 0.5rem 0;">Submitted: 5 days ago</p>
+          <button class="enter-btn" style="padding: 0.5rem 1rem; margin-top: 1rem;">View Feedback</button>
+        </div>
+      </div>
+      <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
+    </div>
+  </div>
+
+  <div id="doubt-solver" class="page">
+    <!-- Doubt Solver Content -->
+    <div class="main-container">
+      <header class="portal-header">
+        <h1 class="cyber-glow">CS DOUBT SOLVER</h1>
+        <p>Get instant explanations for programming questions</p>
+      </header>
+      
+      <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 2rem; transform: translateZ(40px);">
+        <div style="height: 300px; overflow-y: auto; margin-bottom: 1rem; border: 1px solid rgba(0,247,255,0.3); padding: 1rem; border-radius: 4px;">
+          <div style="background: rgba(0,247,255,0.1); padding: 0.8rem; border-radius: 8px; margin-bottom: 1rem; border-left: 3px solid var(--neon-blue);">
+            <p style="margin: 0;"><strong>CS Tutor:</strong> Hello! I'm your CS tutor. Ask me anything about Class 12 Computer Science.</p>
+          </div>
+          <div style="background: rgba(255,0,228,0.1); padding: 0.8rem; border-radius: 8px; margin-bottom: 1rem; border-left: 3px solid var(--neon-pink); margin-left: auto; max-width: 80%;">
+            <p style="margin: 0;"><strong>You:</strong> How to connect Python with MySQL?</p>
+          </div>
+          <div style="background: rgba(0,247,255,0.1); padding: 0.8rem; border-radius: 8px; border-left: 3px solid var(--neon-blue);">
+            <p style="margin: 0;"><strong>CS Tutor:</strong> Use mysql.connector module. First install it with pip, then use connect() with host, user, password, and database parameters.</p>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <input type="text" placeholder="Type your question..." style="flex-grow: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--neon-blue); color: white; padding: 0.8rem; border-radius: 4px;">
+          <button class="enter-btn">Send</button>
+          <button class="enter-btn" style="background: var(--neon-orange);">🎤</button>
+        </div>
+      </div>
+      <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
+    </div>
+  </div>
+
+  <div id="exam-prep" class="page">
+    <!-- Exam Prep Content -->
+    <div class="main-container">
+      <header class="portal-header">
+        <h1 class="cyber-glow">BOARD EXAM PREPARATION</h1>
+        <p>Previous year papers and sample questions</p>
+      </header>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; transform: translateZ(30px);">
+        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem; text-align: center;">
+          <h3 style="color: var(--neon-blue); margin-top: 0;">2023 Question Paper</h3>
+          <div style="font-size: 2rem; margin: 1rem 0;">📄</div>
+          <button class="enter-btn" style="width: 100%;">Download PDF</button>
+        </div>
+        
+        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem; text-align: center;">
+          <h3 style="color: var(--neon-blue); margin-top: 0;">2022 Question Paper</h3>
+          <div style="font-size: 2rem; margin: 1rem 0;">📄</div>
+          <button class="enter-btn" style="width: 100%;">Download PDF</button>
+        </div>
+        
+        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem; text-align: center;">
+          <h3 style="color: var(--neon-blue); margin-top: 0;">Sample Papers</h3>
+          <div style="font-size: 2rem; margin: 1rem 0;">📚</div>
+          <button class="enter-btn" style="width: 100%;">View Papers</button>
+        </div>
+      </div>
+      
+      <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem; margin-top: 2rem; transform: translateZ(30px);">
+        <h2 style="color: var(--neon-blue);">Important Topics</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
+          <span style="background: rgba(0,247,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--neon-blue);">Python Functions</span>
+          <span style="background: rgba(0,247,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--neon-blue);">File Handling</span>
+          <span style="background: rgba(0,247,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--neon-blue);">SQL Queries</span>
+          <span style="background: rgba(0,247,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--neon-blue);">Networking</span>
+          <span style="background: rgba(0,247,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--neon-blue);">Data Structures</span>
+        </div>
+      </div>
+      <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<script>
+  // Your Firebase config (same as in other pages)
+  const firebaseConfig = {
+    apiKey: "AIzaSyBITF0Fh_vCJddNeyURWWyprLCOYB2h7Cc",
+    authDomain: "sign-up-page-fe4f7.firebaseapp.com",
+    projectId: "sign-up-page-fe4f7",
+    storageBucket: "sign-up-page-fe4f7.firebasestorage.app",
+    messagingSenderId: "339652230724",
+    appId: "1:339652230724:web:ba50630f42259219a8c611"
+  };
+  
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+</script>
+
+<!-- At the BOTTOM of the page, before closing </body> tag -->
+<!-- After Firebase initialization but before other scripts -->
+
+<script>
+  // Check authentication state on page load
+  auth.onAuthStateChanged((user) => {
+    if (!user) {
+      localStorage.setItem('returnUrl', window.location.href);
+      window.location.href = 'signup.html';
+    }
+  });
+
+  // Enroll button handler
+  document.getElementById('enrollBtn')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    checkAuthBeforeAction(() => {
+      document.getElementById('purchaseModal').style.display = "block";
+    });
+  });
+
+  // Demo button handler
+  document.getElementById('demoviewBtn')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    checkAuthBeforeAction(() => {
+      window.location.href = 'learnif9ai.html';
+    }, 'learnif9ai.html');
+  });
+
+  // Reusable auth check function
+  function checkAuthBeforeAction(actionCallback, specificReturnUrl) {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        actionCallback();
+      } else {
+        localStorage.setItem('returnUrl', specificReturnUrl || window.location.href);
+        window.location.href = 'signup.html';
+      }
+    });
+  }
+</script>
+
+  <script>
+    // Initialize Binary Rain Visualization
+    function initBinaryRain() {
+      const binaryRain = document.getElementById('binaryRain');
+      const characters = '01';
+      
+      // Create binary digits
+      for (let i = 0; i < 100; i++) {
+        const digit = document.createElement('div');
+        digit.classList.add('binary-digit');
+        digit.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
+        digit.style.left = `${Math.random() * 100}%`;
+        digit.style.top = `${Math.random() * 100}%`;
+        digit.style.animationDelay = `${Math.random() * 5}s`;
+        digit.style.animationDuration = `${5 + Math.random() * 10}s`;
+        binaryRain.appendChild(digit);
+      }
+    }
+    
+    // Page Navigation
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active-page');
+      });
+      
+      if (pageId === 'home') {
+        document.querySelector('.main-container').style.display = 'block';
+      } else {
+        document.querySelector('.main-container').style.display = 'none';
+        document.getElementById(pageId).classList.add('active-page');
+      }
+    }
+    
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+      initBinaryRain();
+      showPage('home');
+    });
+  </script>
+  <script>
+  auth.onAuthStateChanged((user) => {
+    if (!user) {
+      localStorage.setItem('returnUrl', 'learnif12cs.html');
+      window.location.href = 'signup.html';
+    }
+  });
+</script>
+<script>
+  // auth.js - Include this in all HTML files
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Firebase Auth
+    const auth = firebase.auth();
+    
+    // Handle auth state changes
+    auth.onAuthStateChanged(function(user) {
+        updateAuthUI(user);
+    });
+
+    function updateAuthUI(user) {
+        const loginButtons = document.querySelectorAll('.login-btn');
+        const logoutButtons = document.querySelectorAll('.logout-btn');
+        
+        if (user) {
+            // User is logged in
+            loginButtons.forEach(btn => btn.style.display = 'none');
+            logoutButtons.forEach(btn => btn.style.display = 'block');
+        } else {
+            // User is logged out
+            loginButtons.forEach(btn => btn.style.display = 'block');
+            logoutButtons.forEach(btn => btn.style.display = 'none');
+        }
+    }
+
+    // Logout functionality
+    document.querySelectorAll('.logout-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            auth.signOut().then(() => {
+                window.location.href = 'index.html'; // Redirect to home after logout
+            });
+        });
+    });
+});
+</script>
+</body>
+</html>

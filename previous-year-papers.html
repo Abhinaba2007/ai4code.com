@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CS & AI Papers (Class 9-12) | AI4CODE</title>
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    :root {
+      --class-9: #4cc9f0;
+      --class-10: #4895ef;
+      --class-11: #4361ee;
+      --class-12: #3a0ca3;
+      --accent: #f72585;
+      --dark-bg: #0f0f1f;
+      --card-bg: #1a1a2e;
+      --text-light: #e6f1ff;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--dark-bg);
+      color: var(--text-light);
+      perspective: 1200px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, rgba(67,97,238,0.2), rgba(58,12,163,0.3));
+      text-align: center;
+      padding: 3rem 2rem;
+      margin-bottom: 3rem;
+      border-bottom: 3px solid var(--accent);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transform-style: preserve-3d;
+      transform: rotateX(8deg);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header h1 {
+      font-size: 3rem;
+      margin: 0;
+      background: linear-gradient(90deg, var(--class-9), var(--class-12));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      transform: translateZ(50px);
+      text-shadow: 0 0 20px rgba(67,97,238,0.3);
+    }
+    
+    .header p {
+      font-size: 1.2rem;
+      transform: translateZ(30px);
+      margin-top: 1rem;
+      opacity: 0.9;
+    }
+    
+    .class-selector {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2rem auto;
+      max-width: 800px;
+      transform-style: preserve-3d;
+      transform: translateZ(40px);
+    }
+    
+    .class-btn {
+      padding: 0.8rem 1.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      border: 2px solid transparent;
+      transform-style: preserve-3d;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .class-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.1);
+      transform: translateZ(-5px);
+      z-index: -1;
+    }
+    
+    .class-btn.active {
+      transform: translateZ(20px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    
+    .class-9-btn { background: var(--class-9); color: #111; }
+    .class-10-btn { background: var(--class-10); color: #111; }
+    .class-11-btn { background: var(--class-11); color: white; }
+    .class-12-btn { background: var(--class-12); color: white; }
+    
+    .class-btn.active {
+      border: 2px solid white;
+      box-shadow: 0 0 20px currentColor;
+    }
+    
+    .year-filter {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem auto 2rem;
+      max-width: 900px;
+      transform-style: preserve-3d;
+      transform: translateZ(30px);
+    }
+    
+    .year-chip {
+      padding: 0.5rem 1.2rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+    }
+    
+    .year-chip:hover, .year-chip.active {
+      background: var(--accent);
+      transform: translateZ(10px);
+    }
+    
+    .papers-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+      width: 90%;
+      max-width: 1400px;
+      margin: 0 auto 5rem;
+      padding: 1rem;
+      transform-style: preserve-3d;
+    }
+    
+    .paper-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.8rem;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      transform-style: preserve-3d;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      border-top: 4px solid;
+      transform: rotateY(10deg) rotateX(3deg);
+    }
+    
+    .class-9-card { border-color: var(--class-9); }
+    .class-10-card { border-color: var(--class-10); }
+    .class-11-card { border-color: var(--class-11); }
+    .class-12-card { border-color: var(--class-12); }
+    
+    .paper-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+      transform: translateZ(-10px);
+    }
+    
+    .paper-card h2 {
+      margin-top: 0;
+      font-size: 1.6rem;
+      position: relative;
+    }
+    
+    .class-9-card h2 { color: var(--class-9); }
+    .class-10-card h2 { color: var(--class-10); }
+    .class-11-card h2 { color: var(--class-11); }
+    .class-12-card h2 { color: var(--class-12); }
+    
+    .paper-meta {
+      display: flex;
+      justify-content: space-between;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      color: rgba(230,241,255,0.7);
+    }
+    
+    .download-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      margin-top: 1.5rem;
+      border: none;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      position: relative;
+    }
+    
+    .download-btn::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.2);
+      top: 0;
+      left: 0;
+      border-radius: 6px;
+      transform: translateZ(-5px);
+    }
+    
+    .download-btn:hover {
+      transform: translateY(-3px) translateZ(5px);
+      box-shadow: 0 5px 15px rgba(247,37,133,0.6);
+    }
+    
+    .paper-card:hover {
+      transform: rotateY(5deg) rotateX(0deg) translateZ(20px) !important;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 2.5rem;
+      background: rgba(10,10,20,0.9);
+      transform-style: preserve-3d;
+      transform: rotateX(-5deg);
+      position: relative;
+      margin-top: 4rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .footer p {
+      margin: 0;
+      transform: translateZ(30px);
+      color: rgba(230,241,255,0.7);
+    }
+    
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2.2rem;
+      }
+      
+      .class-selector {
+        flex-wrap: wrap;
+      }
+      
+      .papers-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .paper-card {
+        transform: rotateY(5deg) !important;
+      }
+      
+      .header, .footer {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>📚 CS & AI Question Papers</h1>
+    <p>Class 9-12 (2010-2024 Academic Years)</p>
+  </header>
+
+  <div class="class-selector">
+    <button class="class-btn class-9-btn active">Class 9</button>
+    <button class="class-btn class-10-btn">Class 10</button>
+    <button class="class-btn class-11-btn">Class 11</button>
+    <button class="class-btn class-12-btn">Class 12</button>
+  </div>
+
+  <div class="year-filter">
+    <div class="year-chip active">All Years</div>
+    <div class="year-chip">2010-2014</div>
+    <div class="year-chip">2015-2019</div>
+    <div class="year-chip">2020-2024</div>
+  </div>
+
+  <main class="papers-container">
+    <!-- Class 9 Papers -->
+    <div class="paper-card class-9-card">
+      <h2>Computer Science Basics</h2>
+      <div class="paper-meta">
+        <span>Class 9</span>
+        <span>2023 Final</span>
+      </div>
+      <p>Introduction to programming, algorithms, and computer fundamentals.</p>
+      <button class="download-btn">Download PDF</button>
+    </div>
+
+    <div class="paper-card class-9-card">
+      <h2>AI Fundamentals</h2>
+      <div class="paper-meta">
+        <span>Class 9</span>
+        <span>2021 Mid-Term</span>
+      </div>
+      <p>Basic concepts of artificial intelligence and machine learning.</p>
+      <button class="download-btn">Download PDF</button>
+    </div>
+
+    <!-- Class 10 Papers -->
+    <div class="paper-card class-10-card">
+      <h2>Computer Science</h2>
+      <div class="paper-meta">
+        <span>Class 10</span>
+        <span>2022 Board</span>
+      </div>
+      <p>Complete board exam paper with OOP concepts and web basics.</p>
+      <button class="download-btn">Download PDF</button>
+    </div>
+
+    <div class="paper-card class-10-card">
+      <h2>AI Applications</h2>
+      <div class="paper-meta">
+        <span>Class 10</span>
+        <span>2020 Final</span>
+      </div>
+      <p>Practical applications of AI in daily life with case studies.</p>
+      <button class="download-btn">Download PDF</button>
+    </div>
+
+    <!-- Class 11 Papers -->
+    <div class="paper-card class-11-card">
+      <h2>Computer Science</h2>
+      <div class="paper-meta">
+        <span>Class 11</span>
+        <span>2024 Term 1</span>
+      </div>
+      <p>Advanced programming concepts and data structures.</p>
+      <button class="download-btn">Download PDF</button>
+    </div>
+
+    <div class="paper-card class-11-card">
+      <h2>Machine Learning</h2>
+      <div class="paper-meta">
+        <span>Class 11</span>
+        <span>2019 Final</span>
+      </div>
+      <p>Introduction to ML algorithms and statistical methods.</p>
+      <button class="download-btn">Download PDF</button>
+    </div>
+
+    <!-- Class 12 Papers -->
+    <div class="paper-card class-12-card">
+      <h2>Computer Science</h2>
+      <div class="paper-meta">
+        <span>Class 12</span>
+        <span>2023 Board</span>
+      </div>
+      <p>Complete board examination paper with solutions.</p>
+      <button class="download-btn">Download PDF</button>
+    </div>
+
+    <div class="paper-card class-12-card">
+      <h2>Advanced AI</h2>
+      <div class="paper-meta">
+        <span>Class 12</span>
+        <span>2022 Final</span>
+      </div>
+      <p>Neural networks, deep learning, and AI ethics questions.</p>
+      <button class="download-btn">Download PDF</button>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 AI4CODE | Class 9-12 CS & AI Question Papers</p>
+  </footer>
+
+  <script>
+    // Class selector functionality
+    document.querySelectorAll('.class-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelector('.class-btn.active').classList.remove('active');
+        this.classList.add('active');
+        // Here you would filter papers by class
+      });
+    });
+    
+    // Year filter functionality
+    document.querySelectorAll('.year-chip').forEach(chip => {
+      chip.addEventListener('click', function() {
+        document.querySelector('.year-chip.active').classList.remove('active');
+        this.classList.add('active');
+        // Here you would filter papers by year range
+      });
+    });
+    
+    // 3D card hover effect
+    document.querySelectorAll('.paper-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const angleX = (y - centerY) / 20;
+        const angleY = (centerX - x) / 20;
+        
+        card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) translateZ(20px)`;
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        const classType = card.classList.contains('class-9-card') ? 9 :
+                         card.classList.contains('class-10-card') ? 10 :
+                         card.classList.contains('class-11-card') ? 11 : 12;
+        card.style.transform = `rotateY(${15-classType}deg) rotateX(3deg)`;
+      });
+    });
+  </script>
+</body>
+</html>

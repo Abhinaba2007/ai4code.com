@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My AI Progress | CLASS-9</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .stat-card {
+      background: rgba(10, 10, 40, 0.7);
+      border: 1px solid var(--neon-blue);
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 3rem;
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-blue);
+      margin: 1rem 0;
+    }
+    
+    .progress-ring {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    .progress-circle {
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+    
+    .progress-bg {
+      stroke: rgba(0, 247, 255, 0.2);
+      stroke-width: 10;
+      fill: none;
+    }
+    
+    .progress-fill {
+      stroke: var(--neon-blue);
+      stroke-width: 10;
+      stroke-dasharray: 314;
+      stroke-dashoffset: 314;
+      fill: none;
+      transition: stroke-dashoffset 1s ease;
+    }
+    
+    .chapter-progress {
+      margin-top: 3rem;
+    }
+    
+    .progress-item {
+      margin-bottom: 1rem;
+    }
+    
+    .progress-bar {
+      height: 10px;
+      background: rgba(0, 247, 255, 0.2);
+      border-radius: 5px;
+      margin-top: 0.5rem;
+      overflow: hidden;
+    }
+    
+    .progress-level {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="hologram-bg"></div>
+  
+  <div class="main-container">
+    <header class="portal-header">
+      <h1 class="cyber-glow">MY AI PROGRESS</h1>
+      <p>Neural analytics of your learning journey</p>
+    </header>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Overall Mastery</h3>
+        <div class="progress-ring">
+          <svg viewBox="0 0 100 100" class="progress-circle">
+            <circle cx="50" cy="50" r="45" class="progress-bg"></circle>
+            <circle cx="50" cy="50" r="45" class="progress-fill" style="stroke-dashoffset: 125.6;"></circle>
+          </svg>
+          <div class="stat-value">60%</div>
+        </div>
+        <p>Your overall understanding of Class 9 AI concepts</p>
+      </div>
+      
+      <div class="stat-card">
+        <h3>Test Performance</h3>
+        <div class="progress-ring">
+          <svg viewBox="0 0 100 100" class="progress-circle">
+            <circle cx="50" cy="50" r="45" class="progress-bg"></circle>
+            <circle cx="50" cy="50" r="45" class="progress-fill" style="stroke-dashoffset: 62.8;"></circle>
+          </svg>
+          <div class="stat-value">80%</div>
+        </div>
+        <p>Average score across all practice tests</p>
+      </div>
+      
+      <div class="stat-card">
+        <h3>Project Quality</h3>
+        <div class="progress-ring">
+          <svg viewBox="0 0 100 100" class="progress-circle">
+            <circle cx="50" cy="50" r="45" class="progress-bg"></circle>
+            <circle cx="50" cy="50" r="45" class="progress-fill" style="stroke-dashoffset: 157;"></circle>
+          </svg>
+          <div class="stat-value">50%</div>
+        </div>
+        <p>AI assessment of your submitted projects</p>
+      </div>
+    </div>
+    
+    <div class="ai-visualization" id="neuralNetwork"></div>
+    
+    <div class="chapter-progress">
+      <h2 style="color: var(--neon-blue);">Chapter-wise Progress</h2>
+      
+      <div class="progress-item">
+        <div style="display: flex; justify-content: space-between;">
+          <span>Introduction to AI</span>
+          <span>75%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-level" style="width: 75%;"></div>
+        </div>
+      </div>
+      
+      <div class="progress-item">
+        <div style="display: flex; justify-content: space-between;">
+          <span>AI Project Cycle</span>
+          <span>60%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-level" style="width: 60%;"></div>
+        </div>
+      </div>
+      
+      <div class="progress-item">
+        <div style="display: flex; justify-content: space-between;">
+          <span>Neural Networks</span>
+          <span>45%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-level" style="width: 45%;"></div>
+        </div>
+      </div>
+      
+      <div class="progress-item">
+        <div style="display: flex; justify-content: space-between;">
+          <span>Computer Vision</span>
+          <span>30%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-level" style="width: 30%;"></div>
+        </div>
+      </div>
+      
+      <div class="progress-item">
+        <div style="display: flex; justify-content: space-between;">
+          <span>Natural Language Processing</span>
+          <span>25%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-level" style="width: 25%;"></div>
+        </div>
+      </div>
+      
+      <div class="progress-item">
+        <div style="display: flex; justify-content: space-between;">
+          <span>Ethics in AI</span>
+          <span>85%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-level" style="width: 85%;"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="module-grid" style="margin-top: 3rem;">
+      <div class="module-card">
+        <h2>📈 Progress Timeline</h2>
+        <p>View your learning journey over time</p>
+        <button class="cyber-btn">View Timeline</button>
+      </div>
+      
+      <div class="module-card">
+        <h2>🎯 Weak Areas</h2>
+        <p>Focus on concepts needing improvement</p>
+        <button class="cyber-btn">View Recommendations</button>
+      </div>
+      
+      <div class="module-card">
+        <h2>🏆 Achievements</h2>
+        <p>Badges and milestones earned</p>
+        <button class="cyber-btn">View Badges</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="js/main.js"></script>
+  <script>
+    // Animate progress rings
+    document.addEventListener('DOMContentLoaded', () => {
+      const circles = document.querySelectorAll('.progress-fill');
+      circles.forEach(circle => {
+        const style = window.getComputedStyle(circle);
+        const dashoffset = style.getPropertyValue('stroke-dashoffset');
+        circle.style.strokeDashoffset = dashoffset;
+      });
+    });
+  </script>
+</body>
+</html>

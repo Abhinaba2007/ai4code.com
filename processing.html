@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Processing</title>
+    <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+    <style>
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Payment method styles */
+        .payment-method {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .payment-method:hover {
+            border-color: #4361ee;
+        }
+        
+        .payment-method.selected {
+            border: 2px solid #4361ee;
+            background-color: #f0f4ff;
+        }
+        
+        .payment-method img {
+            width: 40px;
+            margin-right: 15px;
+        }
+        
+        /* Form styles */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .error-message {
+            color: #ef233c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* Button styles */
+        .btn-pay {
+            background: linear-gradient(to right, #4361ee, #3a56d4);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+        
+        /* Spinner animation */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #4361ee;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* UPI ID input styles */
+        .upi-container {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Payment Modal -->
+<div id="purchaseModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 style="margin-bottom: 20px;">Complete Payment</h2>
+        
+        <div class="form-group">
+            <label>Selected Plan</label>
+            <div id="selectedPlanDisplay" style="padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                Basic Plan - ₹999
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Payment Method</label>
+            
+            <div class="payment-method" data-type="card">
+                <img src="https://cdn-icons-png.flaticon.com/512/196/196578.png" alt="Visa">
+                <span>Credit/Debit Card</span>
+            </div>
+            
+            <div class="payment-method" data-type="upi">
+                <img src="https://cdn-icons-png.flaticon.com/512/825/825454.png" alt="UPI">
+                <span>UPI Payment</span>
+            </div>
+            
+            <div class="payment-method" data-type="netbanking">
+                <img src="https://cdn-icons-png.flaticon.com/512/2592/2592707.png" alt="NetBanking">
+                <span>Net Banking</span>
+            </div>
+        </div>
+        
+        <!-- Card Payment Form -->
+        <div id="cardPaymentForm" style="display: none;">
+            <div class="form-group">
+                <label for="cardNumber">Card Number</label>
+                <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                <div class="error-message" id="cardNumberError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="cardName">Cardholder Name</label>
+                <input type="text" id="cardName" placeholder="As on card">
+                <div class="error-message" id="cardNameError"></div>
+            </div>
+            
+            <div style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label for="expiryDate">Expiry Date</label>
+                    <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5">
+                    <div class="error-message" id="expiryDateError"></div>
+                </div>
+                
+                <div class="form-group" style="flex: 1;">
+                    <label for="cvv">CVV</label>
+                    <input type="password" id="cvv" placeholder="123" maxlength="4">
+                    <div class="error-message" id="cvvError"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- UPI Payment Form -->
+        <div id="upiPaymentForm" style="display: none;">
+            <div class="upi-container">
+                <div class="form-group">
+                    <label for="upiId">Enter UPI ID</label>
+                    <input type="text" id="upiId" placeholder="yourname@upi">
+                    <div class="error-message" id="upiIdError"></div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn-pay">Pay ₹999</button>
+    </div>
+</div>
+
+<script>
+    // Check if user is logged in (simulated)
+    function checkAuth() {
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+        if (!currentUser) {
+            alert('Please login or signup to make payment');
+            window.location.href = 'login.html';
+            return false;
+        }
+        return true;
+    }
+
+    // Modal functionality
+    const modal = document.getElementById("purchaseModal");
+    const btn = document.getElementById("enrollBtn");
+    const span = document.getElementsByClassName("close")[0];
+    
+    // Open modal when enroll button is clicked
+    btn.onclick = function() {
+        if (!checkAuth()) return;
+        modal.style.display = "block";
+    }
+    
+    // Close modal when X is clicked
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    
+    // Payment method selection
+    const paymentMethods = document.querySelectorAll('.payment-method');
+    paymentMethods.forEach(method => {
+        method.addEventListener('click', function() {
+            paymentMethods.forEach(m => m.classList.remove('selected'));
+            this.classList.add('selected');
+            
+            // Show relevant payment form
+            const paymentType = this.dataset.type;
+            document.getElementById('cardPaymentForm').style.display = 'none';
+            document.getElementById('upiPaymentForm').style.display = 'none';
+            
+            if (paymentType === 'card') {
+                document.getElementById('cardPaymentForm').style.display = 'block';
+            } else if (paymentType === 'upi') {
+                document.getElementById('upiPaymentForm').style.display = 'block';
+            }
+        });
+    });
+    
+    // Card number formatting
+    document.getElementById('cardNumber').addEventListener('input', function(e) {
+        let value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+        let formatted = '';
+        for (let i = 0; i < value.length; i++) {
+            if (i > 0 && i % 4 === 0) formatted += ' ';
+            formatted += value[i];
+        }
+        this.value = formatted.substring(0, 19);
+    });
+    
+    // Expiry date formatting
+    document.getElementById('expiryDate').addEventListener('input', function(e) {
+        let value = this.value.replace(/\D/g, '');
+        if (value.length > 2) {
+            this.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+    });
+
+    // Validate card details
+    function validateCardDetails() {
+        const cardNumber = document.getElementById('cardNumber').value.replace(/\s+/g, '');
+        const cardName = document.getElementById('cardName').value.trim();
+        const expiryDate = document.getElementById('expiryDate').value;
+        const cvv = document.getElementById('cvv').value;
+        
+        // Clear previous errors
+        clearErrors();
+        
+        let isValid = true;
+        
+        // Validate card number (16 digits, Luhn algorithm)
+        if (!cardNumber || cardNumber.length !== 16 || !luhnCheck(cardNumber)) {
+            showError('Please enter a valid 16-digit card number', 'cardNumberError');
+            isValid = false;
+        }
+        
+        // Validate card name (at least 2 words with letters only)
+        if (!cardName || !/^[a-zA-Z ]{2,}$/.test(cardName) || cardName.split(' ').length < 2) {
+            showError('Please enter the full name as shown on card', 'cardNameError');
+            isValid = false;
+        }
+        
+        // Validate expiry date (MM/YY format and not expired)
+        if (!expiryDate || !/^\d{2}\/\d{2}$/.test(expiryDate)) {
+            showError('Please enter valid expiry date (MM/YY)', 'expiryDateError');
+            isValid = false;
+        } else {
+            const [month, year] = expiryDate.split('/');
+            const currentYear = new Date().getFullYear() % 100;
+            const currentMonth = new Date().getMonth() + 1;
+            
+            if (parseInt(month) < 1 || parseInt(month) > 12) {
+                showError('Invalid month (01-12)', 'expiryDateError');
+                isValid = false;
+            } else if (parseInt(year) < currentYear || 
+                      (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
+                showError('Card has expired', 'expiryDateError');
+                isValid = false;
+            }
+        }
+        
+        // Validate CVV (3 or 4 digits)
+        if (!cvv || !/^\d{3,4}$/.test(cvv)) {
+            showError('Please enter valid CVV (3 or 4 digits)', 'cvvError');
+            isValid = false;
+        }
+        
+        return isValid;
+    }
+
+    // Validate UPI ID
+    function validateUPI() {
+        const upiId = document.getElementById('upiId').value.trim();
+        clearErrors();
+        
+        if (!upiId || !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+$/.test(upiId)) {
+            showError('Please enter a valid UPI ID (e.g. name@upi)', 'upiIdError');
+            return false;
+        }
+        return true;
+    }
+
+    // Luhn algorithm check for valid card number
+    function luhnCheck(cardNumber) {
+        let sum = 0;
+        for (let i = 0; i < cardNumber.length; i++) {
+            let digit = parseInt(cardNumber[i]);
+            if ((cardNumber.length - i) % 2 === 0) {
+                digit *= 2;
+                if (digit > 9) digit -= 9;
+            }
+            sum += digit;
+        }
+        return sum % 10 === 0;
+    }
+
+    // Show error message for a field
+    function showError(message, errorElementId) {
+        const errorElement = document.getElementById(errorElementId);
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+
+    // Clear all error messages
+    function clearErrors() {
+        document.querySelectorAll('.error-message').forEach(el => {
+            el.textContent = '';
+            el.style.display = 'none';
+        });
+    }
+
+    // Simulate UPI payment request
+    function sendUPIRequest(upiId) {
+        const modalContent = document.querySelector('.modal-content');
+        modalContent.innerHTML = `
+            <div style="text-align: center; padding: 30px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/825/825454.png" style="width: 60px; margin-bottom: 15px;">
+                <h3>Payment Request Sent</h3>
+                <p>We've sent a payment request of ₹999 to <strong>${upiId}</strong></p>
+                <p>Please approve the payment in your UPI app</p>
+                <div class="spinner"></div>
+                <p style="margin-top: 20px; color: #666;">Waiting for payment confirmation...</p>
+            </div>
+        `;
+        
+        // Simulate payment processing
+        setTimeout(() => {
+            completePayment();
+        }, 3000);
+    }
+
+    // Complete payment after verification
+    function completePayment() {
+        const modalContent = document.querySelector('.modal-content');
+        modalContent.innerHTML = `
+            <div style="text-align: center; padding: 30px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="#4CAF50" style="margin-bottom: 15px;">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <h3>Payment Successful!</h3>
+                <p>₹999 has been received by AI4CODE Admin</p>
+                <p>Transaction ID: <strong>TXN${Math.floor(100000 + Math.random() * 900000)}</strong></p>
+                <p>We've sent a confirmation to your registered email</p>
+                <button onclick="modal.style.display='none'" style="
+                    background: linear-gradient(to right, #4361ee, #3a56d4);
+                    color: white;
+                    border: none;
+                    padding: 12px 20px;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    margin-top: 20px;
+                ">Done</button>
+            </div>
+        `;
+    }
+    
+    // Payment form submission
+    document.querySelector('.btn-pay').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Get selected payment method
+        const selectedPayment = document.querySelector('.payment-method.selected');
+        if (!selectedPayment) {
+            alert('Please select a payment method');
+            return;
+        }
+        
+        const paymentType = selectedPayment.dataset.type;
+        
+        // Handle card payment
+        if (paymentType === 'card') {
+            if (!validateCardDetails()) return;
+            
+            // Show Visa 3D Secure OTP page
+            const modalContent = document.querySelector('.modal-content');
+            modalContent.innerHTML = `
+                <div style="font-family: Arial, sans-serif;">
+                    <div style="background: #00579f; padding: 15px; text-align: center;">
+                        <img src="https://www.visa.co.in/dam/VCOM/regional/ap/india/global-elements/images/visa-logo-800x450.png" 
+                             style="height: 30px;" alt="Visa">
+                    </div>
+                    
+                    <div style="padding: 20px; border: 1px solid #ddd; border-top: none;">
+                        <h3 style="color: #00579f; text-align: center;">Secure Verification</h3>
+                        <p style="text-align: center;">For your security, please complete the verification</p>
+                        
+                        <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                            <p style="margin: 0;">A One-Time Password (OTP) has been sent to your mobile number ending with <strong>${Math.floor(Math.random() * 9000 + 1000)}</strong></p>
+                        </div>
+                        
+                        <div style="margin: 25px 0;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: bold;">Enter OTP</label>
+                            <input type="text" id="visaOTP" 
+                                   style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px;" 
+                                   placeholder="6-digit OTP" maxlength="6">
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-top: 25px;">
+                            <button id="resendOTP" style="
+                                background: none;
+                                border: 1px solid #00579f;
+                                color: #00579f;
+                                padding: 10px 15px;
+                                border-radius: 4px;
+                                cursor: pointer;
+                            ">Resend OTP</button>
+                            
+                            <button id="submitOTP" style="
+                                background: #00579f;
+                                color: white;
+                                border: none;
+                                padding: 10px 25px;
+                                border-radius: 4px;
+                                cursor: pointer;
+                            ">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Handle OTP submission
+            document.getElementById('submitOTP').addEventListener('click', function() {
+                const otp = document.getElementById('visaOTP').value;
+                if (!otp || otp.length !== 6) {
+                    alert('Please enter a valid 6-digit OTP');
+                    return;
+                }
+                completePayment();
+            });
+
+            // Handle OTP resend
+            document.getElementById('resendOTP').addEventListener('click', function() {
+                alert('New OTP has been sent to your registered mobile number');
+            });
+        } 
+        // Handle UPI payment
+        else if (paymentType === 'upi') {
+            if (!validateUPI()) return;
+            const upiId = document.getElementById('upiId').value.trim();
+            sendUPIRequest(upiId);
+        }
+        // Handle net banking
+        else if (paymentType === 'netbanking') {
+            const modalContent = document.querySelector('.modal-content');
+            modalContent.innerHTML = `
+                <div style="text-align: center; padding: 30px;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2592/2592707.png" style="width: 60px; margin-bottom: 15px;">
+                    <h3>Redirecting to Bank</h3>
+                    <p>You will be redirected to your bank's website to complete payment</p>
+                    <div class="spinner"></div>
+                    <p style="margin-top: 20px; color: #666;">Completing transaction...</p>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                completePayment();
+            }, 3000);
+        }
+    });
+</script>
+</body>
+</html>

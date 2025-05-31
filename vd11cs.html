@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI4CODE | Class 11 Computer Science</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --neon-blue: #00f7ff;
+            --neon-pink: #ff00e4;
+            --dark-bg: #0a0a12;
+            --glow: 0 0 15px var(--neon-blue);
+            --text-glow: 0 0 10px rgba(0, 247, 255, 0.7);
+            --danger-color: #ff4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--dark-bg);
+            color: white;
+            overflow-x: hidden;
+            cursor: none;
+            line-height: 1.6;
+        }
+        
+        /* === Futuristic Custom Cursor === */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--neon-blue);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: exclusion;
+            transition: transform 0.1s ease;
+            box-shadow: var(--glow);
+        }
+        
+        .cursor-follower {
+            width: 10px;
+            height: 10px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.4s ease, width 0.3s, height 0.3s;
+            filter: blur(1px);
+        }
+        
+        /* === Huge Typography === */
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--text-glow);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            color: var(--neon-blue);
+            margin-bottom: 1.5rem;
+            text-shadow: var(--text-glow);
+        }
+        
+        h3 {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        /* === Scroll Sections === */
+        section {
+            min-height: 100vh;
+            padding: 5rem 2rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 20px;
+        }
+        
+        /* === Neon Mist Effect === */
+        .mist {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 247, 255, 0.05) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* === Floating Particles Background === */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+        
+        /* === 3D Model Container === */
+        .model-container {
+            width: 100%;
+            height: 400px;
+            margin: 2rem auto;
+            position: relative;
+        }
+        
+        /* === Course Card Styles === */
+        .course-card {
+            background: rgba(10, 10, 30, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0, 247, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 247, 255, 0.2);
+        }
+        
+        /* === Button Styles === */
+        .btn {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            border: none;
+            cursor: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.3s;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .btn:hover::before {
+            opacity: 1;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 247, 255, 0.4);
+        }
+        
+        /* === Module List === */
+        .module-list {
+            list-style: none;
+        }
+        
+        .module-item {
+            padding: 1.5rem;
+            margin: 1rem 0;
+            background: rgba(0, 247, 255, 0.05);
+            border-left: 3px solid var(--neon-blue);
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s;
+        }
+        
+        .module-item:hover {
+            background: rgba(0, 247, 255, 0.1);
+            transform: translateX(10px);
+        }
+        
+        /* === Animated Underline === */
+        .underline {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .underline::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s;
+        }
+        
+        .underline:hover::after {
+            transform: scaleX(1);
+        }
+        
+        /* === Floating Elements === */
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* === Glowing Border === */
+        .glow-border {
+            position: relative;
+        }
+        
+        .glow-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            z-index: -1;
+            border-radius: inherit;
+            filter: blur(5px);
+            opacity: 0.7;
+        }
+        
+        /* === Payment Modal Styles === */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background-color: var(--dark-bg);
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+            position: relative;
+            border: 1px solid rgba(0, 247, 255, 0.2);
+        }
+        
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 15px;
+            color: var(--neon-blue);
+            font-size: 28px;
+            font-weight: bold;
+            cursor: none;
+            transition: color 0.3s;
+        }
+        
+        .close:hover {
+            color: var(--neon-pink);
+        }
+        
+        .payment-tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(0, 247, 255, 0.2);
+            margin-bottom: 20px;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: none;
+            font-weight: bold;
+            color: #aaa;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            border-bottom-color: var(--neon-blue);
+            color: var(--neon-blue);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px 0;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .payment-input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            border-radius: 8px;
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+        }
+        
+        .payment-input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+        }
+        
+        .pay-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: none;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .pay-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 247, 255, 0.4);
+        }
+        
+        .upi-app {
+            cursor: none;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 247, 255, 0.1);
+        }
+        
+        .upi-app:hover {
+            background: rgba(0, 247, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .upi-app img {
+            height: 40px;
+            display: block;
+            margin: 0 auto 5px;
+        }
+        
+        .upi-app span {
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 247, 255, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--neon-blue);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* === Features Grid === */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(0, 247, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .feature-item:hover {
+            background: rgba(0, 247, 255, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .feature-item i {
+            color: var(--neon-blue);
+            font-size: 2rem;
+            margin-right: 1rem;
+            min-width: 40px;
+        }
+        
+        /* === Responsive Design === */
+        @media (max-width: 768px) {
+            section {
+                padding: 3rem 1rem;
+            }
+            
+            .model-container {
+                height: 300px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    
+    <!-- Neon Mist Overlay -->
+    <div class="mist"></div>
+    
+    <!-- Floating Particles Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <h1 class="floating">AI4CODE</h1>
+            <h2>Class 11 Computer Science</h2>
+            <p style="font-size: 1.2rem; max-width: 800px; margin-bottom: 2rem;">
+                Master Python programming, computer systems, and database concepts with this futuristic learning experience.
+            </p>
+            <button id="enrollBtn" class="btn glow-border">Enroll Now</button>
+            <button id="demoBtn" onclick="window.location.href='learnif11cs.html'"class="btn" style="background: transparent; border: 1px solid var(--neon-blue);">Demo View</button>
+            
+            <!-- 3D Model Container -->
+            <div class="model-container" id="hero-model"></div>
+        </div>
+    </section>
+    
+    <!-- Course Overview -->
+    <section id="overview" style="background: rgba(0, 0, 0, 0.3);">
+        <div class="container">
+            <h2>Course <span class="underline">Highlights</span></h2>
+            
+            <div class="course-card floating">
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-laptop-code"></i>
+                        <div>
+                            <h3>Interactive Coding</h3>
+                            <p>Real-time Python coding environment</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-brain"></i>
+                        <div>
+                            <h3>AI Assistance</h3>
+                            <p>24/7 AI tutor for instant help</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-project-diagram"></i>
+                        <div>
+                            <h3>3D Visualizations</h3>
+                            <p>Complex concepts made simple</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-trophy"></i>
+                        <div>
+                            <h3>CBSE Aligned</h3>
+                            <p>Perfect for exam preparation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Animated Stats -->
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin: 3rem 0;">
+                <div style="text-align: center; margin: 1rem;">
+                    <div class="stat-number" style="font-size: 3rem; font-weight: bold; color: var(--neon-blue);">180+</div>
+                    <div style="font-size: 1.2rem;">Video Lessons</div>
+                </div>
+                <div style="text-align: center; margin: 1rem;">
+                    <div class="stat-number" style="font-size: 3rem; font-weight: bold; color: var(--neon-blue);">100+</div>
+                    <div style="font-size: 1.2rem;">Coding Exercises</div>
+                </div>
+                <div style="text-align: center; margin: 1rem;">
+                    <div class="stat-number" style="font-size: 3rem; font-weight: bold; color: var(--neon-blue);">24/7</div>
+                    <div style="font-size: 1.2rem;">AI Support</div>
+                </div>
+                <div style="text-align: center; margin: 1rem;">
+                    <div class="stat-number" style="font-size: 3rem; font-weight: bold; color: var(--neon-blue);">98%</div>
+                    <div style="font-size: 1.2rem;">Success Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Curriculum Section -->
+    <section id="curriculum">
+        <div class="container">
+            <h2>Course <span class="underline">Curriculum</span></h2>
+            
+            <div class="model-container" id="curriculum-model"></div>
+            
+            <ul class="module-list">
+                <li class="module-item">
+                    <h3>Python Programming</h3>
+                    <p>From basics to advanced concepts with interactive coding challenges</p>
+                    <div style="display: flex; flex-wrap: wrap; margin-top: 1rem;">
+                        <span style="background: rgba(0, 247, 255, 0.2); padding: 0.3rem 0.8rem; border-radius: 50px; margin: 0.3rem; font-size: 0.9rem;">Variables</span>
+                        <span style="background: rgba(0, 247, 255, 0.2); padding: 0.3rem 0.8rem; border-radius: 50px; margin: 0.3rem; font-size: 0.9rem;">Loops</span>
+                        <span style="background: rgba(0, 247, 255, 0.2); padding: 0.3rem 0.8rem; border-radius: 50px; margin: 0.3rem; font-size: 0.9rem;">Functions</span>
+                        <span style="background: rgba(0, 247, 255, 0.2); padding: 0.3rem 0.8rem; border-radius: 50px; margin: 0.3rem; font-size: 0.9rem;">File Handling</span>
+                    </div>
+                </li>
+                <li class="module-item">
+                    <h3>Computer Systems</h3>
+                    <p>3D interactive models of computer architecture and organization</p>
+                    <div style="display: flex; flex-wrap: wrap; margin-top: 1rem;">
+                        <span style="background: rgba(0, 247, 255, 0.2); padding: 0.3rem 0.8rem; border-radius: 50px; margin: 0.3rem; font-size: 0.9rem;">CPU</span>
+                        <span style="background: rgba(0, 247, 255, 0.2); padding: 0.3rem 0.8rem; border-radius: 50px; margin: 0.3rem; font-size: 0.9rem;">Memory</span>
+                        <span style="background: rgba(0, 247, 255, 0.2); padding: 0.3rem 0.8rem; border-radius: 50px; margin: 0.3rem; font-size: 0.9rem;">I/O</span>
+                        <span style="background: rgba(0, 247, 255, 0.2); padding: 0.3rem 0.8rem; border-radius: 50px; margin: 0.3rem; font-size: 0.9rem;">OS</span>
+                    </div>
+                </li>
+                <li class="module-item">
+                    <h3>Database Concepts</h3>
+                    <p>Interactive SQL playground with visual query builder</p>
+                    <div style="display: flex; flex-wrap: wrap; margin-top: 1rem;">
+                        <span style="background: rgba(0, 247, 255, 0.2); padding: 0.3rem 0.8rem; border-radius: 50px; margin: 0.3rem; font-size: 0.9rem;">SQL</span>
+                        <span style="background: rgba(0, 247, 255, 0.2); padding: 0.3rem 0.8rem; border-radius: 50px; margin: 0.3rem; font-size: 0.9rem;">Tables</span>
+                        <span style="background: rgba(0, 247, 255, 0.2); padding: 0.3rem 0.8rem; border-radius: 50px; margin: 0.3rem; font-size: 0.9rem;">Queries</span>
+                        <span style="background: rgba(0, 247, 255, 0.2); padding: 0.3rem 0.8rem; border-radius: 50px; margin: 0.3rem; font-size: 0.9rem;">Joins</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    
+    <!-- Enrollment Section -->
+    <section id="enroll" style="background: rgba(0, 0, 0, 0.5); text-align: center;">
+        <div class="container">
+            <h2>Ready to <span class="underline">Transform</span> Your Coding Skills?</h2>
+            
+            <div class="course-card" style="max-width: 600px; margin: 2rem auto;">
+                <h3 style="color: var(--neon-blue); margin-bottom: 1rem;">Enrollment Options</h3>
+                
+                <div style="display: flex; justify-content: center; gap: 1rem; margin: 1rem 0;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold; color: var(--neon-blue);">₹5,499</div>
+                        <div>Annual Access</div>
+                    </div>
+                </div>
+                
+                <button id="finalEnrollBtn" class="btn" style="width: 100%; text-align: center;">Enroll Now</button>
+                
+                <div style="margin-top: 1rem; font-size: 0.9rem;">
+                    <i class="fas fa-shield-alt" style="color: var(--neon-blue);"></i> Secure Payment | 
+                    <i class="fas fa-clock" style="color: var(--neon-blue);"></i> 7-Day Money Back Guarantee
+                </div>
+            </div>
+            
+            <!-- Animated Testimonials -->
+            <div style="max-width: 800px; margin: 3rem auto;">
+                <h3 style="margin-bottom: 2rem;">What Our <span class="underline">Students</span> Say</h3>
+                
+                <div class="course-card" style="position: relative;">
+                    <div class="testimonial-slider">
+                        <div class="testimonial active">
+                            <p style="font-style: italic; margin-bottom: 1rem;">"The 3D visualizations made understanding computer architecture so much easier. I aced my practical exams!"</p>
+                            <div style="display: flex; align-items: center; justify-content: center;">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Student" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 1rem;">
+                                <div>
+                                    <div style="font-weight: bold;">Priya Sharma</div>
+                                    <div style="font-size: 0.8rem; color: #aaa;">Class 11 Student</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalContent">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Three.js Script for 3D Models -->
+    <script>
+        // === Custom Cursor Movement ===
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            gsap.to(cursorFollower, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.5,
+                ease: "power2.out"
+            });
+        });
+        
+        // Cursor effects on interactive elements
+        document.querySelectorAll('a, button, .module-item, .tab-btn, .upi-app, .close').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursor.style.borderColor = 'var(--neon-pink)';
+                cursorFollower.style.width = '20px';
+                cursorFollower.style.height = '20px';
+                cursorFollower.style.background = 'var(--neon-pink)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursor.style.borderColor = 'var(--neon-blue)';
+                cursorFollower.style.width = '10px';
+                cursorFollower.style.height = '10px';
+                cursorFollower.style.background = 'var(--neon-blue)';
+            });
+        });
+
+        // === Three.js 3D Models ===
+        // Hero Model - Floating Code Sphere
+        const heroContainer = document.getElementById('hero-model');
+        const heroScene = new THREE.Scene();
+        const heroCamera = new THREE.PerspectiveCamera(75, heroContainer.clientWidth / heroContainer.clientHeight, 0.1, 1000);
+        const heroRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        heroRenderer.setSize(heroContainer.clientWidth, heroContainer.clientHeight);
+        heroContainer.appendChild(heroRenderer.domElement);
+        
+        // Create floating code sphere
+        const geometry = new THREE.SphereGeometry(2, 32, 32);
+        const material = new THREE.MeshBasicMaterial({ 
+            color: 0x00ffff,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.8
+        });
+        
+        const sphere = new THREE.Mesh(geometry, material);
+        heroScene.add(sphere);
+        
+        // Add floating code particles
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 500;
+        const posArray = new Float32Array(particlesCount * 3);
+        
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 5;
+        }
+        
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.02,
+            color: 0x00ffff,
+            transparent: true,
+            opacity: 0.8
+        });
+        
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        heroScene.add(particlesMesh);
+        
+        heroCamera.position.z = 5;
+        
+        // Curriculum Model - Computer System
+        const curriculumContainer = document.getElementById('curriculum-model');
+        const curriculumScene = new THREE.Scene();
+        const curriculumCamera = new THREE.PerspectiveCamera(75, curriculumContainer.clientWidth / curriculumContainer.clientHeight, 0.1, 1000);
+        const curriculumRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        curriculumRenderer.setSize(curriculumContainer.clientWidth, curriculumContainer.clientHeight);
+        curriculumContainer.appendChild(curriculumRenderer.domElement);
+        
+        // Create simple computer system model
+        const cpuGeometry = new THREE.BoxGeometry(1, 0.5, 1);
+        const cpuMaterial = new THREE.MeshBasicMaterial({ color: 0xff00e4, wireframe: true });
+        const cpu = new THREE.Mesh(cpuGeometry, cpuMaterial);
+        cpu.position.set(0, 1, 0);
+        curriculumScene.add(cpu);
+        
+        const ramGeometry = new THREE.BoxGeometry(0.8, 0.1, 0.8);
+        const ramMaterial = new THREE.MeshBasicMaterial({ color: 0x00f7ff, wireframe: true });
+        const ram1 = new THREE.Mesh(ramGeometry, ramMaterial);
+        ram1.position.set(-1, 0.5, 0);
+        curriculumScene.add(ram1);
+        
+        const ram2 = new THREE.Mesh(ramGeometry, ramMaterial);
+        ram2.position.set(1, 0.5, 0);
+        curriculumScene.add(ram2);
+        
+        const storageGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.2, 32);
+        const storageMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff88, wireframe: true });
+        const storage = new THREE.Mesh(storageGeometry, storageMaterial);
+        storage.position.set(0, -0.5, 0);
+        storage.rotation.x = Math.PI / 2;
+        curriculumScene.add(storage);
+        
+        curriculumCamera.position.z = 5;
+        
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Hero model animation
+            sphere.rotation.x += 0.005;
+            sphere.rotation.y += 0.005;
+            particlesMesh.rotation.x += 0.001;
+            particlesMesh.rotation.y += 0.001;
+            heroRenderer.render(heroScene, heroCamera);
+            
+            // Curriculum model animation
+            cpu.rotation.y += 0.01;
+            ram1.rotation.z += 0.02;
+            ram2.rotation.z -= 0.02;
+            storage.rotation.z += 0.01;
+            curriculumRenderer.render(curriculumScene, curriculumCamera);
+        }
+        animate();
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            heroCamera.aspect = heroContainer.clientWidth / heroContainer.clientHeight;
+            heroCamera.updateProjectionMatrix();
+            heroRenderer.setSize(heroContainer.clientWidth, heroContainer.clientHeight);
+            
+            curriculumCamera.aspect = curriculumContainer.clientWidth / curriculumContainer.clientHeight;
+            curriculumCamera.updateProjectionMatrix();
+            curriculumRenderer.setSize(curriculumContainer.clientWidth, curriculumContainer.clientHeight);
+        });
+        
+        // === Payment System ===
+        const COURSE_PRICE = 5499;
+        const MERCHANT_DETAILS = {
+            name: "AI4Code Academy",
+            upiId: "abhinaba33@ybl",
+            bankAccount: "539902010012098",
+            ifsc: "UBIN0553999",
+            bankName: "Union Bank of India"
+        };
+        
+        // DOM Elements
+        const modal = document.getElementById("paymentModal");
+        const modalContent = document.getElementById("modalContent");
+        const enrollBtn = document.getElementById("enrollBtn");
+        const demoBtn = document.getElementById("demoBtn");
+        const finalEnrollBtn = document.getElementById("finalEnrollBtn");
+        const closeBtn = document.querySelector(".close");
+        
+        // Show payment options
+        function showPaymentOptions() {
+            const content = `
+                <div style="padding: 20px;">
+                    <h2 style="text-align: center; margin-bottom: 20px; color: var(--neon-blue);">Complete Payment</h2>
+                    <p style="text-align: center; margin-bottom: 30px; font-size: 1.2rem;">Amount to pay: <span style="font-weight: bold; color: var(--neon-blue);">₹${COURSE_PRICE}</span></p>
+                    
+                    <div style="background: rgba(0, 247, 255, 0.05); padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid rgba(0, 247, 255, 0.2);">
+                        <h3 style="margin-top: 0; color: var(--neon-blue);">Payment To:</h3>
+                        <p><strong>${MERCHANT_DETAILS.name}</strong></p>
+                        <p>UPI ID: ${MERCHANT_DETAILS.upiId}</p>
+                        <p>Bank: ${MERCHANT_DETAILS.bankName}</p>
+                    </div>
+                    
+                    <div class="payment-tabs">
+                        <button class="tab-btn active" data-tab="card">Card</button>
+                        <button class="tab-btn" data-tab="upi">UPI</button>
+                        <button class="tab-btn" data-tab="netbanking">Net Banking</button>
+                    </div>
+                    
+                    <div id="card-tab" class="tab-content active">
+                        <div style="margin: 20px 0;">
+                            <input type="text" id="cardNumber" placeholder="Card Number" class="payment-input" maxlength="19">
+                            <input type="text" id="cardName" placeholder="Name on Card" class="payment-input">
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="cardExpiry" placeholder="MM/YY" class="payment-input" style="flex: 1;" maxlength="5">
+                                <input type="text" id="cardCvv" placeholder="CVV" class="payment-input" style="flex: 1;" maxlength="4">
+                            </div>
+                        </div>
+                        <button id="payWithCardBtn" class="pay-btn">Pay ₹${COURSE_PRICE}</button>
+                    </div>
+                    
+                    <div id="upi-tab" class="tab-content">
+                        <div style="margin: 20px 0; text-align: center;">
+                            <input type="text" id="upiId" placeholder="yourname@upi" class="payment-input">
+                            <p style="font-size: 14px; color: #aaa; margin: 15px 0;">OR scan QR code:</p>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(
+                                `upi://pay?pa=${MERCHANT_DETAILS.upiId}&pn=${MERCHANT_DETAILS.name}&am=${COURSE_PRICE}&tn=Course Payment&cu=INR`
+                            )}" 
+                                 alt="UPI QR Code" style="width: 150px; height: 150px; display: block; margin: 10px auto; border: 1px solid rgba(0, 247, 255, 0.2);">
+                        </div>
+                        <button id="payWithUpiBtn" class="pay-btn">Pay via UPI</button>
+                        
+                        <div style="margin-top: 20px; text-align: center;">
+                            <p style="font-size: 14px; color: #aaa;">Pay using:</p>
+                            <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
+                                <div class="upi-app" onclick="initiateUpiPayment('googlepay')">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Google_Pay_%28GPay%29_Logo.svg/512px-Google_Pay_%28GPay%29_Logo.svg.png" 
+                                         alt="Google Pay">
+                                    <span>Google Pay</span>
+                                </div>
+                                <div class="upi-app" onclick="initiateUpiPayment('phonepe')">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/PhonePe_Logo.svg/2560px-PhonePe_Logo.svg.png" 
+                                         alt="PhonePe">
+                                    <span>PhonePe</span>
+                                </div>
+                                <div class="upi-app" onclick="initiateUpiPayment('paytm')">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Paytm_logo.png/640px-Paytm_logo.png" 
+                                         alt="Paytm">
+                                    <span>Paytm</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="netbanking-tab" class="tab-content">
+                        <div style="margin: 20px 0;">
+                            <select id="bankSelect" class="payment-input">
+                                <option value="">Select your bank</option>
+                                <option value="SBI">State Bank of India</option>
+                                <option value="HDFC">HDFC Bank</option>
+                                <option value="ICICI">ICICI Bank</option>
+                                <option value="Axis">Axis Bank</option>
+                                <option value="Kotak">Kotak Mahindra Bank</option>
+                            </select>
+                        </div>
+                        <button id="payWithNetBankingBtn" class="pay-btn">Pay via Net Banking</button>
+                    </div>
+                </div>
+            `;
+            
+            modalContent.innerHTML = content;
+            modal.style.display = "block";
+            
+            // Tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById(`${this.dataset.tab}-tab`).classList.add('active');
+                });
+            });
+            
+            // Card number formatting
+            document.getElementById('cardNumber')?.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s/g, '');
+                if (value.length > 16) value = value.substring(0, 16);
+                value = value.replace(/(\d{4})/g, '$1 ').trim();
+                e.target.value = value;
+            });
+            
+            // Expiry date formatting
+            document.getElementById('cardExpiry')?.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                e.target.value = value;
+            });
+            
+            // Payment button handlers
+            document.getElementById('payWithCardBtn')?.addEventListener('click', processCardPayment);
+            document.getElementById('payWithUpiBtn')?.addEventListener('click', processUpiPayment);
+            document.getElementById('payWithNetBankingBtn')?.addEventListener('click', processNetBankingPayment);
+        }
+        
+        // Validate UPI ID
+        function validateUpiId(upiId) {
+            const upiRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+$/;
+            if (!upiRegex.test(upiId)) {
+                return { valid: false, message: "Invalid UPI ID format" };
+            }
+            
+            const providers = ['okicici', 'ybl', 'paytm', 'axisbank', 'okhdfcbank', 'oksbi'];
+            const provider = upiId.split('@')[1];
+            if (!providers.includes(provider)) {
+                return { valid: false, message: "Unsupported UPI provider" };
+            }
+            
+            return { valid: true };
+        }
+        
+        // Process UPI Payment
+        function processUpiPayment() {
+            const upiId = document.getElementById('upiId')?.value.trim() || MERCHANT_DETAILS.upiId;
+            const validation = validateUpiId(upiId);
+            
+            if (!validation.valid) {
+                showPaymentError(validation.message);
+                return;
+            }
+            
+            const transactionId = 'UPI' + Date.now();
+            showPaymentPendingScreen(transactionId, 'UPI');
+            
+            // Simulate UPI payment processing
+            setTimeout(() => {
+                const isSuccess = Math.random() > 0.2; // 80% success rate
+                
+                if (isSuccess) {
+                    showPaymentSuccess(transactionId, 'UPI');
+                } else {
+                    showPaymentError("UPI payment failed or was declined");
+                }
+            }, 3000);
+        }
+        
+        // Initiate UPI Payment from app buttons
+        window.initiateUpiPayment = function(appName) {
+            const transactionId = 'UPI' + Date.now();
+            showPaymentPendingScreen(transactionId, appName);
+            
+            // Simulate UPI payment processing
+            setTimeout(() => {
+                const isSuccess = Math.random() > 0.2; // 80% success rate
+                
+                if (isSuccess) {
+                    showPaymentSuccess(transactionId, appName);
+                } else {
+                    showPaymentError(`${appName} payment failed`);
+                }
+            }, 3000);
+        }
+        
+        // Validate Card Details
+        function validateCardDetails(cardDetails) {
+            const { number, name, expiry, cvv } = cardDetails;
+            
+            if (!number || !/^\d{16}$/.test(number.replace(/\s/g, ''))) {
+                return { isValid: false, message: "Invalid card number" };
+            }
+            
+            if (!name || name.trim().length < 3) {
+                return { isValid: false, message: "Invalid cardholder name" };
+            }
+            
+            if (!expiry || !/^\d{2}\/\d{2}$/.test(expiry)) {
+                return { isValid: false, message: "Invalid expiry date (MM/YY)" };
+            }
+            
+            if (!cvv || !/^\d{3,4}$/.test(cvv)) {
+                return { isValid: false, message: "Invalid CVV" };
+            }
+            
+            // Check expiry date
+            const [month, year] = expiry.split('/');
+            const expiryDate = new Date(`20${year}`, month - 1);
+            const currentDate = new Date();
+            
+            if (expiryDate < currentDate) {
+                return { isValid: false, message: "Card has expired" };
+            }
+            
+            return { isValid: true };
+        }
+        
+        // Process Card Payment
+        function processCardPayment() {
+            const cardDetails = {
+                number: document.getElementById('cardNumber').value,
+                name: document.getElementById('cardName').value,
+                expiry: document.getElementById('cardExpiry').value,
+                cvv: document.getElementById('cardCvv').value
+            };
+            
+            const validation = validateCardDetails(cardDetails);
+            if (!validation.isValid) {
+                showPaymentError(validation.message);
+                return;
+            }
+            
+            const transactionId = 'CARD' + Date.now();
+            showPaymentPendingScreen(transactionId, 'Card');
+            
+            // Simulate card payment processing
+            setTimeout(() => {
+                const isSuccess = Math.random() > 0.2; // 80% success rate
+                
+                if (isSuccess) {
+                    showPaymentSuccess(transactionId, 'Card');
+                } else {
+                    showPaymentError("Card payment declined by bank");
+                }
+            }, 3000);
+        }
+        
+        // Process Net Banking Payment
+        function processNetBankingPayment() {
+            const bank = document.getElementById('bankSelect').value;
+            if (!bank) {
+                showPaymentError("Please select your bank");
+                return;
+            }
+            
+            const transactionId = 'NB' + Date.now();
+            showPaymentPendingScreen(transactionId, 'Net Banking');
+            
+            // Simulate net banking payment processing
+            setTimeout(() => {
+                const isSuccess = Math.random() > 0.2; // 80% success rate
+                
+                if (isSuccess) {
+                    showPaymentSuccess(transactionId, 'Net Banking');
+                } else {
+                    showPaymentError("Net banking payment failed");
+                }
+            }, 3000);
+        }
+        
+        // Show payment pending screen
+        function showPaymentPendingScreen(transactionId, paymentMethod) {
+            const content = `
+                <div style="text-align: center; padding: 30px;">
+                    <div class="spinner"></div>
+                    <h3 style="color: var(--neon-blue);">Payment Processing</h3>
+                    <p>Transaction ID: ${transactionId}</p>
+                    <p>Method: ${paymentMethod}</p>
+                    <p>Please complete the payment in your ${paymentMethod} app</p>
+                </div>
+            `;
+            
+            modalContent.innerHTML = content;
+        }
+        
+        // Show payment success
+        function showPaymentSuccess(transactionId, paymentMethod) {
+            const content = `
+                <div style="text-align: center; padding: 30px;">
+                    <i class="fas fa-check-circle" style="color: #4CAF50; font-size: 60px;"></i>
+                    <h3 style="color: var(--neon-blue);">Payment Successful!</h3>
+                    <p>Transaction ID: ${transactionId}</p>
+                    <p>Method: ${paymentMethod}</p>
+                    <p>Amount: ₹${COURSE_PRICE}</p>
+                    <button id="accessCourseBtn" class="pay-btn">Access Course Now</button>
+                </div>
+            `;
+            
+            modalContent.innerHTML = content;
+            
+            document.getElementById('accessCourseBtn').addEventListener('click', () => {
+                modal.style.display = "none";
+                // In a real implementation, redirect to course access page
+                alert("Payment successful! Course access granted.");
+            });
+        }
+        
+        // Show payment error
+        function showPaymentError(message = "Payment could not be processed") {
+            const content = `
+                <div style="text-align: center; padding: 30px;">
+                    <i class="fas fa-times-circle" style="color: var(--danger-color); font-size: 60px;"></i>
+                    <h3 style="color: var(--danger-color);">Payment Failed</h3>
+                    <p>${message}</p>
+                    <button id="tryAgainBtn" class="pay-btn">Try Again</button>
+                    <button id="contactSupportBtn" style="
+                        background: none;
+                        border: 1px solid var(--neon-blue);
+                        color: var(--neon-blue);
+                        padding: 12px 20px;
+                        margin-top: 10px;
+                        border-radius: 8px;
+                        width: 100%;
+                        cursor: none;
+                    ">Contact Support</button>
+                </div>
+            `;
+            
+            modalContent.innerHTML = content;
+            
+            document.getElementById('tryAgainBtn').addEventListener('click', showPaymentOptions);
+            document.getElementById('contactSupportBtn').addEventListener('click', () => {
+                window.location.href = `mailto:support@ai4code.com?subject=Payment%20Failed`;
+            });
+        }
+        
+        // Close modal
+        function closeModal() {
+            modal.style.display = "none";
+        }
+        
+        // Event Listeners
+        enrollBtn.addEventListener('click', showPaymentOptions);
+        finalEnrollBtn.addEventListener('click', showPaymentOptions);
+        demoBtn.addEventListener('click', () => {
+            alert("Redirecting to demo...");
+            // In a real implementation: window.location.href = "demo.html";
+        });
+        closeBtn.addEventListener('click', closeModal);
+        
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+        
+        // === GSAP Scroll Animations ===
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Animate stats counting
+        document.querySelectorAll('.stat-number').forEach((stat) => {
+            const target = parseInt(stat.textContent);
+            stat.textContent = '0';
+            
+            ScrollTrigger.create({
+                trigger: stat,
+                start: 'top 80%',
+                onEnter: () => {
+                    gsap.to(stat, {
+                        innerHTML: target,
+                        duration: 2,
+                        ease: 'power1.out',
+                        snap: { innerHTML: 1 }
+                    });
+                }
+            });
+        });
+        
+        // Animate module items on scroll
+        gsap.utils.toArray('.module-item').forEach((item, i) => {
+            gsap.from(item, {
+                scrollTrigger: {
+                    trigger: item,
+                    start: 'top 80%',
+                    toggleActions: 'play none none none'
+                },
+                x: i % 2 === 0 ? -100 : 100,
+                opacity: 0,
+                duration: 0.8
+            });
+        });
+        
+        // Parallax effect for hero section
+        gsap.to('#hero-model', {
+            scrollTrigger: {
+                scrub: true
+            },
+            y: 100,
+            ease: 'none'
+        });
+    </script>
+    
+    <!-- Particles.js Configuration -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#00f7ff" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#00f7ff", "opacity": 0.4, "width": 1 },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": { "enable": true, "mode": "repulse" },
+                    "onclick": { "enable": true, "mode": "push" }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

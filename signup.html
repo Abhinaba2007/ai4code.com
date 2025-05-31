@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+    <style>
+        /* 3D Signup Form CSS */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    transform-style: preserve-3d;
+}
+
+.auth-container {
+    max-width: 400px;
+    width: 100%;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.2),
+        0 5px 15px rgba(0, 0, 0, 0.1);
+    transform-style: preserve-3d;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.auth-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, 
+        rgba(255, 154, 158, 0.1) 0%, 
+        rgba(250, 208, 196, 0.1) 50%, 
+        rgba(162, 186, 245, 0.1) 100%);
+    transform: rotate(45deg) translateZ(-20px);
+    z-index: -1;
+    animation: gradientRotate 15s infinite linear;
+}
+
+@keyframes gradientRotate {
+    0% { transform: rotate(0deg) translateZ(-20px); }
+    100% { transform: rotate(360deg) translateZ(-20px); }
+}
+
+.auth-container:hover {
+    transform: translateY(-10px) rotateX(3deg) rotateY(2deg);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.3),
+        0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    font-weight: 700;
+    font-size: 28px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    position: relative;
+    transform: translateZ(20px);
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%) translateZ(10px);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(to right, #ff9a9e, #fad0c4, #a2baf5);
+    border-radius: 3px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.toggle-method {
+    display: flex;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateZ(15px);
+    border: none;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+}
+
+.toggle-method button {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    font-weight: 600;
+    color: #555;
+    position: relative;
+    z-index: 1;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.toggle-method button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(145deg, #ff9a9e, #fad0c4);
+    z-index: -1;
+    opacity: 0;
+    transition: all 0.4s ease;
+    transform: scale(0.9);
+    border-radius: 10px;
+}
+
+.toggle-method button.active {
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.toggle-method button.active::before {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.toggle-method button:first-child {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.toggle-method button:last-child {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 10px;
+    display: block;
+    transform: translateZ(10px);
+    letter-spacing: 0.5px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 
+        inset 0 2px 5px rgba(0, 0, 0, 0.05),
+        0 3px 10px rgba(0, 0, 0, 0.05);
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.form-control:focus {
+    border-color: #a2baf5;
+    outline: none;
+    box-shadow: 
+        inset 0 2px 5px rgba(0, 0, 0, 0.1),
+        0 5px 15px rgba(162, 186, 245, 0.3);
+    transform: translateY(-3px) translateZ(10px);
+    background: white;
+}
+
+.btn {
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 15px;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: translateX(-100%) skewX(-15deg);
+    transition: all 0.6s ease;
+}
+
+.btn:hover::before {
+    transform: translateX(100%) skewX(-15deg);
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-5px) translateZ(10px);
+    box-shadow: 0 10px 25px rgba(255, 154, 158, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(2px);
+}
+
+.btn-success {
+    background: linear-gradient(45deg, #a1c4fd, #c2e9fb);
+    color: white;
+}
+
+.btn-success:hover {
+    transform: translateY(-5px) translateZ(10px);
+    box-shadow: 0 10px 25px rgba(161, 196, 253, 0.4);
+}
+
+.btn-outline-primary {
+    background: transparent;
+    border: 2px solid #a2baf5;
+    color: #2c3e50;
+}
+
+.btn-outline-primary:hover {
+    background: linear-gradient(45deg, rgba(162, 186, 245, 0.1), rgba(162, 186, 245, 0.2));
+    transform: translateY(-3px) translateZ(5px);
+}
+
+.hidden {
+    display: none;
+    transform: translateZ(0);
+}
+
+.alert {
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    transform: translateZ(10px);
+    transition: all 0.4s ease;
+}
+
+.alert-danger {
+    background: rgba(255, 235, 238, 0.9);
+    color: #c62828;
+    border-left: 4px solid #ef9a9a;
+    box-shadow: 0 3px 10px rgba(198, 40, 40, 0.1);
+}
+
+.text-center {
+    text-align: center;
+    transform: translateZ(10px);
+}
+
+a {
+    color: #a2baf5;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #ff9a9e;
+    transition: width 0.3s ease;
+}
+
+a:hover {
+    color: #ff9a9e;
+}
+
+a:hover::after {
+    width: 100%;
+}
+
+/* Password Strength Meter */
+#passwordStrength {
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transform: translateZ(5px);
+}
+
+#passwordStrengthBar {
+    height: 100%;
+    width: 0%;
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Form Check */
+.form-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    transform: translateZ(10px);
+}
+
+.form-check-input {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    position: relative;
+    appearance: none;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.form-check-input:checked {
+    background: #a2baf5;
+    border-color: #a2baf5;
+}
+
+.form-check-input:checked::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.form-check-label {
+    cursor: pointer;
+    color: #555;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 25px 20px;
+        border-radius: 15px;
+    }
+    
+    h2 {
+        font-size: 24px;
+    }
+    
+    .toggle-method button {
+        padding: 12px;
+        font-size: 13px;
+    }
+    
+    .form-control, .btn {
+        padding: 12px 15px;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="auth-container">
+            <h2 class="text-center mb-4">Join Us!</h2>
+            <h2 class="text-center mb-4">Sign Up</h2>
+            
+            <div class="toggle-method btn-group mb-3">
+                <button id="signupEmailBtn" class="btn btn-primary active">Email</button>
+                <button id="signupPhoneBtn" class="btn btn-secondary">Phone</button>
+            </div>
+            
+            <form id="signupForm">
+                <div class="mb-3">
+                    <label for="signupName" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="signupName" required>
+                </div>
+                
+                <div id="signupEmailGroup">
+                    <div class="mb-3">
+                        <label for="signupEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="signupEmail" required>
+                    </div>
+                </div>
+                
+                <div id="signupPhoneGroup" class="hidden">
+                    <div class="mb-3">
+                        <label for="signupPhone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="signupPhone" placeholder="+1234567890">
+                    </div>
+                    <div id="signupOtpGroup" class="mb-3 hidden">
+                        <label for="signupOtp" class="form-label">OTP</label>
+                        <input type="text" class="form-control" id="signupOtp" placeholder="6-digit code">
+                        <button type="button" id="verifySignupOtpBtn" class="btn btn-success mt-2 w-100">Verify OTP</button>
+                    </div>
+                    <button type="button" id="sendOtpBtn" class="btn btn-outline-primary w-100 mb-3">Send OTP</button>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="signupPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="signupPassword" required>
+                    <div id="passwordStrength">
+                        <div id="passwordStrengthBar"></div>
+                    </div>
+                    <small class="text-muted">At least 8 characters with numbers and special characters</small>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="signupConfirm" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="signupConfirm" required>
+                </div>
+                
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                    <label class="form-check-label" for="agreeTerms">I agree to the terms and conditions</label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100 mb-3">Sign Up</button>
+                <div id="signupError" class="alert alert-danger hidden"></div>
+                
+                <p class="text-center">Already have an account? <a href="login.html">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="auth.js"></script>
+    <script src="signup.js"></script>
+    <script>
+        // After successful signup in signup.js
+auth.createUserWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    const returnUrl = localStorage.getItem('returnUrl') || 'dashboard.html';
+    localStorage.removeItem('returnUrl');
+    window.location.href = returnUrl;
+  })
+    </script>
+</body>
+</html>

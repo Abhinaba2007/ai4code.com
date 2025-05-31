@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us | AI4CODE</title>
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    /* 3D Prototype Styles */
+    :root {
+      --primary: #6c5ce7;
+      --secondary: #a29bfe;
+      --dark: #2d3436;
+      --light: #f5f6fa;
+      --accent: #fd79a8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      perspective: 1000px;
+      overflow-x: hidden;
+    }
+
+    .header {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+      transform-style: preserve-3d;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+      transform: translateZ(20px);
+      margin-bottom: 3rem;
+      border-bottom: 5px solid var(--accent);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+      opacity: 0.3;
+      transform: translateZ(-10px);
+    }
+
+    .header h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      transform: translateZ(30px);
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      transform: translateZ(20px);
+    }
+
+    .content {
+      max-width: 900px;
+      margin: 0 auto 4rem;
+      padding: 2rem;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      transform-style: preserve-3d;
+      transition: all 0.5s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .content:hover {
+      transform: translateY(-5px) rotateX(2deg) rotateY(1deg);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .content::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      background: linear-gradient(45deg, var(--primary), var(--accent));
+      z-index: -1;
+      border-radius: 20px;
+      opacity: 0.7;
+      filter: blur(10px);
+      transform: translateZ(-20px);
+    }
+
+    .content p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      background: var(--dark);
+      color: white;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      transform: translateZ(-10px);
+    }
+
+    /* 3D Floating Elements */
+    .floating-shapes {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .shape {
+      position: absolute;
+      opacity: 0.6;
+      border-radius: 50%;
+      filter: blur(30px);
+    }
+
+    .shape-1 {
+      width: 200px;
+      height: 200px;
+      background: var(--primary);
+      top: 10%;
+      left: 5%;
+      animation: float 15s infinite ease-in-out;
+    }
+
+    .shape-2 {
+      width: 300px;
+      height: 300px;
+      background: var(--accent);
+      bottom: 10%;
+      right: 5%;
+      animation: float 20s infinite ease-in-out reverse;
+    }
+
+    .shape-3 {
+      width: 150px;
+      height: 150px;
+      background: var(--secondary);
+      top: 50%;
+      left: 30%;
+      animation: float 12s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) translateX(0) translateZ(0);
+      }
+      50% {
+        transform: translateY(-50px) translateX(20px) translateZ(10px);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2.5rem;
+      }
+      
+      .content {
+        margin: 0 1.5rem 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+
+  <header class="header">
+    <h1>About Deployment</h1>
+    <p>Our journey, our mission, our promise.</p>
+  </header>
+
+  <main class="content">
+    <p>AI4CODE is a premium platform for students, developers, and innovators to explore, learn, and build futuristic solutions. We combine technology and education to deliver engaging content, useful tools, and a collaborative experience.</p>
+    <p>Our team consists of passionate engineers, educators, and designers working together to create the best learning platform in the industry. We believe in learning by doing and provide hands-on experiences with cutting-edge technologies.</p>
+    <p>Join us on this exciting journey as we shape the future of education and technology together. Your success is our mission!</p>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 AI4CODE | About Us</p>
+  </footer>
+
+  <script>
+    // Add subtle interactive 3D effects
+    document.addEventListener('mousemove', (e) => {
+      const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+      const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+      document.querySelector('.content').style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+    });
+
+    // Reset position when mouse leaves
+    document.querySelector('.content').addEventListener('mouseleave', () => {
+      document.querySelector('.content').style.transform = 'rotateX(0) rotateY(0)';
+    });
+  </script>
+  <!-- In all HTML files -->
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<script src="auth.js"></script> <!-- Your config -->
+</body>
+</html>

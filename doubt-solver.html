@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Doubt Solver | CLASS-9</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    .doubt-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .chat-interface {
+      background: rgba(10, 10, 40, 0.7);
+      border: 1px solid var(--neon-blue);
+      border-radius: 8px;
+      padding: 1.5rem;
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .chat-messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .message {
+      max-width: 80%;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+    }
+    
+    .user-message {
+      align-self: flex-end;
+      background: rgba(0, 247, 255, 0.2);
+      border: 1px solid var(--neon-blue);
+    }
+    
+    .ai-message {
+      align-self: flex-start;
+      background: rgba(255, 0, 228, 0.2);
+      border: 1px solid var(--neon-pink);
+    }
+    
+    .chat-input {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .chat-input input {
+      flex-grow: 1;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--neon-blue);
+      color: white;
+      padding: 0.8rem;
+      border-radius: 4px;
+    }
+    
+    .knowledge-base {
+      background: rgba(10, 10, 40, 0.7);
+      border: 1px solid var(--neon-pink);
+      border-radius: 8px;
+      padding: 1.5rem;
+      height: 500px;
+      overflow-y: auto;
+    }
+    
+    .faq-item {
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed rgba(0, 247, 255, 0.3);
+    }
+    
+    .faq-question {
+      color: var(--neon-blue);
+      cursor: pointer;
+    }
+    
+    .faq-answer {
+      margin-top: 0.5rem;
+      display: none;
+    }
+    
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="hologram-bg"></div>
+  
+  <div class="main-container">
+    <header class="portal-header">
+      <h1 class="cyber-glow">AI DOUBT SOLVER</h1>
+      <p>Get instant explanations from our AI tutor</p>
+    </header>
+    
+    <div class="doubt-container">
+      <div class="chat-interface">
+        <h3 style="color: var(--neon-blue); margin-bottom: 1rem;">CHAT WITH AI TUTOR</h3>
+        <div class="chat-messages" id="chatMessages">
+          <div class="message ai-message">
+            Hello! I'm your AI tutor. Ask me anything about Class 9 AI concepts.
+          </div>
+          <div class="message user-message">
+            What's the difference between AI and machine learning?
+          </div>
+          <div class="message ai-message">
+            AI is the broader concept of machines being able to carry out tasks in a way we'd consider "smart". Machine Learning is a current application of AI where we give machines access to data and let them learn for themselves.
+          </div>
+        </div>
+        <div class="chat-input">
+          <input type="text" id="userInput" placeholder="Type your doubt here...">
+          <button class="cyber-btn" id="sendBtn">Send</button>
+        </div>
+      </div>
+      
+      <div class="knowledge-base">
+        <h3 style="color: var(--neon-pink); margin-bottom: 1rem;">KNOWLEDGE BASE</h3>
+        <div class="faq-item">
+          <div class="faq-question">What is Artificial Intelligence?</div>
+          <div class="faq-answer">
+            AI refers to the simulation of human intelligence in machines that are programmed to think like humans and mimic their actions.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">What are the types of AI?</div>
+          <div class="faq-answer">
+            There are three types: Narrow AI (designed for specific tasks), General AI (human-level intelligence), and Super AI (exceeds human intelligence).
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">What is the AI project cycle?</div>
+          <div class="faq-answer">
+            It consists of problem scoping, data acquisition, data exploration, modeling, evaluation, and deployment.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">What is computer vision?</div>
+          <div class="faq-answer">
+            It's a field of AI that enables computers to interpret and understand the visual world through digital images and videos.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">What are neural networks?</div>
+          <div class="faq-answer">
+            They are computing systems inspired by biological neural networks that constitute animal brains, used in machine learning.
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="ai-visualization" id="neuralNetwork"></div>
+    
+    <div class="module-grid">
+      <div class="module-card">
+        <h2>🎤 Voice Questions</h2>
+        <p>Ask doubts using your voice</p>
+        <button class="cyber-btn" id="voiceBtn">Start Speaking</button>
+      </div>
+      
+      <div class="module-card">
+        <h2>📷 Image Questions</h2>
+        <p>Upload images of problems</p>
+        <button class="cyber-btn">Upload Image</button>
+      </div>
+      
+      <div class="module-card">
+        <h2>📚 Related Concepts</h2>
+        <p>Explore connected topics</p>
+        <button class="cyber-btn">Browse Topics</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="js/main.js"></script>
+  <script>
+    // FAQ functionality
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      question.addEventListener('click', () => {
+        item.classList.toggle('active');
+      });
+    });
+    
+    // Chat functionality
+    const sendBtn = document.getElementById('sendBtn');
+    const userInput = document.getElementById('userInput');
+    const chatMessages = document.getElementById('chatMessages');
+    
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+    
+    function sendMessage() {
+      const message = userInput.value.trim();
+      if (message) {
+        // Add user message
+        const userMsg = document.createElement('div');
+        userMsg.className = 'message user-message';
+        userMsg.textContent = message;
+        chatMessages.appendChild(userMsg);
+        
+        // Clear input
+        userInput.value = '';
+        
+        // Simulate AI response
+        setTimeout(() => {
+          const aiMsg = document.createElement('div');
+          aiMsg.className = 'message ai-message';
+          aiMsg.textContent = getAIResponse(message);
+          chatMessages.appendChild(aiMsg);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1000);
+      }
+    }
+    
+    function getAIResponse(question) {
+      // Simple response logic - in real app would use AI API
+      const responses = [
+        "That's an excellent question about AI concepts.",
+        "In Class 9 AI, we typically cover that in Chapter 3.",
+        "The NCERT syllabus explains this concept in detail.",
+        "Would you like me to show you some examples?",
+        "Let me find the best explanation for you...",
+        "That concept relates to machine learning fundamentals."
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+    
+    // Voice control
+    const voiceBtn = document.getElementById('voiceBtn');
+    if ('webkitSpeechRecognition' in window) {
+      const recognition = new webkitSpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      
+      voiceBtn.addEventListener('click', () => {
+        recognition.start();
+        voiceBtn.textContent = "Listening...";
+      });
+      
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        userInput.value = transcript;
+        voiceBtn.textContent = "Start Speaking";
+      };
+      
+      recognition.onerror = () => {
+        voiceBtn.textContent = "Start Speaking";
+      };
+    } else {
+      voiceBtn.style.display = 'none';
+    }
+  </script>
+  <!-- In all HTML files -->
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<script src="auth.js"></script> <!-- Your config -->
+</body>
+</html>

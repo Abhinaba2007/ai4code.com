@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Live AI Classroom | CLASS-9</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    :root {
+      --neon-blue: #00f7ff;
+      --neon-pink: #ff00e4;
+      --neon-orange: #ff5e00;
+      --dark-space: #0a0a20;
+      --cyber-purple: #6a00ff;
+      --matrix-green: #00ff9d;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Rajdhani', sans-serif;
+      background: radial-gradient(circle at center, #0a0a30, #000010);
+      color: white;
+      perspective: 1000px;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* 3D Holographic Background */
+    .hologram-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(0, 247, 255, 0.05), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(255, 0, 228, 0.05), transparent 40%);
+      animation: float 15s infinite alternate ease-in-out;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(-20px, -10px); }
+      100% { transform: translate(10px, 15px); }
+    }
+
+    /* Main Container with 3D Perspective */
+    .main-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      transform-style: preserve-3d;
+    }
+
+    /* Cyberpunk Header */
+    .portal-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+      transform: translateZ(50px);
+    }
+
+    .portal-header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+    }
+
+    /* Page Container */
+    .page-container {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .active-page {
+      display: block;
+    }
+
+    /* 3D Classroom Layout */
+    .classroom-container {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 2rem;
+      margin-top: 2rem;
+      transform-style: preserve-3d;
+    }
+
+    /* 3D Video Container */
+    .video-container {
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid var(--neon-blue);
+      border-radius: 8px;
+      padding: 1.5rem;
+      position: relative;
+      transform: translateZ(40px);
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+      min-height: 500px;
+    }
+
+    .video-container iframe {
+      width: 100%;
+      height: 450px;
+      border: none;
+      border-radius: 4px;
+    }
+
+    /* Schedule Page Styles */
+    .schedule-container {
+      background: rgba(10, 10, 40, 0.7);
+      border: 1px solid var(--neon-blue);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-top: 2rem;
+      transform: translateZ(30px);
+    }
+
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .schedule-card {
+      background: rgba(20, 20, 60, 0.7);
+      border: 1px solid var(--neon-pink);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      transform-style: preserve-3d;
+    }
+
+    .schedule-card:hover {
+      transform: translateY(-5px) translateZ(20px);
+      box-shadow: 0 10px 20px rgba(255, 0, 228, 0.2);
+    }
+
+    .schedule-card h3 {
+      color: var(--neon-blue);
+      margin-top: 0;
+    }
+
+    .schedule-card .time {
+      color: var(--neon-orange);
+      font-weight: bold;
+    }
+
+    /* 3D Control Buttons */
+    .control-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .cyber-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+      color: black;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      transform: translateZ(30px);
+      font-family: 'Orbitron', sans-serif;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cyber-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: all 0.5s ease;
+    }
+
+    .cyber-btn:hover {
+      transform: translateZ(50px);
+      box-shadow: 0 0 20px var(--neon-blue);
+    }
+
+    .cyber-btn:hover::before {
+      left: 100%;
+    }
+
+    .cyber-btn.secondary {
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--neon-blue);
+      border: 1px solid var(--neon-blue);
+    }
+
+    .cyber-btn.secondary:hover {
+      background: rgba(0, 247, 255, 0.2);
+      box-shadow: 0 0 20px var(--neon-blue);
+    }
+
+    .cyber-btn.orange {
+      background: var(--neon-orange);
+      color: black;
+    }
+
+    .cyber-btn.pink {
+      background: var(--neon-pink);
+      color: black;
+    }
+
+    .cyber-btn.green {
+      background: var(--matrix-green);
+      color: black;
+    }
+
+    /* Back button */
+    .back-btn {
+      display: inline-block;
+      margin-top: 2rem;
+      margin-left: auto;
+    }
+
+    /* Chat styles */
+    .chat-container {
+      background: rgba(10, 10, 40, 0.7);
+      border: 1px solid var(--neon-pink);
+      border-radius: 8px;
+      padding: 1.5rem;
+      height: 600px;
+      display: flex;
+      flex-direction: column;
+      transform: translateZ(30px);
+    }
+
+    .chat-messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      padding-right: 0.5rem;
+      transform-style: preserve-3d;
+    }
+
+    /* AI Visualization */
+    .ai-visualization {
+      width: 100%;
+      height: 200px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px dashed var(--neon-blue);
+      margin: 2rem 0;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.3; transform: scale(0.8) translateZ(30px); }
+      50% { opacity: 1; transform: scale(1.1) translateZ(50px); }
+      100% { opacity: 0.3; transform: scale(0.8) translateZ(30px); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .classroom-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .portal-header h1 {
+        font-size: 2rem;
+      }
+      
+      .control-group {
+        flex-direction: column;
+      }
+      
+      .video-container iframe {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 3D Holographic Background -->
+  <div class="hologram-bg"></div>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    
+    <!-- Classroom Page -->
+    <div id="classroom-page" class="page-container active-page">
+      <header class="portal-header">
+        <h1 class="cyber-glow">3D LIVE AI CLASSROOM</h1>
+        <p>Immersive learning environment with real-time AI tutor</p>
+      </header>
+      
+      <div class="classroom-container">
+        <div class="video-container">
+          <iframe id="meet-frame" src="https://meet.google.com/nzp-txte-ijd" allow="camera; microphone; fullscreen" style="display: none;"></iframe>
+          <div id="meet-placeholder" class="ai-teacher" style="height: 450px; background: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 1rem; transform-style: preserve-3d;">
+            <div style="font-size: 5rem; animation: pulse 2s infinite;">🤖</div>
+            <h3 style="color: var(--neon-blue);">AI CLASSROOM SESSION</h3>
+            <p>Click "Join Class" to enter the virtual classroom</p>
+          </div>
+          <div class="control-group">
+            <button class="cyber-btn" id="joinClass">🎤 Join Class</button>
+            <button class="cyber-btn orange" id="viewSchedule">📅 View Schedule</button>
+            <button class="cyber-btn pink" id="openWhiteboard">🖍️ Open Whiteboard</button>
+            <button class="cyber-btn secondary" id="startQuiz">✏️ Start Quiz</button>
+          </div>
+        </div>
+        
+        <div class="chat-container">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="color: var(--neon-pink); margin: 0;">CLASS CHAT</h3>
+            <span style="background: rgba(0, 247, 255, 0.2); color: var(--neon-blue); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem;">👥 24 Online</span>
+          </div>
+          <div class="chat-messages">
+            <div style="max-width: 80%; padding: 0.8rem 1rem; border-radius: 8px; background: rgba(255, 94, 0, 0.2); border: 1px solid var(--neon-orange); text-align: center; font-size: 0.9rem; transform: translateZ(20px);">
+              Class "Introduction to AI" will start in 5 minutes
+            </div>
+            <div style="max-width: 80%; padding: 0.8rem 1rem; border-radius: 8px; background: rgba(255, 0, 228, 0.2); border: 1px solid var(--neon-pink); border-bottom-left-radius: 0; align-self: flex-start; transform: translateZ(30px);">
+              <div style="font-weight: bold; margin-bottom: 0.3rem; font-size: 0.8rem;">AI Tutor</div>
+              Welcome everyone! Today we'll explore the basics of Artificial Intelligence.
+            </div>
+            <div style="max-width: 80%; padding: 0.8rem 1rem; border-radius: 8px; background: rgba(106, 0, 255, 0.2); border: 1px solid var(--cyber-purple); border-bottom-right-radius: 0; align-self: flex-end; transform: translateZ(20px);">
+              <div style="font-weight: bold; margin-bottom: 0.3rem; font-size: 0.8rem;">You</div>
+              Excited for today's class!
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" placeholder="Type your message..." style="flex-grow: 1; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--neon-blue); color: white; padding: 0.8rem; border-radius: 4px;">
+            <button class="cyber-btn">Send</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="ai-visualization" id="neuralNetwork"></div>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+        <div style="background: rgba(10, 10, 40, 0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; transform-style: preserve-3d; transform: translateZ(30px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);">
+          <h2 style="font-family: 'Orbitron', sans-serif; color: var(--neon-blue); margin-bottom: 1rem; transform: translateZ(40px);">📚 Current Topic: Introduction to AI</h2>
+          <p style="margin-bottom: 1.5rem; line-height: 1.5; transform: translateZ(30px);">Exploring the basics of Artificial Intelligence and its applications in modern technology.</p>
+          <div class="control-group" style="margin-top: 1rem;">
+            <button class="cyber-btn secondary">📥 Download Slides</button>
+            <button class="cyber-btn secondary">📖 Read Notes</button>
+          </div>
+        </div>
+        
+        <div style="background: rgba(10, 10, 40, 0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; transform-style: preserve-3d; transform: translateZ(30px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);">
+          <h2 style="font-family: 'Orbitron', sans-serif; color: var(--neon-blue); margin-bottom: 1rem; transform: translateZ(40px);">🧪 Interactive Lab</h2>
+          <p style="margin-bottom: 1.5rem; line-height: 1.5; transform: translateZ(30px);">Try live AI coding exercises with the teacher in our virtual sandbox environment.</p>
+          <div class="control-group" style="margin-top: 1rem;">
+            <button class="cyber-btn">🚀 Open Lab</button>
+            <button class="cyber-btn secondary">💡 View Examples</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Attendance Panel -->
+      <div style="background: rgba(10, 10, 40, 0.7); border: 1px solid var(--matrix-green); border-radius: 8px; padding: 1.5rem; margin-top: 2rem; transform: translateZ(30px);">
+        <h2 style="color: var(--matrix-green); margin-top: 0;">🎯 Today's Objectives</h2>
+        <ul style="padding-left: 1.5rem;">
+          <li style="margin-bottom: 0.5rem;">Understand what AI is and its importance</li>
+          <li style="margin-bottom: 0.5rem;">Explore real-world applications of AI</li>
+          <li style="margin-bottom: 0.5rem;">Learn about basic AI concepts like machine learning</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Schedule Page -->
+    <div id="schedule-page" class="page-container">
+      <header class="portal-header">
+        <h1 class="cyber-glow">CLASS SCHEDULE</h1>
+        <p>Upcoming sessions and classroom events</p>
+      </header>
+      
+      <div class="schedule-container">
+        <h2 style="color: var(--neon-orange);">Weekly AI Class Schedule</h2>
+        <p>All times are in your local timezone (IST)</p>
+        
+        <div class="schedule-grid">
+          <div class="schedule-card">
+            <h3>Introduction to AI</h3>
+            <p class="time">⏰ Mon, 10:00 - 11:30 AM</p>
+            <p>Basic concepts and history of Artificial Intelligence</p>
+            <button class="cyber-btn" style="padding: 0.5rem 1rem; width: 100%; margin-top: 1rem;">Add to Calendar</button>
+          </div>
+          
+          <div class="schedule-card">
+            <h3>AI Project Cycle</h3>
+            <p class="time">⏰ Wed, 10:00 - 11:30 AM</p>
+            <p>Understanding the complete AI project development process</p>
+            <button class="cyber-btn" style="padding: 0.5rem 1rem; width: 100%; margin-top: 1rem;">Add to Calendar</button>
+          </div>
+          
+          <div class="schedule-card">
+            <h3>Neural Networks</h3>
+            <p class="time">⏰ Fri, 10:00 - 11:30 AM</p>
+            <p>How AI systems learn from data</p>
+            <button class="cyber-btn" style="padding: 0.5rem 1rem; width: 100%; margin-top: 1rem;">Add to Calendar</button>
+          </div>
+          
+          <div class="schedule-card">
+            <h3>Special Workshop</h3>
+            <p class="time">⏰ Sat, 2:00 - 4:00 PM</p>
+            <p>Hands-on AI project development</p>
+            <button class="cyber-btn" style="padding: 0.5rem 1rem; width: 100%; margin-top: 1rem;">Add to Calendar</button>
+          </div>
+        </div>
+      </div>
+      
+      <button class="cyber-btn back-btn" id="backFromSchedule">⬅ Back to Classroom</button>
+    </div>
+    
+    <!-- Quiz Page -->
+    <div id="quiz-page" class="page-container">
+      <header class="portal-header">
+        <h1 class="cyber-glow">CLASS QUIZ</h1>
+        <p>Test your understanding of today's lesson</p>
+      </header>
+      
+      <div style="background: rgba(10, 10, 40, 0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 2rem; margin-top: 2rem; transform: translateZ(30px);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2 style="color: var(--neon-pink); margin: 0;">Question 1 of 5</h2>
+          <div style="background: rgba(0, 247, 255, 0.2); color: var(--neon-blue); padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold;">⏱️ 02:30</div>
+        </div>
+        
+        <div style="background: rgba(20, 20, 60, 0.7); border: 1px solid var(--neon-orange); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem;">
+          <h3 style="color: var(--neon-blue); margin-top: 0;">What does AI stand for?</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <button class="cyber-btn secondary" style="text-align: left; justify-content: flex-start;">Artificial Innovation</button>
+            <button class="cyber-btn secondary" style="text-align: left; justify-content: flex-start;">Automated Intelligence</button>
+            <button class="cyber-btn secondary" style="text-align: left; justify-content: flex-start;">Artificial Intelligence</button>
+            <button class="cyber-btn secondary" style="text-align: left; justify-content: flex-start;">Advanced Interface</button>
+          </div>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between;">
+          <button class="cyber-btn orange">⏭️ Skip Question</button>
+          <button class="cyber-btn green">✅ Submit Answer</button>
+        </div>
+      </div>
+      
+      <button class="cyber-btn back-btn" id="backFromQuiz">⬅ Back to Classroom</button>
+    </div>
+  </div>
+
+  <script>
+    // Google Meet Integration
+    const joinClassBtn = document.getElementById('joinClass');
+    const meetFrame = document.getElementById('meet-frame');
+    const meetPlaceholder = document.getElementById('meet-placeholder');
+    const viewScheduleBtn = document.getElementById('viewSchedule');
+    const openWhiteboardBtn = document.getElementById('openWhiteboard');
+    const startQuizBtn = document.getElementById('startQuiz');
+    const backFromScheduleBtn = document.getElementById('backFromSchedule');
+    const backFromQuizBtn = document.getElementById('backFromQuiz');
+    const classroomPage = document.getElementById('classroom-page');
+    const schedulePage = document.getElementById('schedule-page');
+    const quizPage = document.getElementById('quiz-page');
+    const chatMessages = document.querySelector('.chat-messages');
+
+    // Replace with your actual Google Meet link
+    const GOOGLE_MEET_LINK = "https://meet.google.com/nzp-txte-ijd";
+    const WHITEBOARD_LINK = "https://whiteboard.microsoft.com/";
+
+    // Initialize neural network visualization
+    function initNeuralNetwork() {
+      const neuralNetwork = document.getElementById('neuralNetwork');
+      
+      // Create neurons
+      for (let i = 0; i < 20; i++) {
+        const neuron = document.createElement('div');
+        neuron.style.position = 'absolute';
+        neuron.style.width = '10px';
+        neuron.style.height = '10px';
+        neuron.style.background = 'var(--neon-blue)';
+        neuron.style.borderRadius = '50%';
+        neuron.style.animation = 'pulse 2s infinite';
+        neuron.style.left = `${Math.random() * 100}%`;
+        neuron.style.top = `${Math.random() * 100}%`;
+        neuron.style.animationDelay = `${Math.random() * 2}s`;
+        neuralNetwork.appendChild(neuron);
+      }
+      
+      // Create connections
+      const neurons = document.querySelectorAll('#neuralNetwork > div');
+      neurons.forEach((neuron, index) => {
+        if (index < neurons.length - 1) {
+          const nextNeuron = neurons[index + 1];
+          const x1 = parseFloat(neuron.style.left);
+          const y1 = parseFloat(neuron.style.top);
+          const x2 = parseFloat(nextNeuron.style.left);
+          const y2 = parseFloat(nextNeuron.style.top);
+          
+          const connection = document.createElement('div');
+          connection.style.position = 'absolute';
+          connection.style.height = '2px';
+          connection.style.background = 'var(--neon-blue)';
+          connection.style.transformOrigin = '0 0';
+          connection.style.opacity = '0.3';
+          connection.style.animation = 'pulse 3s infinite';
+          connection.style.left = `${x1}%`;
+          connection.style.top = `${y1}%`;
+          connection.style.width = `${Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2))}%`;
+          connection.style.transform = `rotate(${Math.atan2(y2-y1, x2-x1)}rad)`;
+          connection.style.animationDelay = `${Math.random() * 2}s`;
+          neuralNetwork.appendChild(connection);
+        }
+      });
+    }
+
+    // Add chat message function
+    function addChatMessage(sender, message, type = 'ai') {
+      const messageDiv = document.createElement('div');
+      messageDiv.style.maxWidth = '80%';
+      messageDiv.style.padding = '0.8rem 1rem';
+      messageDiv.style.borderRadius = '8px';
+      messageDiv.style.marginBottom = '0.8rem';
+      messageDiv.style.transform = 'translateZ(20px)';
+      
+      if (type === 'ai') {
+        messageDiv.style.background = 'rgba(255, 0, 228, 0.2)';
+        messageDiv.style.border = '1px solid var(--neon-pink)';
+        messageDiv.style.borderBottomLeftRadius = '0';
+        messageDiv.style.alignSelf = 'flex-start';
+      } else if (type === 'user') {
+        messageDiv.style.background = 'rgba(106, 0, 255, 0.2)';
+        messageDiv.style.border = '1px solid var(--cyber-purple)';
+        messageDiv.style.borderBottomRightRadius = '0';
+        messageDiv.style.alignSelf = 'flex-end';
+      } else {
+        messageDiv.style.background = 'rgba(255, 94, 0, 0.2)';
+        messageDiv.style.border = '1px solid var(--neon-orange)';
+        messageDiv.style.textAlign = 'center';
+      }
+      
+      messageDiv.innerHTML = `
+        <div style="font-weight: bold; margin-bottom: 0.3rem; font-size: 0.8rem;">${sender}</div>
+        ${message}
+      `;
+      
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    joinClassBtn.addEventListener('click', () => {
+      meetFrame.src = GOOGLE_MEET_LINK;
+      meetFrame.style.display = 'block';
+      meetPlaceholder.style.display = 'none';
+      joinClassBtn.textContent = "🎤 Joined";
+      joinClassBtn.classList.add('green');
+      joinClassBtn.classList.remove('cyber-btn');
+      
+      // Simulate participants joining
+      setTimeout(() => {
+        addChatMessage('System', 'Teacher has joined the meeting', 'system');
+      }, 1500);
+      
+      // Simulate AI tutor welcome message
+      setTimeout(() => {
+        addChatMessage('AI Tutor', 'Welcome to today\'s class on Introduction to AI! Please turn on your cameras if possible.');
+      }, 3000);
+    });
+
+    openWhiteboardBtn.addEventListener('click', () => {
+      window.open(WHITEBOARD_LINK, '_blank');
+      addChatMessage('AI Tutor', `I've opened a collaborative whiteboard for today's session: <a href="${WHITEBOARD_LINK}" target="_blank" style="color: var(--neon-blue);">Click here to join</a>`);
+    });
+
+    startQuizBtn.addEventListener('click', () => {
+      classroomPage.classList.remove('active-page');
+      quizPage.classList.add('active-page');
+      addChatMessage('AI Tutor', 'A quiz has been started for today\'s lesson!');
+    });
+
+    // Page Navigation
+    viewScheduleBtn.addEventListener('click', () => {
+      classroomPage.classList.remove('active-page');
+      schedulePage.classList.add('active-page');
+    });
+
+    backFromScheduleBtn.addEventListener('click', () => {
+      schedulePage.classList.remove('active-page');
+      classroomPage.classList.add('active-page');
+    });
+
+    backFromQuizBtn.addEventListener('click', () => {
+      quizPage.classList.remove('active-page');
+      classroomPage.classList.add('active-page');
+    });
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+      initNeuralNetwork();
+      
+      // Simulate initial chat messages
+      setTimeout(() => {
+        addChatMessage('System', 'Class "Introduction to AI" will start in 5 minutes', 'system');
+      }, 1000);
+      
+      setTimeout(() => {
+        addChatMessage('AI Tutor', 'Welcome everyone! Today we\'ll explore the basics of Artificial Intelligence.');
+      }, 2500);
+      
+      setTimeout(() => {
+        addChatMessage('You', 'Excited for today\'s class!', 'user');
+      }, 4000);
+    });
+  </script>
+</body>
+</html>

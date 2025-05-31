@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Projects | CLASS-9</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    .project-upload {
+      background: rgba(10, 10, 40, 0.7);
+      border: 2px dashed var(--neon-blue);
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      margin: 2rem 0;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .project-upload:hover {
+      background: rgba(0, 247, 255, 0.1);
+    }
+    
+    .project-upload i {
+      font-size: 3rem;
+      color: var(--neon-blue);
+      margin-bottom: 1rem;
+    }
+    
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .project-card {
+      background: rgba(20, 20, 60, 0.7);
+      border: 1px solid var(--neon-pink);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: all 0.3s;
+    }
+    
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(255, 0, 228, 0.2);
+    }
+    
+    .project-card h3 {
+      color: var(--neon-blue);
+      margin-bottom: 0.5rem;
+    }
+    
+    .project-status {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
+    
+    .status-pending {
+      background: rgba(255, 165, 0, 0.2);
+      color: orange;
+      border: 1px solid orange;
+    }
+    
+    .status-approved {
+      background: rgba(0, 255, 0, 0.2);
+      color: lime;
+      border: 1px solid lime;
+    }
+    
+    .status-feedback {
+      background: rgba(0, 247, 255, 0.2);
+      color: var(--neon-blue);
+      border: 1px solid var(--neon-blue);
+    }
+  </style>
+</head>
+<body>
+  <div class="hologram-bg"></div>
+  
+  <div class="main-container">
+    <header class="portal-header">
+      <h1 class="cyber-glow">AI PROJECTS LAB</h1>
+      <p>Submit your AI projects and receive automated feedback</p>
+    </header>
+    
+    <div class="project-upload" id="dropZone">
+      <div>📁</div>
+      <h3>Drag & Drop Project Files Here</h3>
+      <p>or click to browse files (PDF, ZIP, PY, etc.)</p>
+    </div>
+    
+    <div class="ai-visualization" id="neuralNetwork"></div>
+    
+    <h2 style="color: var(--neon-blue); margin-top: 2rem;">Your Submitted Projects</h2>
+    <div class="project-list">
+      <div class="project-card">
+        <h3>AI Chatbot Project</h3>
+        <p>Python-based conversational agent</p>
+        <div class="project-status status-approved">Approved</div>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-top: 1rem; width: 100%;">View Feedback</button>
+      </div>
+      
+      <div class="project-card">
+        <h3>Image Classifier</h3>
+        <p>Machine learning model to recognize objects</p>
+        <div class="project-status status-feedback">Feedback Available</div>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-top: 1rem; width: 100%;">View Feedback</button>
+      </div>
+      
+      <div class="project-card">
+        <h3>Ethics in AI Presentation</h3>
+        <p>Research on AI bias and fairness</p>
+        <div class="project-status status-pending">Under Review</div>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-top: 1rem; width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--neon-blue); color: var(--neon-blue);">Check Status</button>
+      </div>
+    </div>
+    
+    <div class="module-grid" style="margin-top: 2rem;">
+      <div class="module-card">
+        <h2>💡 Project Ideas</h2>
+        <p>Get inspired with AI project suggestions</p>
+        <button class="cyber-btn">Browse Ideas</button>
+      </div>
+      
+      <div class="module-card">
+        <h2>🛠️ Tutorials</h2>
+        <p>Step-by-step guides for AI projects</p>
+        <button class="cyber-btn">View Tutorials</button>
+      </div>
+      
+      <div class="module-card">
+        <h2>🏆 Top Projects</h2>
+        <p>See exemplary work from other students</p>
+        <button class="cyber-btn">View Gallery</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="js/main.js"></script>
+  <script>
+    // Drag and drop functionality
+    const dropZone = document.getElementById('dropZone');
+    
+    dropZone.addEventListener('click', () => {
+      alert('File upload dialog would open here');
+    });
+    
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+    });
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => {
+        dropZone.style.background = 'rgba(0, 247, 255, 0.2)';
+        dropZone.style.border = '2px dashed var(--neon-pink)';
+      });
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => {
+        dropZone.style.background = 'rgba(0, 247, 255, 0.1)';
+        dropZone.style.border = '2px dashed var(--neon-blue)';
+      });
+    });
+    
+    dropZone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      alert(`Files ready to upload: ${files.length}`);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEURAL ACADEMY | B.Tech in Artificial Intelligence</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollToPlugin.min.js"></script>
+    <style>
+        :root {
+            --primary: #00f7ff;
+            --primary-dark: #00a8ff;
+            --secondary: #9d00ff;
+            --accent: #ff00aa;
+            --dark: #0a0a12;
+            --light: #f0f0f0;
+            --neon-glow: 0 0 10px rgba(0, 247, 255, 0.7);
+            --text-glow: 0 0 8px rgba(0, 247, 255, 0.5);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            cursor: none;
+            line-height: 1.6;
+        }
+        
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease, width 0.3s, height 0.3s;
+        }
+        
+        .cursor-follower {
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.4s ease, width 0.3s, height 0.3s;
+            filter: blur(1px);
+        }
+        
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+        
+        h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--text-glow);
+            line-height: 1.1;
+        }
+        
+        h2 {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+        
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+        }
+        
+        /* Sections */
+        section {
+            min-height: 100vh;
+            padding: 8rem 2rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Neon Mist Effect */
+        .neon-mist {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 247, 255, 0.05) 0%, transparent 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        /* 3D Model Containers */
+        .model-container {
+            width: 100%;
+            height: 400px;
+            margin: 3rem auto;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.2);
+        }
+        
+        /* Floating Particles Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* Cards */
+        .card {
+            background: rgba(10, 10, 30, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0, 247, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 50px rgba(0, 247, 255, 0.3);
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--dark);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            border: none;
+            cursor: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0, 247, 255, 0.3);
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 247, 255, 0.5);
+        }
+        
+        .btn:hover::before {
+            opacity: 1;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            box-shadow: none;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(0, 247, 255, 0.1);
+            color: var(--light);
+        }
+        
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            background: rgba(0, 247, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 247, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(0, 247, 255, 0.1);
+            box-shadow: 0 15px 40px rgba(0, 247, 255, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .feature-item:hover .feature-icon {
+            transform: scale(1.2);
+            text-shadow: var(--text-glow);
+        }
+        
+        /* Stats */
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin: 4rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            min-width: 180px;
+            position: relative;
+        }
+        
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: var(--text-glow);
+        }
+        
+        .stat-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+        
+        /* Accordion */
+        .accordion-item {
+            margin-bottom: 1.5rem;
+            border-radius: 15px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .accordion-header {
+            background: linear-gradient(90deg, rgba(0, 247, 255, 0.1), rgba(157, 0, 255, 0.1));
+            color: white;
+            padding: 1.8rem;
+            cursor: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+        }
+        
+        .accordion-header:hover {
+            background: linear-gradient(90deg, rgba(0, 247, 255, 0.2), rgba(157, 0, 255, 0.2));
+        }
+        
+        .accordion-header::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            transition: transform 0.3s;
+            color: var(--primary);
+        }
+        
+        .accordion-header.active::after {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            background: rgba(0, 0, 0, 0.2);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .accordion-content-inner {
+            padding: 2rem;
+        }
+        
+        /* Module List */
+        .module-list {
+            list-style: none;
+        }
+        
+        .module-item {
+            padding: 1.8rem;
+            margin: 1.5rem 0;
+            background: rgba(0, 247, 255, 0.05);
+            border-left: 4px solid var(--primary);
+            border-radius: 0 12px 12px 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .module-item:hover {
+            background: rgba(0, 247, 255, 0.1);
+            transform: translateX(15px);
+            box-shadow: 0 10px 20px rgba(0, 247, 255, 0.1);
+        }
+        
+        /* University Logos */
+        .university-logos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            align-items: center;
+            justify-content: center;
+            margin: 4rem 0;
+        }
+        
+        .university-logos img {
+            height: 70px;
+            object-fit: contain;
+            filter: grayscale(100%) brightness(2);
+            opacity: 0.7;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .university-logos img:hover {
+            filter: grayscale(0) brightness(1);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        /* Floating Animation */
+        .floating {
+            animation: floating 8s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        
+        /* Glowing Border */
+        .glow-border {
+            position: relative;
+        }
+        
+        .glow-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            z-index: -1;
+            border-radius: inherit;
+            filter: blur(10px);
+            opacity: 0.7;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal-content {
+            background-color: var(--dark);
+            margin: 5% auto;
+            padding: 3rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 0 50px rgba(0, 247, 255, 0.3);
+            position: relative;
+            border: 1px solid rgba(0, 247, 255, 0.3);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .modal.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .close {
+            position: absolute;
+            right: 2rem;
+            top: 2rem;
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: none;
+            transition: all 0.3s;
+            z-index: 2;
+        }
+        
+        .close:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+        
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .scroll-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: none;
+            transition: all 0.3s;
+        }
+        
+        .scroll-dot.active {
+            background: var(--primary);
+            transform: scale(1.5);
+            box-shadow: 0 0 10px var(--primary);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            section {
+                padding: 6rem 1.5rem;
+            }
+            
+            .model-container {
+                height: 300px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-container {
+                gap: 1.5rem;
+            }
+            
+            .stat-item {
+                min-width: 120px;
+                padding: 1.5rem;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+            
+            .university-logos {
+                gap: 1.5rem;
+            }
+            
+            .university-logos img {
+                height: 50px;
+            }
+            
+            .scroll-indicator {
+                display: none;
+            }
+        }
+        
+        /* Animated Gradient Background */
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(-45deg, #0a0a12, #0f172a, #1e293b, #334155);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Floating AI Elements */
+        .floating-ai {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.1;
+            animation: floatAi 20s linear infinite;
+        }
+        
+        @keyframes floatAi {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, 50px) rotate(90deg); }
+            50% { transform: translate(100px, 0) rotate(180deg); }
+            75% { transform: translate(50px, -50px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+        
+        /* Scroll Down Arrow */
+        .scroll-down {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--primary);
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            cursor: none;
+            z-index: 10;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Gradient Background -->
+    <div class="gradient-bg"></div>
+    
+    <!-- Floating AI Elements -->
+    <div class="floating-ai" style="top: 20%; left: 10%; font-size: 5rem;">🤖</div>
+    <div class="floating-ai" style="top: 70%; left: 80%; font-size: 4rem;">🧠</div>
+    <div class="floating-ai" style="top: 40%; left: 85%; font-size: 6rem;">⚡</div>
+    <div class="floating-ai" style="top: 80%; left: 15%; font-size: 5rem;">🔍</div>
+    
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    
+    <!-- Neon Mist Overlay -->
+    <div class="neon-mist"></div>
+    
+    <!-- Floating Particles Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+        <div class="scroll-dot active" data-section="hero"></div>
+        <div class="scroll-dot" data-section="overview"></div>
+        <div class="scroll-dot" data-section="curriculum"></div>
+        <div class="scroll-dot" data-section="recognition"></div>
+        <div class="scroll-dot" data-section="enroll"></div>
+    </div>
+    
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <h1 class="floating">AI4CODE</h1>
+            <h2>B.Tech in CSE</h2>
+            <p style="font-size: 1.3rem; max-width: 800px; margin-bottom: 2rem;">
+                AICTE-approved 4-year engineering program combining computer science fundamentals with advanced AI specialization
+            </p>
+            <div>
+                <button id="enrollBtn" class="btn glow-border">Apply Now</button>
+                <button id="demoBtn" class="btn btn-outline">Program Brochure</button>
+            </div>
+            
+            <!-- 3D Model Container - AI Brain -->
+            <div class="model-container" id="hero-model"></div>
+            
+            <div class="scroll-down">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Program Overview -->
+    <section id="overview">
+        <div class="container">
+            <h2>Program <span style="color: var(--accent);">Highlights</span></h2>
+            <p style="max-width: 700px; margin-bottom: 3rem;">Cutting-edge curriculum designed to create the AI leaders of tomorrow</p>
+            
+            <div class="features-grid">
+                <div class="feature-item floating" style="animation-delay: 0.1s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>AICTE Approved</h3>
+                    <p>Recognized by All India Council for Technical Education with full accreditation and industry recognition.</p>
+                </div>
+                <div class="feature-item floating" style="animation-delay: 0.3s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Industry-Aligned</h3>
+                    <p>Curriculum developed in partnership with Google AI, NVIDIA, and leading research institutions.</p>
+                </div>
+                <div class="feature-item floating" style="animation-delay: 0.5s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>Advanced Labs</h3>
+                    <p>State-of-the-art GPU clusters and quantum computing access for cutting-edge research.</p>
+                </div>
+                <div class="feature-item floating" style="animation-delay: 0.7s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3>Internship Program</h3>
+                    <p>Guaranteed 6-month industry internship with tech giants and AI startups.</p>
+                </div>
+            </div>
+            
+            <!-- Animated Stats -->
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number">4</div>
+                    <div>Years</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">160+</div>
+                    <div>Credits</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">30+</div>
+                    <div>Labs</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div>Placement Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Curriculum Section -->
+    <section id="curriculum">
+        <div class="container">
+            <h2>Program <span style="color: var(--accent);">Curriculum</span></h2>
+            <p style="max-width: 700px; margin-bottom: 3rem;">Comprehensive learning path from fundamentals to advanced AI specialization</p>
+            
+            <!-- 3D Model Container - Computer System -->
+            <div class="model-container" id="curriculum-model"></div>
+            
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Year 1: Engineering Foundations</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <ul class="module-list">
+                                <li class="module-item">
+                                    <h3>Mathematics for AI</h3>
+                                    <p>Linear Algebra, Multivariable Calculus, Probability Theory, Statistical Methods</p>
+                                </li>
+                                <li class="module-item">
+                                    <h3>Programming Fundamentals</h3>
+                                    <p>Python, C++, Data Structures, Algorithms, Computational Thinking</p>
+                                </li>
+                                <li class="module-item">
+                                    <h3>Computer Organization</h3>
+                                    <p>Computer Architecture, Digital Electronics, Systems Programming, Embedded Systems</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Year 2: Core Computer Science</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <ul class="module-list">
+                                <li class="module-item">
+                                    <h3>Database Systems</h3>
+                                    <p>SQL, NoSQL, Big Data Technologies, Distributed Systems, Data Warehousing</p>
+                                </li>
+                                <li class="module-item">
+                                    <h3>Operating Systems</h3>
+                                    <p>Linux Kernel, Process Management, Memory Management, File Systems</p>
+                                </li>
+                                <li class="module-item">
+                                    <h3>Machine Learning</h3>
+                                    <p>Supervised/Unsupervised Learning, Model Evaluation, Feature Engineering</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Year 3: AI Specialization</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <ul class="module-list">
+                                <li class="module-item">
+                                    <h3>Deep Learning</h3>
+                                    <p>Neural Networks, TensorFlow, PyTorch, Keras, GANs, Transformers</p>
+                                </li>
+                                <li class="module-item">
+                                    <h3>Computer Vision</h3>
+                                    <p>OpenCV, CNN Architectures, Object Detection, Image Segmentation</p>
+                                </li>
+                                <li class="module-item">
+                                    <h3>Natural Language Processing</h3>
+                                    <p>Transformers, BERT, GPT Models, Text Processing, Sentiment Analysis</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Year 4: Advanced Topics & Capstone</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <ul class="module-list">
+                                <li class="module-item">
+                                    <h3>Robotics & Autonomous Systems</h3>
+                                    <p>ROS, Reinforcement Learning, Motion Planning, Control Systems</p>
+                                </li>
+                                <li class="module-item">
+                                    <h3>AI Ethics & Governance</h3>
+                                    <p>Responsible AI, Bias Mitigation, Policy Implications, Regulatory Frameworks</p>
+                                </li>
+                                <li class="module-item">
+                                    <h3>Capstone Project</h3>
+                                    <p>Industry/Research Problem Solving with Faculty and Industry Mentors</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- University Recognition -->
+    <section id="recognition">
+        <div class="container">
+            <h2>University <span style="color: var(--accent);">Collaboration</span></h2>
+            <p style="max-width: 700px; margin-bottom: 3rem;">This program is offered in collaboration with world-leading technical universities and follows AICTE guidelines</p>
+            
+            <div class="university-logos">
+                <img src="https://logowik.com/content/uploads/images/iit-madras-indian-institute-of-technology-madras4653.jpg" alt="IIT Madras">
+                <img src="https://www.pngkey.com/png/detail/50-506039_iit-bombay-logo-png.png" alt="IIT Bombay">
+                <img src="https://th.bing.com/th/id/OIP.q4UhhlBWTRvC7Hs7gc6HowHaFj?rs=1&pid=ImgDetMain" alt="IIT Delhi">
+                <img src="https://th.bing.com/th/id/OIP.qWOrojPBp3Bk0lnubqfRcgHaHa?rs=1&pid=ImgDetMain" alt="BITS Pilani">
+                <img src="https://th.bing.com/th/id/OIP.3TqVtq0q3QZ3Q3Q3Q3Q3Q3QHaHa?rs=1&pid=ImgDetMain" alt="MIT">
+                <img src="https://th.bing.com/th/id/OIP.3TqVtq0q3QZ3Q3Q3Q3Q3Q3QHaHa?rs=1&pid=ImgDetMain" alt="Stanford">
+            </div>
+            
+            <div class="card" style="max-width: 800px; margin: 4rem auto; text-align: center;">
+                <h3 style="color: var(--primary); margin-bottom: 1.5rem;">Global Recognition</h3>
+                <p>Our program is internationally recognized and accredited, with opportunities for student exchange programs at partner universities worldwide. Graduates receive dual certification from Neural Academy and our partner institutions.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Enrollment Section -->
+    <section id="enroll">
+        <div class="container">
+            <h2>Ready to <span style="color: var(--accent);">Launch</span> Your AI Career?</h2>
+            <p style="max-width: 700px; margin-bottom: 3rem; text-align: center; margin-left: auto; margin-right: auto;">
+                Join the next generation of AI innovators and thought leaders
+            </p>
+            
+            <div class="card" style="max-width: 600px; margin: 2rem auto; text-align: center;">
+                <h3 style="color: var(--primary); margin-bottom: 1.5rem;">Admission Details</h3>
+                
+                <div style="display: flex; justify-content: center; gap: 3rem; margin: 2rem 0;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: bold; color: var(--primary);">₹49,999</div>
+                        <div>Per Year</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: bold; color: var(--primary);">July 2024</div>
+                        <div>Next Intake</div>
+                    </div>
+                </div>
+                
+                <button id="finalEnrollBtn" class="btn" style="width: 100%;">Apply Now</button>
+                
+                <div style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--primary);">
+                    <i class="fas fa-shield-alt"></i> Secure Application | 
+                    <i class="fas fa-clock"></i> Rolling Admissions
+                </div>
+            </div>
+            
+            <!-- Career Outcomes -->
+            <div style="max-width: 900px; margin: 4rem auto;">
+                <h3 style="text-align: center; margin-bottom: 3rem; color: var(--accent);">Career <span style="color: var(--primary);">Outcomes</span></h3>
+                
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>AI Engineer</h3>
+                        <p>₹12-25 LPA</p>
+                        <p style="font-size: 0.9rem; color: var(--primary);">Google, Microsoft, NVIDIA</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>ML Engineer</h3>
+                        <p>₹10-22 LPA</p>
+                        <p style="font-size: 0.9rem; color: var(--primary);">Amazon, Tesla, OpenAI</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Data Scientist</h3>
+                        <p>₹9-20 LPA</p>
+                        <p style="font-size: 0.9rem; color: var(--primary);">Uber, Netflix, JPMorgan</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Computer Vision Engineer</h3>
+                        <p>₹11-24 LPA</p>
+                        <p style="font-size: 0.9rem; color: var(--primary);">Waymo, Boston Dynamics</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalContent">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === Custom Cursor ===
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            gsap.to(cursorFollower, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.5,
+                ease: "power2.out"
+            });
+        });
+        
+        // Cursor effects on interactive elements
+        document.querySelectorAll('a, button, .module-item, .accordion-header, .university-logos img, .scroll-dot').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursor.style.borderColor = 'var(--accent)';
+                cursorFollower.style.width = '20px';
+                cursorFollower.style.height = '20px';
+                cursorFollower.style.background = 'var(--accent)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursor.style.borderColor = 'var(--primary)';
+                cursorFollower.style.width = '10px';
+                cursorFollower.style.height = '10px';
+                cursorFollower.style.background = 'var(--primary)';
+            });
+        });
+
+        // === Three.js 3D Models ===
+        // Hero Model - AI Brain
+        const heroContainer = document.getElementById('hero-model');
+        const heroScene = new THREE.Scene();
+        const heroCamera = new THREE.PerspectiveCamera(75, heroContainer.clientWidth / heroContainer.clientHeight, 0.1, 1000);
+        const heroRenderer = new THREE.WebGLRenderer({ 
+            alpha: true, 
+            antialias: true,
+            powerPreference: "high-performance"
+        });
+        
+        heroRenderer.setSize(heroContainer.clientWidth, heroContainer.clientHeight);
+        heroRenderer.setPixelRatio(window.devicePixelRatio);
+        heroContainer.appendChild(heroRenderer.domElement);
+        
+        // Create brain geometry with more detail
+        const brainGeometry = new THREE.SphereGeometry(1.5, 128, 128);
+        
+        // Displace vertices to create brain-like appearance
+        const positionAttribute = brainGeometry.getAttribute('position');
+        const vertex = new THREE.Vector3();
+        const temp = new THREE.Vector3();
+        
+        for (let i = 0; i < positionAttribute.count; i++) {
+            vertex.fromBufferAttribute(positionAttribute, i);
+            vertex.normalize();
+            
+            const distance = 0.8 + Math.random() * 0.4;
+            const x = vertex.x * distance;
+            const y = vertex.y * distance;
+            const z = vertex.z * distance;
+            
+            // Add more organic variation
+            const noise = 0.1 * Math.sin(vertex.x * 10) * Math.cos(vertex.y * 10) * Math.sin(vertex.z * 10);
+            
+            positionAttribute.setXYZ(i, x * (1 + noise), y * (1 + noise), z * (1 + noise));
+        }
+        
+        brainGeometry.computeVertexNormals();
+        
+        // Create shader material for glowing effect
+        const brainMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0x00f7ff,
+            emissive: 0x00a8ff,
+            emissiveIntensity: 0.5,
+            metalness: 0.8,
+            roughness: 0.2,
+            transparent: true,
+            opacity: 0.9
+        });
+        
+        const brain = new THREE.Mesh(brainGeometry, brainMaterial);
+        heroScene.add(brain);
+        
+        // Add lights
+        const pointLight = new THREE.PointLight(0x00f7ff, 1, 10);
+        pointLight.position.set(2, 2, 2);
+        heroScene.add(pointLight);
+        
+        const ambientLight = new THREE.AmbientLight(0x404040);
+        heroScene.add(ambientLight);
+        
+        // Add connecting lines between vertices
+        const edges = new THREE.EdgesGeometry(brainGeometry);
+        const lineMaterial = new THREE.LineBasicMaterial({ 
+            color: 0x9d00ff, 
+            transparent: true, 
+            opacity: 0.3,
+            linewidth: 2
+        });
+        const lineSegments = new THREE.LineSegments(edges, lineMaterial);
+        brain.add(lineSegments);
+        
+        heroCamera.position.z = 4;
+        
+        // Curriculum Model - Neural Network Visualization
+        const curriculumContainer = document.getElementById('curriculum-model');
+        const curriculumScene = new THREE.Scene();
+        const curriculumCamera = new THREE.PerspectiveCamera(75, curriculumContainer.clientWidth / curriculumContainer.clientHeight, 0.1, 1000);
+        const curriculumRenderer = new THREE.WebGLRenderer({ 
+            alpha: true, 
+            antialias: true,
+            powerPreference: "high-performance"
+        });
+        
+        curriculumRenderer.setSize(curriculumContainer.clientWidth, curriculumContainer.clientHeight);
+        curriculumRenderer.setPixelRatio(window.devicePixelRatio);
+        curriculumContainer.appendChild(curriculumRenderer.domElement);
+        
+        // Create neural network visualization
+        const layers = 5;
+        const nodesPerLayer = 8;
+        const nodeSize = 0.1;
+        const layerSpacing = 1;
+        const nodes = [];
+        const connections = [];
+        
+        // Create nodes
+        for (let l = 0; l < layers; l++) {
+            const layerNodes = [];
+            for (let n = 0; n < nodesPerLayer; n++) {
+                const x = l * layerSpacing - (layers * layerSpacing) / 2;
+                const y = (n - nodesPerLayer / 2) * 0.5;
+                
+                const geometry = new THREE.SphereGeometry(nodeSize, 16, 16);
+                const material = new THREE.MeshStandardMaterial({
+                    color: l === 0 ? 0xff00aa : (l === layers - 1 ? 0x00f7ff : 0x9d00ff),
+                    emissive: l === 0 ? 0xff0066 : (l === layers - 1 ? 0x00a8ff : 0x7d00cc),
+                    emissiveIntensity: 0.3,
+                    metalness: 0.7,
+                    roughness: 0.3
+                });
+                
+                const node = new THREE.Mesh(geometry, material);
+                node.position.set(x, y, 0);
+                curriculumScene.add(node);
+                layerNodes.push(node);
+                
+                // Add pulsing animation
+                node.userData = {
+                    originalScale: node.scale.clone(),
+                    pulseSpeed: 0.5 + Math.random() * 0.5,
+                    pulseOffset: Math.random() * Math.PI * 2
+                };
+            }
+            nodes.push(layerNodes);
+        }
+        
+        // Create connections
+        for (let l = 0; l < layers - 1; l++) {
+            for (let n1 = 0; n1 < nodesPerLayer; n1++) {
+                for (let n2 = 0; n2 < nodesPerLayer; n2++) {
+                    const start = nodes[l][n1].position;
+                    const end = nodes[l + 1][n2].position;
+                    
+                    const curve = new THREE.QuadraticBezierCurve3(
+                        start,
+                        new THREE.Vector3(
+                            (start.x + end.x) / 2,
+                            (start.y + end.y) / 2 + (Math.random() - 0.5) * 0.5,
+                            (Math.random() - 0.5) * 0.5
+                        ),
+                        end
+                    );
+                    
+                    const points = curve.getPoints(20);
+                    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                    const material = new THREE.LineBasicMaterial({
+                        color: 0x00f7ff,
+                        transparent: true,
+                        opacity: 0.2 + Math.random() * 0.1
+                    });
+                    
+                    const line = new THREE.Line(geometry, material);
+                    curriculumScene.add(line);
+                    connections.push(line);
+                }
+            }
+        }
+        
+        // Add lights
+        const curriculumPointLight = new THREE.PointLight(0x00f7ff, 1, 10);
+        curriculumPointLight.position.set(0, 0, 3);
+        curriculumScene.add(curriculumPointLight);
+        
+        const curriculumAmbientLight = new THREE.AmbientLight(0x404040);
+        curriculumScene.add(curriculumAmbientLight);
+        
+        curriculumCamera.position.z = 7;
+        
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Hero model animation
+            brain.rotation.x += 0.005;
+            brain.rotation.y += 0.007;
+            
+            // Pulse animation for nodes
+            const time = Date.now() * 0.001;
+            nodes.forEach((layer, l) => {
+                layer.forEach((node, n) => {
+                    const pulse = Math.sin(time * node.userData.pulseSpeed + node.userData.pulseOffset) * 0.1 + 1;
+                    node.scale.copy(node.userData.originalScale).multiplyScalar(pulse);
+                });
+            });
+            
+            // Rotate connections slightly
+            connections.forEach(conn => {
+                conn.rotation.z = Math.sin(time * 0.1) * 0.05;
+            });
+            
+            heroRenderer.render(heroScene, heroCamera);
+            curriculumRenderer.render(curriculumScene, curriculumCamera);
+        }
+        animate();
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            // Hero model
+            heroCamera.aspect = heroContainer.clientWidth / heroContainer.clientHeight;
+            heroCamera.updateProjectionMatrix();
+            heroRenderer.setSize(heroContainer.clientWidth, heroContainer.clientHeight);
+            
+            // Curriculum model
+            curriculumCamera.aspect = curriculumContainer.clientWidth / curriculumContainer.clientHeight;
+            curriculumCamera.updateProjectionMatrix();
+            curriculumRenderer.setSize(curriculumContainer.clientWidth, curriculumContainer.clientHeight);
+        });
+
+        // === Scroll Animations ===
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Animate sections on scroll
+        gsap.utils.toArray('section').forEach((section, i) => {
+            gsap.from(section, {
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    toggleActions: 'play none none none',
+                    scrub: true
+                },
+                y: 100,
+                opacity: 0,
+                duration: 1,
+                ease: "power2.out"
+            });
+            
+            // Animate elements within each section
+            if (i > 0) { // Skip hero section
+                gsap.from(section.querySelectorAll('h2, p, .card, .feature-item'), {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    },
+                    y: 50,
+                    opacity: 0,
+                    stagger: 0.1,
+                    duration: 0.8,
+                    ease: "back.out(1.7)"
+                });
+            }
+        });
+        
+        // Parallax effect for 3D models
+        gsap.to(heroContainer, {
+            scrollTrigger: {
+                trigger: heroContainer,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true
+            },
+            y: 100,
+            ease: "none"
+        });
+        
+        gsap.to(curriculumContainer, {
+            scrollTrigger: {
+                trigger: curriculumContainer,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true
+            },
+            y: -100,
+            ease: "none"
+        });
+        
+        // Scroll indicator functionality
+        const sections = gsap.utils.toArray('section');
+        const scrollDots = gsap.utils.toArray('.scroll-dot');
+        
+        sections.forEach((section, i) => {
+            ScrollTrigger.create({
+                trigger: section,
+                start: 'top center',
+                end: 'bottom center',
+                onToggle: self => {
+                    if (self.isActive) {
+                        scrollDots.forEach(dot => dot.classList.remove('active'));
+                        scrollDots[i].classList.add('active');
+                    }
+                }
+            });
+        });
+        
+        scrollDots.forEach((dot, i) => {
+            dot.addEventListener('click', () => {
+                gsap.to(window, {
+                    duration: 1,
+                    scrollTo: sections[i],
+                    ease: "power2.inOut"
+                });
+            });
+        });
+        
+        // Scroll down arrow
+        document.querySelector('.scroll-down').addEventListener('click', () => {
+            gsap.to(window, {
+                duration: 1,
+                scrollTo: sections[1],
+                ease: "power2.inOut"
+            });
+        });
+
+        // === Accordion Functionality ===
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                header.classList.toggle('active');
+                const content = header.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                }
+            });
+        });
+
+        // === Animated Stats Counter ===
+        const statNumbers = document.querySelectorAll('.stat-number');
+        statNumbers.forEach(stat => {
+            const target = +stat.innerText.replace(/[^0-9]/g, '');
+            const suffix = stat.innerText.replace(/[0-9]/g, '');
+            const duration = 2;
+            const start = 0;
+            const increment = target / (duration * 60); // 60fps
+            
+            let current = start;
+            const updateStat = () => {
+                current += increment;
+                if (current < target) {
+                    stat.innerText = Math.floor(current) + suffix;
+                    requestAnimationFrame(updateStat);
+                } else {
+                    stat.innerText = target + suffix;
+                }
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    updateStat();
+                    observer.unobserve(stat);
+                }
+            }, { threshold: 0.5 });
+            
+            observer.observe(stat);
+        });
+
+        // === Modal Functionality ===
+        const enrollBtns = document.querySelectorAll('#enrollBtn, #finalEnrollBtn');
+        const modal = document.getElementById('paymentModal');
+        const closeBtn = document.querySelector('.close');
+        const modalContent = document.getElementById('modalContent');
+
+        function showModal(content) {
+            modalContent.innerHTML = content;
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+            
+            // Initialize any interactive elements in the modal
+            initModalInteractivity();
+        }
+
+        function hideModal() {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 500);
+        }
+
+        function initModalInteractivity() {
+            // Tab functionality
+            const tabBtns = modalContent.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.getAttribute('data-tab');
+                    const tabContainer = btn.closest('.tabs');
+                    
+                    // Remove active class from all tabs in this container
+                    tabContainer.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    btn.classList.add('active');
+                    
+                    // Hide all tab contents in this section
+                    const tabContents = modalContent.querySelectorAll('.tab-content');
+                    tabContents.forEach(content => {
+                        if (content.parentElement === tabContainer.parentElement) {
+                            content.classList.remove('active');
+                        }
+                    });
+                    
+                    // Show selected tab content
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Next tab button
+            const nextTabBtn = modalContent.querySelector('.next-tab');
+            if (nextTabBtn) {
+                nextTabBtn.addEventListener('click', () => {
+                    const nextTabId = nextTabBtn.getAttribute('data-next');
+                    const currentTab = nextTabBtn.closest('.tab-content');
+                    const nextTab = document.getElementById(nextTabId);
+                    
+                    currentTab.classList.remove('active');
+                    nextTab.classList.add('active');
+                    
+                    // Update tab buttons
+                    const tabContainer = nextTab.previousElementSibling;
+                    tabContainer.querySelectorAll('.tab-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                        if (btn.getAttribute('data-tab') === nextTabId) {
+                            btn.classList.add('active');
+                        }
+                    });
+                });
+            }
+            
+            // Form submission
+            const forms = modalContent.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    submitBtn.innerHTML = '<div class="spinner"></div>';
+                    
+                    // Simulate form submission
+                    setTimeout(() => {
+                        showSuccessModal();
+                    }, 2000);
+                });
+            });
+            
+            // Close buttons
+            const closeBtns = modalContent.querySelectorAll('.close-modal');
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', hideModal);
+            });
+        }
+
+        function showSuccessModal() {
+            modalContent.innerHTML = `
+                <div style="text-align: center; padding: 3rem;">
+                    <div style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem;">
+                        <i class="fas fa-check" style="color: white; font-size: 3rem;"></i>
+                    </div>
+                    <h2 style="margin-bottom: 1.5rem; color: var(--primary);">Application Submitted!</h2>
+                    <p style="margin-bottom: 2rem; font-size: 1.1rem;">Your enrollment for B.Tech in Artificial Intelligence has been received. Our admissions team will contact you shortly.</p>
+                    <a href="learnif9ai.html" id="demoviewBtn" class="btn" style="margin-left: 15px; background: transparent; border: 2px solid var(--primary-color);">Continue to course</a>
+                </div>
+            `;
+            initModalInteractivity();
+        }
+
+        enrollBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                showModal(`
+                    <h2 style="margin-bottom: 2rem; color: var(--primary);">Enrollment Form</h2>
+                    
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="personal">Personal Info</button>
+                        <button class="tab-btn" data-tab="payment">Payment</button>
+                    </div>
+                    
+                    <div id="personal" class="tab-content active">
+                        <form>
+                            <input type="text" class="form-input" placeholder="Full Name" required>
+                            <input type="email" class="form-input" placeholder="Email" required>
+                            <input type="tel" class="form-input" placeholder="Phone Number" required>
+                            <input type="text" class="form-input" placeholder="Address">
+                            <input type="text" class="form-input" placeholder="Education Qualification" required>
+                            
+                            <button type="button" class="btn next-tab" style="width: 100%; margin-top: 1.5rem;" data-next="payment">Continue to Payment</button>
+                        </form>
+                    </div>
+                    
+                    <div id="payment" class="tab-content">
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <h3 style="color: var(--primary);">Total Amount: ₹49,999</h3>
+                            <p style="color: var(--light); opacity: 0.7;">First Year Tuition Fee</p>
+                        </div>
+                        
+                        <div class="tabs" style="margin-bottom: 2rem;">
+                            <button class="tab-btn active" data-tab="credit">Credit Card</button>
+                            <button class="tab-btn" data-tab="upi">UPI</button>
+                            <button class="tab-btn" data-tab="netbanking">Net Banking</button>
+                        </div>
+                        
+                        <div id="credit" class="tab-content active">
+                            <form>
+                                <input type="text" class="form-input" placeholder="Card Number" required>
+                                <input type="text" class="form-input" placeholder="Name on Card" required>
+                                <div style="display: flex; gap: 1rem;">
+                                    <input type="text" class="form-input" placeholder="MM/YY" style="flex: 1;" required>
+                                    <input type="text" class="form-input" placeholder="CVV" style="flex: 1;" required>
+                                </div>
+                                <button type="submit" class="btn" style="width: 100%; margin-top: 1.5rem;">Pay ₹49,999</button>
+                            </form>
+                        </div>
+                        
+                        <div id="upi" class="tab-content">
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2rem;">
+                                <div style="padding: 1.5rem; border-radius: 12px; background: rgba(0, 247, 255, 0.05); border: 1px solid rgba(0, 247, 255, 0.2); cursor: pointer; transition: all 0.3s;">
+                                    <img src="https://th.bing.com/th/id/OIP.3TqVtq0q3QZ3Q3Q3Q3Q3Q3QHaHa?rs=1&pid=ImgDetMain" alt="Google Pay" style="height: 40px; display: block; margin: 0 auto 0.5rem;">
+                                    <span style="font-size: 0.8rem; color: var(--light); opacity: 0.7;">Google Pay</span>
+                                </div>
+                                <div style="padding: 1.5rem; border-radius: 12px; background: rgba(0, 247, 255, 0.05); border: 1px solid rgba(0, 247, 255, 0.2); cursor: pointer; transition: all 0.3s;">
+                                    <img src="https://th.bing.com/th/id/OIP.3TqVtq0q3QZ3Q3Q3Q3Q3Q3QHaHa?rs=1&pid=ImgDetMain" alt="PhonePe" style="height: 40px; display: block; margin: 0 auto 0.5rem;">
+                                    <span style="font-size: 0.8rem; color: var(--light); opacity: 0.7;">PhonePe</span>
+                                </div>
+                                <div style="padding: 1.5rem; border-radius: 12px; background: rgba(0, 247, 255, 0.05); border: 1px solid rgba(0, 247, 255, 0.2); cursor: pointer; transition: all 0.3s;">
+                                    <img src="https://th.bing.com/th/id/OIP.3TqVtq0q3QZ3Q3Q3Q3Q3Q3QHaHa?rs=1&pid=ImgDetMain" alt="Paytm" style="height: 40px; display: block; margin: 0 auto 0.5rem;">
+                                    <span style="font-size: 0.8rem; color: var(--light); opacity: 0.7;">Paytm</span>
+                                </div>
+                                <div style="padding: 1.5rem; border-radius: 12px; background: rgba(0, 247, 255, 0.05); border: 1px solid rgba(0, 247, 255, 0.2); cursor: pointer; transition: all 0.3s;">
+                                    <img src="https://th.bing.com/th/id/OIP.3TqVtq0q3QZ3Q3Q3Q3Q3QHaHa?rs=1&pid=ImgDetMain" alt="BHIM" style="height: 40px; display: block; margin: 0 auto 0.5rem;">
+                                    <span style="font-size: 0.8rem; color: var(--light); opacity: 0.7;">BHIM</span>
+                                </div>
+                            </div>
+                            <form>
+                                <input type="text" class="form-input" placeholder="UPI ID" required>
+                                <button type="submit" class="btn" style="width: 100%; margin-top: 1.5rem;">Pay via UPI</button>
+                            </form>
+                        </div>
+                        
+                        <div id="netbanking" class="tab-content">
+                            <form>
+                                <select class="form-input" required>
+                                    <option value="">Select Bank</option>
+                                    <option value="sbi">State Bank of India</option>
+                                    <option value="hdfc">HDFC Bank</option>
+                                    <option value="icici">ICICI Bank</option>
+                                    <option value="axis">Axis Bank</option>
+                                </select>
+                                <button type="submit" class="btn" style="width: 100%; margin-top: 1.5rem;">Proceed to Net Banking</button>
+                            </form>
+                        </div>
+                    </div>
+                `);
+            });
+        });
+
+        closeBtn.addEventListener('click', hideModal);
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                hideModal();
+            }
+        });
+
+        // === Demo Button Functionality ===
+        document.getElementById('demoBtn').addEventListener('click', () => {
+            showModal(`
+                <div style="text-align: center; padding: 3rem;">
+                    <div style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem;">
+                        <i class="fas fa-file-pdf" style="color: white; font-size: 3rem;"></i>
+                    </div>
+                    <h2 style="margin-bottom: 1.5rem; color: var(--primary);">Download Program Brochure</h2>
+                    <p style="margin-bottom: 2rem; font-size: 1.1rem;">Enter your email to receive the detailed program brochure with complete curriculum, faculty details, and placement statistics.</p>
+                    <form>
+                        <input type="email" class="form-input" placeholder="Your Email Address" style="margin-bottom: 1.5rem;" required>
+                        <button type="submit" class="btn" style="width: 100%;">Download Brochure</button>
+                    </form>
+                </div>
+            `);
+        });
+
+        // === Particles.js Background ===
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('particles-js')) {
+                particlesJS('particles-js', {
+                    "particles": {
+                        "number": {
+                            "value": 100,
+                            "density": {
+                                "enable": true,
+                                "value_area": 800
+                            }
+                        },
+                        "color": {
+                            "value": "#00f7ff"
+                        },
+                        "shape": {
+                            "type": "circle",
+                            "stroke": {
+                                "width": 0,
+                                "color": "#000000"
+                            },
+                            "polygon": {
+                                "nb_sides": 5
+                            }
+                        },
+                        "opacity": {
+                            "value": 0.5,
+                            "random": true,
+                            "anim": {
+                                "enable": true,
+                                "speed": 1,
+                                "opacity_min": 0.1,
+                                "sync": false
+                            }
+                        },
+                        "size": {
+                            "value": 3,
+                            "random": true,
+                            "anim": {
+                                "enable": true,
+                                "speed": 2,
+                                "size_min": 0.1,
+                                "sync": false
+                            }
+                        },
+                        "line_linked": {
+                            "enable": true,
+                            "distance": 150,
+                            "color": "#9d00ff",
+                            "opacity": 0.4,
+                            "width": 1
+                        },
+                        "move": {
+                            "enable": true,
+                            "speed": 1.5,
+                            "direction": "none",
+                            "random": true,
+                            "straight": false,
+                            "out_mode": "out",
+                            "bounce": false,
+                            "attract": {
+                                "enable": true,
+                                "rotateX": 600,
+                                "rotateY": 1200
+                            }
+                        }
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": {
+                            "onhover": {
+                                "enable": true,
+                                "mode": "grab"
+                            },
+                            "onclick": {
+                                "enable": true,
+                                "mode": "push"
+                            },
+                            "resize": true
+                        },
+                        "modes": {
+                            "grab": {
+                                "distance": 140,
+                                "line_linked": {
+                                    "opacity": 1
+                                }
+                            },
+                            "bubble": {
+                                "distance": 400,
+                                "size": 40,
+                                "duration": 2,
+                                "opacity": 8,
+                                "speed": 3
+                            },
+                            "repulse": {
+                                "distance": 200,
+                                "duration": 0.4
+                            },
+                            "push": {
+                                "particles_nb": 4
+                            },
+                            "remove": {
+                                "particles_nb": 2
+                            }
+                        }
+                    },
+                    "retina_detect": true
+                });
+            }
+        });
+    </script>
+</body>
+</html>

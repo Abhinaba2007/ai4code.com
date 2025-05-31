@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>System Requirements | AI4CODE</title>
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    /* Cyber-Tech 3D Requirements Interface */
+    :root {
+      --neon-green: #00ff9d;
+      --neon-blue: #00e1ff;
+      --neon-purple: #8a2be2;
+      --dark-matrix: #0a0f0f;
+      --panel-dark: #121a1a;
+      --text-glow: #e0fff9;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Share Tech Mono', 'Rajdhani', monospace;
+    }
+
+    body {
+      background: radial-gradient(ellipse at bottom, var(--dark-matrix), #050808);
+      min-height: 100vh;
+      perspective: 1000px;
+      overflow-x: hidden;
+      color: var(--text-glow);
+    }
+
+    .header {
+      background: linear-gradient(135deg, #050808, var(--dark-matrix));
+      color: white;
+      text-align: center;
+      padding: 5rem 2rem 10rem;
+      position: relative;
+      transform-style: preserve-3d;
+      box-shadow: 0 0 60px rgba(0, 255, 157, 0.2);
+      margin-bottom: -6rem;
+      clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+      z-index: 1;
+      border-bottom: 3px solid var(--neon-green);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="10" height="10" fill="%2300ff9d" opacity="0.1"/></svg>');
+      opacity: 0.1;
+      transform: translateZ(-40px);
+    }
+
+    .header h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 20px var(--neon-green), 0 0 40px rgba(0, 255, 157, 0.3);
+      transform: translateZ(50px);
+      font-weight: 400;
+      letter-spacing: 3px;
+      background: linear-gradient(to right, var(--neon-green), var(--neon-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header p {
+      font-size: 1.3rem;
+      transform: translateZ(40px);
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 300;
+      text-shadow: 0 0 15px var(--neon-green);
+      opacity: 0.9;
+    }
+
+    .dashboard {
+      max-width: 800px;
+      margin: 0 auto 6rem;
+      padding: 0 2rem;
+      transform-style: preserve-3d;
+      position: relative;
+      z-index: 2;
+    }
+
+    .requirements-panel {
+      background: rgba(18, 26, 26, 0.8);
+      border-radius: 15px;
+      padding: 3rem;
+      border: 1px solid rgba(0, 255, 157, 0.2);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5),
+                  inset 0 0 30px rgba(0, 225, 255, 0.1),
+                  0 0 40px rgba(0, 255, 157, 0.2);
+      backdrop-filter: blur(10px);
+      transform-style: preserve-3d;
+      transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(40px);
+    }
+
+    .requirements-panel:hover {
+      transform: translateY(-10px) translateZ(60px);
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7),
+                  inset 0 0 50px rgba(0, 225, 255, 0.2),
+                  0 0 60px rgba(0, 255, 157, 0.4);
+      border-color: rgba(0, 255, 157, 0.4);
+    }
+
+    .requirements-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        rgba(0, 255, 157, 0.05) 0%,
+        rgba(0, 225, 255, 0.03) 100%
+      );
+      z-index: -1;
+      transform: translateZ(-30px);
+    }
+
+    .requirements-panel::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--neon-green), var(--neon-blue));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s ease;
+    }
+
+    .requirements-panel:hover::after {
+      transform: scaleX(1);
+    }
+
+    .requirements-list {
+      list-style: none;
+      transform-style: preserve-3d;
+    }
+
+    .requirement-item {
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      background: rgba(0, 20, 20, 0.4);
+      border-left: 3px solid var(--neon-green);
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      transform: translateZ(20px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .requirement-item:hover {
+      transform: translateZ(40px);
+      background: rgba(0, 30, 30, 0.6);
+      box-shadow: 0 5px 20px rgba(0, 255, 157, 0.2);
+      border-left-width: 5px;
+    }
+
+    .requirement-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 255, 157, 0.05) 50%,
+        transparent
+      );
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .requirement-item:hover::before {
+      transform: translateX(100%);
+    }
+
+    .requirement-item strong {
+      color: var(--neon-blue);
+      font-weight: 400;
+    }
+
+    .compatibility-check {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .check-button {
+      background: linear-gradient(45deg, var(--neon-green), var(--neon-blue));
+      color: var(--dark-matrix);
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.2rem;
+      font-weight: 500;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 25px rgba(0, 255, 157, 0.4);
+      transform: translateZ(30px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .check-button:hover {
+      transform: translateY(-5px) translateZ(50px);
+      box-shadow: 0 10px 40px rgba(0, 255, 157, 0.6);
+      background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+    }
+
+    .check-button::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      transform: rotate(45deg);
+      transition: all 0.6s ease;
+    }
+
+    .check-button:hover::before {
+      left: 100%;
+    }
+
+    .tech-sphere {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle at center, 
+        rgba(0, 255, 157, 0.1) 0%, 
+        rgba(0, 225, 255, 0.05) 50%, 
+        transparent 70%);
+      border-radius: 50%;
+      filter: blur(50px);
+      z-index: -1;
+      animation: float-sphere 12s ease-in-out infinite;
+    }
+
+    .sphere-1 {
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .sphere-2 {
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 4s;
+      background: radial-gradient(circle at center, 
+        rgba(138, 43, 226, 0.1) 0%, 
+        rgba(0, 225, 255, 0.05) 50%, 
+        transparent 70%);
+    }
+
+    @keyframes float-sphere {
+      0%, 100% { 
+        transform: translate(0, 0) translateZ(0) scale(1);
+      }
+      50% { 
+        transform: translate(-40px, -50px) translateZ(40px) scale(1.1);
+      }
+    }
+
+    .footer {
+      text-align: center;
+      padding: 5rem 2rem 2rem;
+      background: linear-gradient(to top, var(--dark-matrix), #050808);
+      color: var(--text-glow);
+      position: relative;
+      clip-path: polygon(0 25%, 100% 0, 100% 100%, 0% 100%);
+      margin-top: 5rem;
+      border-top: 1px solid rgba(0, 255, 157, 0.2);
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--neon-green), var(--neon-blue));
+    }
+
+    .footer p {
+      transform: translateY(30px);
+      opacity: 0.8;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header {
+        padding: 4rem 1.5rem 8rem;
+        clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+      }
+      
+      .header h1 {
+        font-size: 2.5rem;
+      }
+      
+      .header p {
+        font-size: 1.2rem;
+      }
+      
+      .dashboard {
+        padding: 0 1.5rem;
+      }
+      
+      .requirements-panel {
+        padding: 2rem;
+      }
+      
+      .footer {
+        clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%);
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="tech-sphere sphere-1"></div>
+  <div class="tech-sphere sphere-2"></div>
+
+  <header class="header">
+    <h1>SYSTEM REQUIREMENTS</h1>
+    <p>Ensure compatibility before using Deployment.</p>
+  </header>
+
+  <main class="dashboard">
+    <div class="requirements-panel">
+      <ul class="requirements-list">
+        <li class="requirement-item">
+          <strong>Browser:</strong> Latest Chrome, Firefox, or Edge (WebGL 2.0 support required)
+        </li>
+        <li class="requirement-item">
+          <strong>Screen:</strong> Minimum 1024x768 resolution (1920x1080 recommended)
+        </li>
+        <li class="requirement-item">
+          <strong>JavaScript:</strong> Enabled (ES2020 features required)
+        </li>
+        <li class="requirement-item">
+          <strong>Internet:</strong> Stable 5Mbps+ connection (WebSockets required)
+        </li>
+        <li class="requirement-item">
+          <strong>GPU:</strong> Hardware acceleration recommended
+        </li>
+        <li class="requirement-item">
+          <strong>RAM:</strong> 4GB minimum (8GB recommended for optimal performance)
+        </li>
+      </ul>
+
+      <div class="compatibility-check">
+        <button class="check-button">RUN COMPATIBILITY CHECK</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 AI4CODE | SYSTEM REQUIREMENTS v3.2</p>
+  </footer>
+
+  <script>
+    // 3D Panel Interaction
+    const panel = document.querySelector('.requirements-panel');
+    
+    panel.addEventListener('mousemove', (e) => {
+      const rect = panel.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const angleX = (y - centerY) / 30;
+      const angleY = (centerX - x) / 30;
+      
+      panel.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) translateZ(60px)`;
+    });
+    
+    panel.addEventListener('mouseleave', () => {
+      panel.style.transform = 'translateY(0) translateZ(40px)';
+    });
+
+    // Compatibility Check Animation
+    const checkButton = document.querySelector('.check-button');
+    
+    checkButton.addEventListener('click', function() {
+      this.textContent = 'SCANNING SYSTEM...';
+      this.style.background = 'linear-gradient(45deg, var(--neon-purple), var(--neon-blue))';
+      
+      setTimeout(() => {
+        this.textContent = '✓ COMPATIBILITY VERIFIED';
+        this.style.background = 'linear-gradient(45deg, var(--neon-green), #00cc66)';
+        
+        // Add checkmarks to requirements
+        document.querySelectorAll('.requirement-item').forEach(item => {
+          const check = document.createElement('span');
+          check.innerHTML = ' ✓';
+          check.style.color = 'var(--neon-green)';
+          check.style.textShadow = '0 0 10px var(--neon-green)';
+          item.appendChild(check);
+        });
+        
+        // Reset after 3 seconds
+        setTimeout(() => {
+          this.textContent = 'RUN COMPATIBILITY CHECK';
+          this.style.background = 'linear-gradient(45deg, var(--neon-green), var(--neon-blue))';
+          
+          document.querySelectorAll('.requirement-item span').forEach(span => {
+            span.remove();
+          });
+        }, 3000);
+      }, 1500);
+    });
+
+    // Floating spheres follow mouse slightly
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      
+      document.querySelector('.sphere-1').style.transform = `
+        translate(${(x - 0.5) * 50}px, ${(y - 0.5) * 50}px)
+        translateZ(${x * 20}px)
+      `;
+      
+      document.querySelector('.sphere-2').style.transform = `
+        translate(${(0.5 - x) * 50}px, ${(0.5 - y) * 50}px)
+        translateZ(${y * 20}px)
+      `;
+    });
+  </script>
+</body>
+</html>

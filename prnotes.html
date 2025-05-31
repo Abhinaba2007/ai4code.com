@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Notes | CLASS-9 AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .chapter-card {
+      background: rgba(20, 20, 60, 0.7);
+      border: 1px solid var(--neon-blue);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .chapter-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 247, 255, 0.2);
+    }
+    
+    .chapter-card h3 {
+      color: var(--neon-blue);
+      margin-bottom: 0.5rem;
+    }
+    
+    .search-bar {
+      margin: 2rem 0;
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .search-bar input {
+      flex-grow: 1;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--neon-blue);
+      color: white;
+      padding: 0.8rem;
+      border-radius: 4px;
+      font-family: 'Rajdhani', sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="hologram-bg"></div>
+  
+  <div class="main-container">
+    <header class="portal-header">
+      <h1 class="cyber-glow">SMART NOTES</h1>
+      <p>AI-curated NCERT-aligned notes with interactive elements</p>
+    </header>
+    
+    <div class="search-bar">
+      <input type="text" placeholder="Search notes... (Try 'AI ethics' or 'Neural networks')">
+      <button class="cyber-btn">Search</button>
+    </div>
+    
+    <div class="ai-visualization" id="neuralNetwork"></div>
+    
+    <div class="notes-grid">
+      <div class="chapter-card">
+        <h3>Chapter 1: Introduction to AI</h3>
+        <p>What is AI? History and basic concepts</p>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View Notes</button>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; background: var(--neon-orange);">Download PDF</button>
+      </div>
+      
+      <div class="chapter-card">
+        <h3>Chapter 2: AI Project Cycle</h3>
+        <p>Problem scoping, data acquisition, modeling</p>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View Notes</button>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; background: var(--neon-orange);">Download PDF</button>
+      </div>
+      
+      <div class="chapter-card">
+        <h3>Chapter 3: Neural Networks</h3>
+        <p>Basic concepts of how AI learns</p>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View Notes</button>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; background: var(--neon-orange);">Download PDF</button>
+      </div>
+      
+      <div class="chapter-card">
+        <h3>Chapter 4: Computer Vision</h3>
+        <p>How AI sees and interprets images</p>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View Notes</button>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; background: var(--neon-orange);">Download PDF</button>
+      </div>
+      
+      <div class="chapter-card">
+        <h3>Chapter 5: Natural Language Processing</h3>
+        <p>How AI understands human language</p>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View Notes</button>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; background: var(--neon-orange);">Download PDF</button>
+      </div>
+      
+      <div class="chapter-card">
+        <h3>Chapter 6: Ethics in AI</h3>
+        <p>Responsible use of artificial intelligence</p>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View Notes</button>
+        <button class="cyber-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; background: var(--neon-orange);">Download PDF</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="js/main.js"></script>
+</body>
+</html>

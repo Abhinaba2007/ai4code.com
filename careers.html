@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Careers | AI4CODE</title>
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    /* 3D Prototype Styles */
+    :root {
+      --primary: #6cb8e1;
+      --secondary: #8e2de2;
+      --accent: #00d2ff;
+      --dark: #1a1a2e;
+      --light: #f8f9fa;
+      --text: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      min-height: 100vh;
+      perspective: 1000px;
+      overflow-x: hidden;
+      color: var(--text);
+    }
+
+    .header {
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      color: white;
+      text-align: center;
+      padding: 6rem 2rem 8rem;
+      position: relative;
+      transform-style: preserve-3d;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+      margin-bottom: -3rem;
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+      z-index: 1;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+      opacity: 0.3;
+      transform: translateZ(-10px);
+    }
+
+    .header h1 {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+      transform: translateZ(30px);
+      letter-spacing: -1px;
+    }
+
+    .header p {
+      font-size: 1.5rem;
+      opacity: 0.9;
+      transform: translateZ(20px);
+      max-width: 700px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    .careers {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto 5rem;
+      padding: 0 2rem;
+      transform-style: preserve-3d;
+      position: relative;
+      z-index: 2;
+    }
+
+    .job-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2.5rem;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      border: none;
+      cursor: pointer;
+      transform: translateZ(0);
+    }
+
+    .job-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+    }
+
+    .job-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(74, 0, 224, 0.05) 0%, rgba(142, 45, 226, 0.03) 100%);
+      z-index: -1;
+      transform: translateZ(-10px);
+    }
+
+    .job-card:hover {
+      transform: translateY(-10px) translateZ(20px);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .job-card h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+
+    .job-card h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 4px;
+    }
+
+    .job-card p {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      color: var(--text);
+      font-size: 1.1rem;
+    }
+
+    .job-card .apply-btn {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(74, 0, 224, 0.3);
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transform: translateZ(10px);
+    }
+
+    .job-card .apply-btn:hover {
+      transform: translateY(-3px) translateZ(15px);
+      box-shadow: 0 8px 25px rgba(74, 0, 224, 0.4);
+      background: linear-gradient(to right, var(--secondary), var(--primary));
+    }
+
+    .footer {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+      background: var(--dark);
+      color: white;
+      position: relative;
+      clip-path: polygon(0 20%, 100% 0, 100% 100%, 0% 100%);
+      margin-top: 5rem;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+    }
+
+    .footer p {
+      transform: translateY(20px);
+    }
+
+    /* 3D Floating Elements */
+    .floating-shapes {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .shape {
+      position: absolute;
+      opacity: 0.1;
+      border-radius: 50%;
+      filter: blur(50px);
+    }
+
+    .shape-1 {
+      width: 400px;
+      height: 400px;
+      background: var(--primary);
+      top: 20%;
+      left: 10%;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .shape-2 {
+      width: 300px;
+      height: 300px;
+      background: var(--accent);
+      bottom: 15%;
+      right: 10%;
+      animation: float 18s infinite ease-in-out reverse;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) translateX(0) translateZ(0);
+      }
+      50% {
+        transform: translateY(-50px) translateX(30px) translateZ(20px);
+      }
+    }
+
+    /* Job Card Details Panel */
+    .job-details {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.4s ease;
+      transform-style: preserve-3d;
+    }
+
+    .job-details.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .details-content {
+      background: white;
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+      transform: translateY(50px) translateZ(0);
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .job-details.active .details-content {
+      transform: translateY(0) translateZ(30px);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      transform: translateZ(10px);
+    }
+
+    .close-btn:hover {
+      transform: rotate(90deg) translateZ(15px);
+      background: var(--accent);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header {
+        padding: 4rem 1.5rem 6rem;
+        clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+      }
+      
+      .header h1 {
+        font-size: 2.5rem;
+      }
+      
+      .header p {
+        font-size: 1.2rem;
+      }
+      
+      .careers {
+        padding: 0 1.5rem;
+      }
+      
+      .job-card {
+        padding: 2rem;
+      }
+      
+      .footer {
+        clip-path: polygon(0 10%, 100% 0, 100% 100%, 0% 100%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+  </div>
+
+  <header class="header">
+    <h1>Join Our Team</h1>
+    <p>Shape the future of education and AI with us.</p>
+  </header>
+
+  <main class="careers">
+    <div class="job-card">
+      <h2>Frontend & Backend Developer and Teacher</h2>
+      <p>Experience in HTML, CSS, JS, and animation frameworks required. Build immersive educational interfaces and teaching skills with cutting-edge web technologies.</p>
+      <button class="apply-btn">Apply Now</button>
+    </div>
+    <div class="job-card">
+      <h2>AI,CS,DS Teacher</h2>Teaching for Students from Classes 9 to 12. Work with our research team on adaptive learning algorithms.</p>
+      <button class="apply-btn">Apply Now</button>
+    </div>
+  </main>
+
+  <div class="job-details">
+    <div class="details-content">
+      <div class="close-btn">×</div>
+      <h2>Job Details</h2>
+      <p>Detailed job description would appear here...</p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 AI4CODE | Careers</p>
+  </footer>
+
+  <script>
+    // Job card interaction
+    const jobCards = document.querySelectorAll('.job-card');
+    const jobDetails = document.querySelector('.job-details');
+    const closeBtn = document.querySelector('.close-btn');
+    const detailsContent = document.querySelector('.details-content h2');
+
+    jobCards.forEach(card => {
+      // 3D hover effect
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const angleX = (y - centerY) / 15;
+        const angleY = (centerX - x) / 15;
+        
+        card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) translateZ(20px)`;
+      });
+
+      // Reset position when mouse leaves
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'rotateX(0) rotateY(0) translateZ(0)';
+      });
+
+      // Click to show details
+      card.addEventListener('click', () => {
+        const jobTitle = card.querySelector('h2').textContent;
+        detailsContent.textContent = jobTitle;
+        jobDetails.classList.add('active');
+      });
+    });
+
+    // Close details panel
+    closeBtn.addEventListener('click', () => {
+      jobDetails.classList.remove('active');
+    });
+
+    // Floating shapes animation
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      
+      document.querySelector('.shape-1').style.transform = `
+        translateX(${x * 50}px) 
+        translateY(${y * 50}px)
+        translateZ(${x * 20}px)
+      `;
+      
+      document.querySelector('.shape-2').style.transform = `
+        translateX(${-x * 50}px) 
+        translateY(${-y * 50}px)
+        translateZ(${y * 20}px)
+      `;
+    });
+  </script>
+  <!-- In all HTML files -->
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<script src="auth.js"></script> <!-- Your config -->
+</body>
+</html>

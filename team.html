@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Team | AI4CODE</title>
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    /* Quantum Team Interface */
+    :root {
+      --quantum-blue: #00f7ff;
+      --neon-purple: #a635ec;
+      --plasma-pink: #fb04a9;
+      --dark-matter: #833b9d;
+      --star-light: #e6f7ff;
+      --void-space: #050510;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Orbitron', 'Rajdhani', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(ellipse at bottom, var(--void-space), var(--dark-matter));
+      min-height: 100vh;
+      perspective: 1200px;
+      overflow-x: hidden;
+      color: var(--star-light);
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--dark-matter), var(--void-space));
+      color: white;
+      text-align: center;
+      padding: 6rem 2rem 15rem;
+      position: relative;
+      transform-style: preserve-3d;
+      box-shadow: 0 0 80px rgba(172, 91, 222, 0.3);
+      margin-bottom: -10rem;
+      clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
+      z-index: 1;
+      border-bottom: 4px solid var(--quantum-blue);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="none" stroke="white" stroke-width="0.5" opacity="0.05"/></svg>');
+      opacity: 0.15;
+      transform: translateZ(-80px);
+    }
+
+    .header h1 {
+      font-size: 4.5rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 30px var(--quantum-blue), 0 0 60px rgba(53, 126, 132, 0.3);
+      transform: translateZ(80px);
+      font-weight: 800;
+      letter-spacing: 4px;
+      background: linear-gradient(to right, var(--quantum-blue), var(--plasma-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header p {
+      font-size: 1.6rem;
+      transform: translateZ(60px);
+      max-width: 700px;
+      margin: 0 auto;
+      font-weight: 300;
+      text-shadow: 0 0 20px var(--quantum-blue);
+      opacity: 0.9;
+    }
+
+    .quantum-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 4rem;
+      max-width: 1400px;
+      margin: 0 auto 8rem;
+      padding: 0 2rem;
+      transform-style: preserve-3d;
+      position: relative;
+      z-index: 2;
+    }
+
+    .team-member {
+      background: rgba(10, 10, 26, 0.7);
+      border-radius: 25px;
+      padding: 3rem;
+      border: 2px solid rgba(0, 247, 255, 0.2);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
+                  inset 0 0 40px rgba(0, 247, 255, 0.1),
+                  0 0 50px rgba(157, 0, 255, 0.3);
+      backdrop-filter: blur(15px);
+      transform-style: preserve-3d;
+      transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(50px);
+      cursor: pointer;
+    }
+
+    .team-member::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        rgba(0, 247, 255, 0.08) 0%,
+        rgba(157, 0, 255, 0.05) 100%
+      );
+      z-index: -1;
+      transform: translateZ(-40px);
+    }
+
+    .team-member::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(to right, var(--quantum-blue), var(--plasma-pink));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s ease;
+    }
+
+    .team-member:hover {
+      transform: translateY(-20px) translateZ(80px);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8),
+                  inset 0 0 60px rgba(0, 247, 255, 0.2),
+                  0 0 80px rgba(157, 0, 255, 0.5);
+      border-color: rgba(0, 247, 255, 0.4);
+    }
+
+    .team-member:hover::after {
+      transform: scaleX(1);
+    }
+
+    .member-avatar {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      margin: 0 auto 2rem;
+      border: 4px solid var(--quantum-blue);
+      box-shadow: 0 0 30px var(--quantum-blue),
+                  inset 0 0 20px rgba(0, 247, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(30px);
+      transition: all 0.4s ease;
+    }
+
+    .team-member:hover .member-avatar {
+      transform: translateZ(50px) scale(1.05);
+      box-shadow: 0 0 50px var(--quantum-blue),
+                  inset 0 0 30px rgba(0, 247, 255, 0.5);
+    }
+
+    .member-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(20%) contrast(110%);
+      transition: all 0.4s ease;
+    }
+
+    .team-member:hover .member-avatar img {
+      filter: grayscale(0%) contrast(120%);
+    }
+
+    .member-info {
+      text-align: center;
+      transform-style: preserve-3d;
+    }
+
+    .member-info h2 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      color: var(--quantum-blue);
+      transform: translateZ(20px);
+    }
+
+    .member-info .title {
+      font-size: 1.2rem;
+      color: var(--plasma-pink);
+      margin-bottom: 1.5rem;
+      transform: translateZ(15px);
+      font-weight: 500;
+    }
+
+    .member-info .bio {
+      line-height: 1.8;
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-bottom: 2rem;
+      transform: translateZ(10px);
+    }
+
+    .member-social {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      transform: translateZ(20px);
+    }
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(0, 247, 255, 0.1);
+      border: 1px solid var(--quantum-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+      background: var(--quantum-blue);
+      transform: translateY(-5px) translateZ(30px);
+      box-shadow: 0 0 20px var(--quantum-blue);
+    }
+
+    .hologram-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 247, 255, 0.03) 50%,
+        transparent 100%
+      );
+      animation: scan 6s linear infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    .quantum-sphere {
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle at center, 
+        rgba(0, 247, 255, 0.15) 0%, 
+        rgba(157, 0, 255, 0.1) 50%, 
+        transparent 70%);
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: -1;
+      animation: float-sphere 15s ease-in-out infinite;
+    }
+
+    .sphere-1 {
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .sphere-2 {
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 5s;
+      background: radial-gradient(circle at center, 
+        rgba(255, 0, 170, 0.15) 0%, 
+        rgba(157, 0, 255, 0.1) 50%, 
+        transparent 70%);
+    }
+
+    @keyframes float-sphere {
+      0%, 100% { 
+        transform: translate(0, 0) translateZ(0) scale(1);
+      }
+      50% { 
+        transform: translate(-50px, -60px) translateZ(50px) scale(1.1);
+      }
+    }
+
+    .footer {
+      text-align: center;
+      padding: 8rem 2rem 3rem;
+      background: linear-gradient(to top, var(--dark-matter), var(--void-space));
+      color: var(--star-light);
+      position: relative;
+      clip-path: polygon(0 40%, 100% 0, 100% 100%, 0% 100%);
+      margin-top: 5rem;
+      border-top: 2px solid rgba(0, 247, 255, 0.2);
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(to right, var(--quantum-blue), var(--plasma-pink));
+    }
+
+    .footer p {
+      transform: translateY(40px);
+      opacity: 0.8;
+      font-size: 1rem;
+      letter-spacing: 2px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header {
+        padding: 4rem 1.5rem 10rem;
+        clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+      }
+      
+      .header h1 {
+        font-size: 3rem;
+      }
+      
+      .header p {
+        font-size: 1.3rem;
+      }
+      
+      .quantum-grid {
+        grid-template-columns: 1fr;
+        padding: 0 1.5rem;
+        gap: 3rem;
+      }
+      
+      .team-member {
+        padding: 2.5rem;
+      }
+      
+      .member-avatar {
+        width: 150px;
+        height: 150px;
+      }
+      
+      .footer {
+        clip-path: polygon(0 25%, 100% 0, 100% 100%, 0% 100%);
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="quantum-sphere sphere-1"></div>
+  <div class="quantum-sphere sphere-2"></div>
+
+  <header class="header">
+    <h1>Meet the Team</h1>
+    <p>The minds behind Deployment's vision.</p>
+  </header>
+
+  <main class="quantum-grid">
+    <div class="team-member">
+      <div class="hologram-lines"></div>
+      <div class="member-avatar">
+        <img src="sourab sir.jpg" alt="AI4CODE Founder">
+      </div>
+      <div class="member-info">
+        <h2>Saurabh Bandhopadhy</h2>
+        <p class="title">Website Developer</p>
+        <p class="bio">Visionary architect of Deployment with 10+ years in AI research and full-stack development. Passionate about creating accessible education through technology.</p>
+        <div class="member-social">
+          <a href="#" class="social-icon">🔗</a>
+          <a href="#" class="social-icon">💻</a>
+          <a href="#" class="social-icon">📧</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="team-member">
+      <div class="hologram-lines"></div>
+      <div class="member-avatar">
+        <img src="abhisekh sir.jpg" alt="Sneha Sharma">
+      </div>
+      <div class="member-info">
+        <h2>Abhisekh</h2>
+        <p class="title">API Faculty</p>
+        <p class="bio">Creative director with expertise in human-centered design. Transforms complex technical concepts into intuitive user experiences with 8 years in edtech design.</p>
+        <div class="member-social">
+          <a href="#" class="social-icon">🎨</a>
+          <a href="#" class="social-icon">📱</a>
+          <a href="#" class="social-icon">📌</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-member">
+      <div class="hologram-lines"></div>
+      <div class="member-avatar">
+        <img src="https://t3.ftcdn.net/jpg/06/26/85/56/360_F_626855679_EWlMfvq08aooELdl8hbX2ExPhA6R7xfa.jpg" alt="Sneha Sharma">
+      </div>
+      <div class="member-info">
+        <h2>Amar Daal</h2>
+        <p class="title">Python,Java,AI Model Developer</p>
+        <p class="bio">Creative director with expertise in human-centered design. Transforms complex technical concepts into intuitive user experiences with 8 years in edtech design.</p>
+        <div class="member-social">
+          <a href="#" class="social-icon">🎨</a>
+          <a href="#" class="social-icon">📱</a>
+          <a href="#" class="social-icon">📌</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="team-member">
+      <div class="hologram-lines"></div>
+      <div class="member-avatar">
+        <img src="soumo sir.png" alt="Soumyajit Ghosh">
+      </div>
+      <div class="member-info">
+        <h2>Soumyajit Ghosh</h2>
+        <p class="title">AI & CS Specialist</p>
+        <p class="bio">Machine learning expert with PhD in Computer Science. Develops core algorithms that power Deployment's adaptive learning systems and AI tutors.</p>
+        <div class="member-social">
+          <a href="#" class="social-icon">🧠</a>
+          <a href="#" class="social-icon">📊</a>
+          <a href="#" class="social-icon">📚</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 AI4CODE | Quantum Team Interface</p>
+  </footer>
+
+  <script>
+    // 3D Member Card Interaction
+    const teamMembers = document.querySelectorAll('.team-member');
+    
+    teamMembers.forEach(member => {
+      // Mouse move effect
+      member.addEventListener('mousemove', (e) => {
+        const rect = member.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const angleX = (y - centerY) / 25;
+        const angleY = (centerX - x) / 25;
+        
+        member.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) translateZ(80px)`;
+      });
+      
+      // Mouse leave effect
+      member.addEventListener('mouseleave', () => {
+        member.style.transform = 'translateY(0) translateZ(50px)';
+      });
+    });
+    
+    // Floating spheres follow mouse slightly
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      
+      document.querySelector('.sphere-1').style.transform = `
+        translate(${(x - 0.5) * 60}px, ${(y - 0.5) * 60}px)
+        translateZ(${x * 30}px)
+      `;
+      
+      document.querySelector('.sphere-2').style.transform = `
+        translate(${(0.5 - x) * 60}px, ${(0.5 - y) * 60}px)
+        translateZ(${y * 30}px)
+      `;
+    });
+    
+    // Avatar pulse effect on hover
+    teamMembers.forEach(member => {
+      const avatar = member.querySelector('.member-avatar');
+      
+      member.addEventListener('mouseenter', () => {
+        avatar.style.animation = 'pulse 2s infinite';
+      });
+      
+      member.addEventListener('mouseleave', () => {
+        avatar.style.animation = 'none';
+      });
+    });
+  </script>
+</body>
+</html>

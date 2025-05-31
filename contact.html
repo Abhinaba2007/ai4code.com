@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us | AI4CODE</title>
+  <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
+  <style>
+    /* 3D Prototype Styles */
+    :root {
+      --primary: #6a11cb;
+      --secondary: #2575fc;
+      --accent: #00d2ff;
+      --dark: #1a1a2e;
+      --light: #f8f9fa;
+      --text: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      min-height: 100vh;
+      perspective: 1000px;
+      overflow-x: hidden;
+      color: var(--text);
+    }
+
+    .header {
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      color: white;
+      text-align: center;
+      padding: 6rem 2rem 8rem;
+      position: relative;
+      transform-style: preserve-3d;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+      margin-bottom: -3rem;
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+      z-index: 1;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+      opacity: 0.3;
+      transform: translateZ(-10px);
+    }
+
+    .header h1 {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+      transform: translateZ(30px);
+      letter-spacing: -1px;
+    }
+
+    .header p {
+      font-size: 1.5rem;
+      opacity: 0.9;
+      transform: translateZ(20px);
+      max-width: 700px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    .contact-form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4rem;
+      max-width: 1200px;
+      margin: 0 auto 5rem;
+      padding: 0 2rem;
+      transform-style: preserve-3d;
+      position: relative;
+      z-index: 2;
+    }
+
+    .contact-form form {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      border: none;
+      transform: translateZ(0);
+    }
+
+    .contact-form form::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+    }
+
+    .contact-form form::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(106, 17, 203, 0.05) 0%, rgba(37, 117, 252, 0.03) 100%);
+      z-index: -1;
+      transform: translateZ(-10px);
+    }
+
+    .contact-form form:hover {
+      transform: translateY(-5px) translateZ(20px);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border: 2px solid #eee;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      transform: translateZ(0);
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 5px 15px rgba(106, 17, 203, 0.1);
+      transform: translateZ(5px);
+    }
+
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 150px;
+    }
+
+    .contact-form button {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 20px rgba(106, 17, 203, 0.3);
+      transform: translateZ(10px);
+      width: 100%;
+    }
+
+    .contact-form button:hover {
+      transform: translateY(-3px) translateZ(15px);
+      box-shadow: 0 8px 25px rgba(106, 17, 203, 0.4);
+      background: linear-gradient(to right, var(--secondary), var(--primary));
+    }
+
+    .contact-avatar {
+      width: 350px;
+      height: 350px;
+      background: url('https://cdn-icons-png.flaticon.com/512/8643/8643765.png') center/cover;
+      border-radius: 50%;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+      position: relative;
+      transform-style: preserve-3d;
+      animation: float 6s ease-in-out infinite;
+      display: none; /* Hidden on mobile by default */
+    }
+
+    .contact-avatar::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border: 5px solid rgba(106, 17, 203, 0.2);
+      border-radius: 50%;
+      animation: pulse 3s ease-in-out infinite;
+      transform: translateZ(-20px);
+    }
+
+    .contact-avatar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(106, 17, 203, 0.1), rgba(37, 117, 252, 0.1));
+      border-radius: 50%;
+      transform: translateZ(-10px);
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) translateZ(20px);
+      }
+      50% {
+        transform: translateY(-20px) translateZ(30px);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1) translateZ(-20px);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.05) translateZ(-25px);
+        opacity: 0.5;
+      }
+    }
+
+    .footer {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+      background: var(--dark);
+      color: white;
+      position: relative;
+      clip-path: polygon(0 20%, 100% 0, 100% 100%, 0% 100%);
+      margin-top: 5rem;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+    }
+
+    .footer p {
+      transform: translateY(20px);
+    }
+
+    /* 3D Floating Elements */
+    .floating-shapes {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .shape {
+      position: absolute;
+      opacity: 0.1;
+      border-radius: 50%;
+      filter: blur(50px);
+    }
+
+    .shape-1 {
+      width: 400px;
+      height: 400px;
+      background: var(--primary);
+      top: 20%;
+      left: 10%;
+      animation: float-shape 20s infinite ease-in-out;
+    }
+
+    .shape-2 {
+      width: 300px;
+      height: 300px;
+      background: var(--accent);
+      bottom: 15%;
+      right: 10%;
+      animation: float-shape 18s infinite ease-in-out reverse;
+    }
+
+    @keyframes float-shape {
+      0%, 100% {
+        transform: translateY(0) translateX(0) translateZ(0);
+      }
+      50% {
+        transform: translateY(-50px) translateX(30px) translateZ(20px);
+      }
+    }
+
+    /* Responsive Design */
+    @media (min-width: 992px) {
+      .contact-avatar {
+        display: block;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 4rem 1.5rem 6rem;
+        clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+      }
+      
+      .header h1 {
+        font-size: 2.5rem;
+      }
+      
+      .header p {
+        font-size: 1.2rem;
+      }
+      
+      .contact-form {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 0 1.5rem;
+      }
+      
+      .footer {
+        clip-path: polygon(0 10%, 100% 0, 100% 100%, 0% 100%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+  </div>
+
+  <header class="header">
+    <h1>Contact Us</h1>
+    <p>We'd love to hear from you!</p>
+  </header>
+
+  <main class="contact-form">
+    <div class="contact-avatar"></div>
+    <form>
+      <input type="text" placeholder="Your Name" required />
+      <input type="email" placeholder="Your Email" required />
+      <textarea placeholder="Your Message" rows="5" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 AI4CODE | Contact Us</p>
+  </footer>
+
+  <script>
+    // Form input 3D effects
+    const inputs = document.querySelectorAll('input, textarea');
+    
+    inputs.forEach(input => {
+      // Focus effect
+      input.addEventListener('focus', () => {
+        input.style.transform = 'translateZ(10px)';
+        input.parentElement.style.transform = 'translateZ(5px)';
+      });
+      
+      // Blur effect
+      input.addEventListener('blur', () => {
+        input.style.transform = 'translateZ(0)';
+        input.parentElement.style.transform = 'translateZ(0)';
+      });
+    });
+
+    // Avatar follows mouse slightly
+    const avatar = document.querySelector('.contact-avatar');
+    document.addEventListener('mousemove', (e) => {
+      if (avatar) {
+        const x = (window.innerWidth / 2 - e.pageX) / 30;
+        const y = (window.innerHeight / 2 - e.pageY) / 30;
+        avatar.style.transform = `translateY(${y}px) translateX(${x}px) translateZ(20px)`;
+      }
+      
+      // Floating shapes follow mouse
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      
+      document.querySelector('.shape-1').style.transform = `
+        translateX(${x * 50}px) 
+        translateY(${y * 50}px)
+        translateZ(${x * 20}px)
+      `;
+      
+      document.querySelector('.shape-2').style.transform = `
+        translateX(${-x * 50}px) 
+        translateY(${-y * 50}px)
+        translateZ(${y * 20}px)
+      `;
+    });
+
+    // Form submission
+    const form = document.querySelector('form');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      // Show success message
+      const submitBtn = form.querySelector('button');
+      submitBtn.textContent = 'Message Sent!';
+      submitBtn.style.background = 'linear-gradient(to right, #4CAF50, #2E7D32)';
+      
+      setTimeout(() => {
+        submitBtn.textContent = 'Send Message';
+        submitBtn.style.background = 'linear-gradient(to right, var(--primary), var(--secondary))';
+        form.reset();
+      }, 2000);
+    });
+  </script>
+  <!-- In all HTML files -->
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<script src="auth.js"></script> <!-- Your config -->
+</body>
+</html>
