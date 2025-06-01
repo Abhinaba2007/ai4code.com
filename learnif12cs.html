@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D CS Learning Portal | CLASS-12</title>
+  <title>3D Learning Portal | Class 12 AI</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
   <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
   <style>
@@ -94,6 +94,7 @@
       transform-style: preserve-3d;
       transform: translateZ(30px);
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
     }
 
     .module-card::before {
@@ -161,8 +162,8 @@
       left: 100%;
     }
 
-    /* Binary Code Visualization */
-    .cs-visualization {
+    /* Neural Network Visualization */
+    .ai-visualization {
       width: 100%;
       height: 200px;
       background: rgba(0, 0, 0, 0.5);
@@ -174,20 +175,30 @@
       transform: translateZ(20px);
     }
 
-    .binary-digit {
+    .neuron {
       position: absolute;
-      font-family: 'Orbitron', sans-serif;
-      color: var(--matrix-green);
-      animation: floatDown 10s linear infinite;
-      opacity: 0.7;
+      width: 10px;
+      height: 10px;
+      background: var(--neon-blue);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
       transform: translateZ(30px);
     }
 
-    @keyframes floatDown {
-      0% { transform: translateY(-50px) translateZ(30px); opacity: 0; }
-      10% { opacity: 0.7; }
-      90% { opacity: 0.7; }
-      100% { transform: translateY(250px) translateZ(30px); opacity: 0; }
+    @keyframes pulse {
+      0% { opacity: 0.3; transform: scale(0.8) translateZ(30px); }
+      50% { opacity: 1; transform: scale(1.1) translateZ(50px); }
+      100% { opacity: 0.3; transform: scale(0.8) translateZ(30px); }
+    }
+
+    /* Connection lines between neurons */
+    .connection {
+      position: absolute;
+      height: 2px;
+      background: var(--neon-blue);
+      transform-origin: 0 0;
+      opacity: 0.3;
+      animation: pulse 3s infinite;
     }
 
     /* Responsive Design */
@@ -214,6 +225,68 @@
     .active-page {
       display: block;
     }
+
+    /* Progress Page Specific Styles */
+    .progress-card {
+      background: rgba(10,10,40,0.7);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transform-style: preserve-3d;
+      transform: translateZ(30px);
+    }
+
+    .progress-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      margin-top: 0;
+    }
+
+    .progress-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      transform: translateZ(30px);
+    }
+
+    .activity-item {
+      display: flex;
+      margin-bottom: 1rem;
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .activity-bullet {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: rgba(0,247,255,0.2);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      transition: width 1s ease;
+    }
+
+    .chart-container {
+      height: 300px;
+      background: rgba(0,0,0,0.3);
+      border: 1px dashed var(--neon-blue);
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
@@ -224,55 +297,55 @@
   <div class="main-container">
     <!-- Futuristic Header -->
     <header class="portal-header">
-      <h1 class="cyber-glow">3D CS LEARNING PORTAL</h1>
-      <p>Immersive cyberpunk interface for Class 12 Computer Science</p>
+      <h1 class="cyber-glow">3D LEARNING PORTAL</h1>
+      <p>Immersive cyberpunk interface for Class 12 AI education</p>
     </header>
 
-    <!-- Binary Code Visualization -->
-    <div class="cs-visualization" id="binaryRain"></div>
+    <!-- AI Neural Network Visualization -->
+    <div class="ai-visualization" id="neuralNetwork"></div>
 
     <!-- 3D Card Modules -->
     <div class="module-grid">
       <!-- Live Classes Module -->
       <div class="module-card" onclick="showPage('live-classes')">
-        <h2>📡 Live CS Classes</h2>
-        <p>Attend real-time lectures with interactive coding sessions.</p>
-        <button class="enter-btn" onclick="window.location.href='live-classes12cs.html'">Enter Classroom</button>
+        <h2>📡 Live AI Classes</h2>
+        <p>Attend real-time AI lectures with interactive 3D simulations.</p>
+        <button class="enter-btn" onclick="window.location.href='live-classes12ai.html'">Enter Classroom</button>
       </div>
 
       <!-- Notes Module -->
       <div class="module-card" onclick="showPage('smart-notes')">
-        <h2>📝 CS Study Materials</h2>
-        <p>Download notes for Python, SQL, Networking, and more.</p>
+        <h2>📝 Smart Notes</h2>
+        <p>Download AI-curated notes for all NCERT chapters.</p>
         <button class="enter-btn">Access Notes</button>
       </div>
 
-      <!-- Coding Practice Module -->
-      <div class="module-card" onclick="showPage('coding-practice')">
-        <h2>💻 Code Playground</h2>
-        <p>Practice Python, SQL, and other programming concepts.</p>
-        <button class="enter-btn">Start Coding</button>
+      <!-- Practice Tests Module -->
+      <div class="module-card" onclick="showPage('practice-tests')">
+        <h2>⚡ AI Practice Tests</h2>
+        <p>Take adaptive tests with instant performance analysis.</p>
+        <button class="enter-btn">Start Test</button>
       </div>
 
       <!-- Projects Module -->
       <div class="module-card" onclick="showPage('projects-lab')">
-        <h2>🛠️ CS Projects Lab</h2>
-        <p>Submit your Python/SQL projects and get feedback.</p>
+        <h2>🛠️ AI Projects Lab</h2>
+        <p>Submit projects & get AI feedback.</p>
         <button class="enter-btn">Upload Project</button>
       </div>
 
       <!-- Doubt Solver Module -->
       <div class="module-card" onclick="showPage('doubt-solver')">
-        <h2>❓ CS Doubt Solver</h2>
-        <p>Ask programming questions & get instant explanations.</p>
+        <h2>❓ AI Doubt Solver</h2>
+        <p>Ask questions & get instant AI explanations.</p>
         <button class="enter-btn">Ask Now</button>
       </div>
 
-      <!-- Exam Prep Module -->
-      <div class="module-card" onclick="showPage('exam-prep')">
-        <h2>📚 Board Exam Prep</h2>
-        <p>Previous year papers and sample questions.</p>
-        <button class="enter-btn">Prepare Now</button>
+      <!-- Performance Tracker -->
+      <div class="module-card" onclick="showPage('ai-progress')">
+        <h2>📊 My AI Progress</h2>
+        <p>Track learning with neural analytics.</p>
+        <button class="enter-btn">View Stats</button>
       </div>
     </div>
   </div>
@@ -282,19 +355,19 @@
     <!-- Live Classes Content -->
     <div class="main-container">
       <header class="portal-header">
-        <h1 class="cyber-glow">LIVE CS CLASSROOM</h1>
-        <p>Real-time interactive learning with coding demonstrations</p>
+        <h1 class="cyber-glow">LIVE AI CLASSROOM</h1>
+        <p>Real-time interactive learning with 3D simulations</p>
       </header>
       
       <div style="background: rgba(0,0,0,0.5); border: 1px solid var(--neon-blue); padding: 2rem; border-radius: 8px; transform: translateZ(40px);">
-        <h2 style="color: var(--neon-blue);">Today's Class: Python - File Handling</h2>
+        <h2 style="color: var(--neon-blue);">Today's Class: Introduction to AI</h2>
         <div style="height: 400px; background: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; margin: 1rem 0; border: 1px dashed var(--neon-blue);">
-          <h3>Interactive Coding Environment</h3>
+          <h3>3D AI Teacher Simulation</h3>
         </div>
         <div style="display: flex; gap: 1rem;">
           <button class="enter-btn">Join Class</button>
           <button class="enter-btn" style="background: var(--neon-orange);">View Schedule</button>
-          <button class="enter-btn" style="background: var(--neon-pink);">Open IDE</button>
+          <button class="enter-btn" style="background: var(--neon-pink);">Open Whiteboard</button>
         </div>
       </div>
       <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
@@ -305,24 +378,24 @@
     <!-- Smart Notes Content -->
     <div class="main-container">
       <header class="portal-header">
-        <h1 class="cyber-glow">CS STUDY MATERIALS</h1>
-        <p>Comprehensive resources for Class 12 Computer Science</p>
+        <h1 class="cyber-glow">SMART NOTES</h1>
+        <p>AI-curated NCERT-aligned learning materials</p>
       </header>
       
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; transform: translateZ(30px);">
         <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem;">
-          <h3 style="color: var(--neon-blue);">Python Programming</h3>
-          <p>Complete Python notes with examples</p>
+          <h3 style="color: var(--neon-blue);">Chapter 1: Intro to AI</h3>
+          <p>Basic concepts and history of AI</p>
           <button class="enter-btn" style="padding: 0.5rem 1rem; width: 100%; margin-top: 1rem;">Download PDF</button>
         </div>
         <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem;">
-          <h3 style="color: var(--neon-blue);">SQL & Databases</h3>
-          <p>MySQL notes and practice queries</p>
+          <h3 style="color: var(--neon-blue);">Chapter 2: AI Project Cycle</h3>
+          <p>Steps in developing AI projects</p>
           <button class="enter-btn" style="padding: 0.5rem 1rem; width: 100%; margin-top: 1rem;">Download PDF</button>
         </div>
         <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem;">
-          <h3 style="color: var(--neon-blue);">Computer Networks</h3>
-          <p>Networking concepts and protocols</p>
+          <h3 style="color: var(--neon-blue);">Chapter 3: Neural Networks</h3>
+          <p>How AI systems learn</p>
           <button class="enter-btn" style="padding: 0.5rem 1rem; width: 100%; margin-top: 1rem;">Download PDF</button>
         </div>
       </div>
@@ -330,37 +403,30 @@
     </div>
   </div>
 
-  <div id="coding-practice" class="page">
-    <!-- Coding Practice Content -->
+  <div id="practice-tests" class="page">
+    <!-- Practice Tests Content -->
     <div class="main-container">
       <header class="portal-header">
-        <h1 class="cyber-glow">CODE PLAYGROUND</h1>
-        <p>Practice Python, SQL, and other programming concepts</p>
+        <h1 class="cyber-glow">AI PRACTICE TESTS</h1>
+        <p>Adaptive assessments with instant feedback</p>
       </header>
       
       <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 2rem; transform: translateZ(40px);">
-        <h2 style="color: var(--neon-blue);">Choose Practice Area</h2>
+        <h2 style="color: var(--neon-blue);">Available Tests</h2>
         <div style="margin-top: 1.5rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px dashed rgba(0,247,255,0.3);">
             <div>
-              <h3 style="margin: 0;">Python Programming</h3>
-              <p style="margin: 0.5rem 0 0; opacity: 0.8;">Functions, File Handling, OOP</p>
+              <h3 style="margin: 0;">Chapter 1 Quiz</h3>
+              <p style="margin: 0.5rem 0 0; opacity: 0.8;">15 Questions | 20 Minutes</p>
             </div>
-            <button class="enter-btn">Start Practice</button>
+            <button class="enter-btn">Start Test</button>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px dashed rgba(0,247,255,0.3);">
             <div>
-              <h3 style="margin: 0;">SQL Queries</h3>
-              <p style="margin: 0.5rem 0 0; opacity: 0.8;">SELECT, JOIN, Functions</p>
+              <h3 style="margin: 0;">Mid-Term Assessment</h3>
+              <p style="margin: 0.5rem 0 0; opacity: 0.8;">30 Questions | 45 Minutes</p>
             </div>
-            <button class="enter-btn">Start Practice</button>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem;">
-            <div>
-              <h3 style="margin: 0;">Data Structures</h3>
-              <p style="margin: 0.5rem 0 0; opacity: 0.8;">Stacks, Queues, Lists</p>
-            </div>
-            <button class="enter-btn">Start Practice</button>
+            <button class="enter-btn">Start Test</button>
           </div>
         </div>
       </div>
@@ -372,12 +438,12 @@
     <!-- Projects Lab Content -->
     <div class="main-container">
       <header class="portal-header">
-        <h1 class="cyber-glow">CS PROJECTS LAB</h1>
-        <p>Submit your Python/SQL projects and receive feedback</p>
+        <h1 class="cyber-glow">AI PROJECTS LAB</h1>
+        <p>Submit your work and receive AI-powered feedback</p>
       </header>
       
       <div style="background: rgba(10,10,40,0.7); border: 2px dashed var(--neon-blue); border-radius: 8px; padding: 3rem; text-align: center; transform: translateZ(40px); cursor: pointer;">
-        <div style="font-size: 3rem;">🖥️</div>
+        <div style="font-size: 3rem;">🛠️</div>
         <h2 style="color: var(--neon-blue);">Drag & Drop Project Files Here</h2>
         <p>or click to select files from your device</p>
       </div>
@@ -386,10 +452,10 @@
         <h2 style="color: var(--neon-blue);">Recent Submissions</h2>
         <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-pink); border-radius: 8px; padding: 1rem; margin-top: 1rem;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h3 style="margin: 0;">Library Management System</h3>
+            <h3 style="margin: 0;">AI Chatbot Project</h3>
             <span style="background: rgba(0,255,0,0.2); color: lime; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem;">Reviewed</span>
           </div>
-          <p style="margin: 0.5rem 0;">Submitted: 5 days ago</p>
+          <p style="margin: 0.5rem 0;">Submitted: 2 days ago</p>
           <button class="enter-btn" style="padding: 0.5rem 1rem; margin-top: 1rem;">View Feedback</button>
         </div>
       </div>
@@ -401,20 +467,20 @@
     <!-- Doubt Solver Content -->
     <div class="main-container">
       <header class="portal-header">
-        <h1 class="cyber-glow">CS DOUBT SOLVER</h1>
-        <p>Get instant explanations for programming questions</p>
+        <h1 class="cyber-glow">AI DOUBT SOLVER</h1>
+        <p>Get instant explanations for your questions</p>
       </header>
       
       <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 2rem; transform: translateZ(40px);">
         <div style="height: 300px; overflow-y: auto; margin-bottom: 1rem; border: 1px solid rgba(0,247,255,0.3); padding: 1rem; border-radius: 4px;">
           <div style="background: rgba(0,247,255,0.1); padding: 0.8rem; border-radius: 8px; margin-bottom: 1rem; border-left: 3px solid var(--neon-blue);">
-            <p style="margin: 0;"><strong>CS Tutor:</strong> Hello! I'm your CS tutor. Ask me anything about Class 12 Computer Science.</p>
+            <p style="margin: 0;"><strong>AI Tutor:</strong> Hello! I'm your AI tutor. Ask me anything about Class 9 AI concepts.</p>
           </div>
           <div style="background: rgba(255,0,228,0.1); padding: 0.8rem; border-radius: 8px; margin-bottom: 1rem; border-left: 3px solid var(--neon-pink); margin-left: auto; max-width: 80%;">
-            <p style="margin: 0;"><strong>You:</strong> How to connect Python with MySQL?</p>
+            <p style="margin: 0;"><strong>You:</strong> What's the difference between AI and machine learning?</p>
           </div>
           <div style="background: rgba(0,247,255,0.1); padding: 0.8rem; border-radius: 8px; border-left: 3px solid var(--neon-blue);">
-            <p style="margin: 0;"><strong>CS Tutor:</strong> Use mysql.connector module. First install it with pip, then use connect() with host, user, password, and database parameters.</p>
+            <p style="margin: 0;"><strong>AI Tutor:</strong> AI is the broader concept of machines performing tasks intelligently. Machine Learning is a subset of AI where machines learn from data.</p>
           </div>
         </div>
         <div style="display: flex; gap: 0.5rem;">
@@ -427,125 +493,281 @@
     </div>
   </div>
 
-  <div id="exam-prep" class="page">
-    <!-- Exam Prep Content -->
+  <div id="ai-progress" class="page">
+    <!-- AI Progress Content -->
     <div class="main-container">
       <header class="portal-header">
-        <h1 class="cyber-glow">BOARD EXAM PREPARATION</h1>
-        <p>Previous year papers and sample questions</p>
+        <h1 class="cyber-glow">MY AI PROGRESS</h1>
+        <p>Track your learning journey with neural analytics</p>
       </header>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; transform: translateZ(30px);">
-        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem; text-align: center;">
-          <h3 style="color: var(--neon-blue); margin-top: 0;">2023 Question Paper</h3>
-          <div style="font-size: 2rem; margin: 1rem 0;">📄</div>
-          <button class="enter-btn" style="width: 100%;">Download PDF</button>
+      <div class="progress-grid">
+        <!-- Overall Progress Card -->
+        <div class="progress-card" style="border: 1px solid var(--neon-blue); grid-column: span 2;">
+          <h3 style="color: var(--neon-blue);">Overall Learning Progress</h3>
+          <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
+            <div style="min-width: 150px; text-align: center;">
+              <div style="width: 100px; height: 100px; margin: 0 auto; position: relative;">
+                <svg viewBox="0 0 100 100" style="transform: rotate(-90deg); transform-origin: 50% 50%;">
+                  <circle cx="50" cy="50" r="45" style="stroke: rgba(0,247,255,0.2); stroke-width: 8; fill: none;"></circle>
+                  <circle cx="50" cy="50" r="45" style="stroke: var(--neon-blue); stroke-width: 8; stroke-dasharray: 283; stroke-dashoffset: 113; fill: none;"></circle>
+                </svg>
+                <div id="overall-completion" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; font-weight: bold; color: var(--neon-blue);">60%</div>
+              </div>
+              <p style="margin-top: 0.5rem;">Course Completion</p>
+            </div>
+            
+            <div style="min-width: 150px; text-align: center;">
+              <div id="classes-attended" style="font-size: 2.5rem; color: var(--neon-pink);">8</div>
+              <p style="margin-top: 0.5rem;">Classes Attended</p>
+            </div>
+            
+            <div style="min-width: 150px; text-align: center;">
+              <div id="tests-completed" style="font-size: 2.5rem; color: var(--matrix-green);">5</div>
+              <p style="margin-top: 0.5rem;">Tests Completed</p>
+            </div>
+            
+            <div style="min-width: 150px; text-align: center;">
+              <div id="projects-submitted" style="font-size: 2.5rem; color: var(--neon-orange);">3</div>
+              <p style="margin-top: 0.5rem;">Projects Submitted</p>
+            </div>
+          </div>
         </div>
         
-        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem; text-align: center;">
-          <h3 style="color: var(--neon-blue); margin-top: 0;">2022 Question Paper</h3>
-          <div style="font-size: 2rem; margin: 1rem 0;">📄</div>
-          <button class="enter-btn" style="width: 100%;">Download PDF</button>
+        <!-- Recent Activity Timeline -->
+        <div class="progress-card" style="border: 1px solid var(--neon-pink); grid-column: span 2;">
+          <h3 style="color: var(--neon-pink);">Recent Activity</h3>
+          <div id="recent-activity-container" style="margin-top: 1rem; max-height: 300px; overflow-y: auto;">
+            <!-- Activities will be dynamically inserted here -->
+          </div>
         </div>
         
-        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem; text-align: center;">
-          <h3 style="color: var(--neon-blue); margin-top: 0;">Sample Papers</h3>
-          <div style="font-size: 2rem; margin: 1rem 0;">📚</div>
-          <button class="enter-btn" style="width: 100%;">View Papers</button>
+        <!-- Chapter Progress -->
+        <div class="progress-card" style="border: 1px solid var(--neon-blue);">
+          <h3 style="color: var(--neon-blue);">Chapter Progress</h3>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Intro to AI</span>
+              <span>75%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 75%;"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>AI Project Cycle</span>
+              <span>60%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 60%;"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Neural Networks</span>
+              <span>45%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 45%;"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Computer Vision</span>
+              <span>30%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 30%;"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Test Performance -->
+        <div class="progress-card" style="border: 1px solid var(--matrix-green);">
+          <h3 style="color: var(--matrix-green);">Test Performance</h3>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Chapter 1 Quiz</span>
+              <span>82%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 82%; background: linear-gradient(90deg, var(--matrix-green), var(--neon-blue));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Chapter 2 Quiz</span>
+              <span>78%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 78%; background: linear-gradient(90deg, var(--matrix-green), var(--neon-blue));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Chapter 3 Quiz</span>
+              <span>85%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 85%; background: linear-gradient(90deg, var(--matrix-green), var(--neon-blue));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Mid-Term Test</span>
+              <span>72%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 72%; background: linear-gradient(90deg, var(--matrix-green), var(--neon-blue));"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Class Attendance -->
+        <div class="progress-card" style="border: 1px solid var(--cyber-purple);">
+          <h3 style="color: var(--cyber-purple);">Class Attendance</h3>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Week 1</span>
+              <span>2/2</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 100%; background: linear-gradient(90deg, var(--cyber-purple), var(--neon-pink));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Week 2</span>
+              <span>1/2</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 50%; background: linear-gradient(90deg, var(--cyber-purple), var(--neon-pink));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Week 3</span>
+              <span>2/2</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 100%; background: linear-gradient(90deg, var(--cyber-purple), var(--neon-pink));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Week 4</span>
+              <span>1/2</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 50%; background: linear-gradient(90deg, var(--cyber-purple), var(--neon-pink));"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Project Grades -->
+        <div class="progress-card" style="border: 1px solid var(--neon-orange);">
+          <h3 style="color: var(--neon-orange);">Project Grades</h3>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>AI Chatbot</span>
+              <span>A</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 90%; background: linear-gradient(90deg, var(--neon-orange), var(--neon-pink));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Image Classifier</span>
+              <span>B+</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 80%; background: linear-gradient(90deg, var(--neon-orange), var(--neon-pink));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Recommendation System</span>
+              <span>A-</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 85%; background: linear-gradient(90deg, var(--neon-orange), var(--neon-pink));"></div>
+            </div>
+          </div>
         </div>
       </div>
       
-      <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem; margin-top: 2rem; transform: translateZ(30px);">
-        <h2 style="color: var(--neon-blue);">Important Topics</h2>
-        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
-          <span style="background: rgba(0,247,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--neon-blue);">Python Functions</span>
-          <span style="background: rgba(0,247,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--neon-blue);">File Handling</span>
-          <span style="background: rgba(0,247,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--neon-blue);">SQL Queries</span>
-          <span style="background: rgba(0,247,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--neon-blue);">Networking</span>
-          <span style="background: rgba(0,247,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--neon-blue);">Data Structures</span>
+      <!-- Performance Chart Section -->
+      <div class="progress-card" style="margin-top: 2rem;">
+        <h3 style="color: var(--neon-blue);">Performance Over Time</h3>
+        <div class="chart-container">
+          <!-- This would be replaced with a real chart library like Chart.js -->
+          <p style="color: rgba(255,255,255,0.5);">Performance chart visualization would appear here</p>
         </div>
       </div>
+      
       <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
     </div>
   </div>
 
   <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
-<script>
-  // Your Firebase config (same as in other pages)
-  const firebaseConfig = {
-    apiKey: "AIzaSyBITF0Fh_vCJddNeyURWWyprLCOYB2h7Cc",
-    authDomain: "sign-up-page-fe4f7.firebaseapp.com",
-    projectId: "sign-up-page-fe4f7",
-    storageBucket: "sign-up-page-fe4f7.firebasestorage.app",
-    messagingSenderId: "339652230724",
-    appId: "1:339652230724:web:ba50630f42259219a8c611"
-  };
-  
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-</script>
-
-<!-- At the BOTTOM of the page, before closing </body> tag -->
-<!-- After Firebase initialization but before other scripts -->
-
-<script>
-  // Check authentication state on page load
-  auth.onAuthStateChanged((user) => {
-    if (!user) {
-      localStorage.setItem('returnUrl', window.location.href);
-      window.location.href = 'signup.html';
-    }
-  });
-
-  // Enroll button handler
-  document.getElementById('enrollBtn')?.addEventListener('click', function(e) {
-    e.preventDefault();
-    checkAuthBeforeAction(() => {
-      document.getElementById('purchaseModal').style.display = "block";
-    });
-  });
-
-  // Demo button handler
-  document.getElementById('demoviewBtn')?.addEventListener('click', function(e) {
-    e.preventDefault();
-    checkAuthBeforeAction(() => {
-      window.location.href = 'learnif9ai.html';
-    }, 'learnif9ai.html');
-  });
-
-  // Reusable auth check function
-  function checkAuthBeforeAction(actionCallback, specificReturnUrl) {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        actionCallback();
-      } else {
-        localStorage.setItem('returnUrl', specificReturnUrl || window.location.href);
-        window.location.href = 'signup.html';
-      }
-    });
-  }
-</script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
 
   <script>
-    // Initialize Binary Rain Visualization
-    function initBinaryRain() {
-      const binaryRain = document.getElementById('binaryRain');
-      const characters = '01';
+    // Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBITF0Fh_vCJddNeyURWWyprLCOYB2h7Cc",
+      authDomain: "sign-up-page-fe4f7.firebaseapp.com",
+      projectId: "sign-up-page-fe4f7",
+      storageBucket: "sign-up-page-fe4f7.firebasestorage.app",
+      messagingSenderId: "339652230724",
+      appId: "1:339652230724:web:ba50630f42259219a8c611"
+    };
+    
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const database = firebase.database();
+  </script>
+
+  <script>
+    // Initialize Neural Network Visualization
+    function initNeuralNetwork() {
+      const neuralNetwork = document.getElementById('neuralNetwork');
       
-      // Create binary digits
-      for (let i = 0; i < 100; i++) {
-        const digit = document.createElement('div');
-        digit.classList.add('binary-digit');
-        digit.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
-        digit.style.left = `${Math.random() * 100}%`;
-        digit.style.top = `${Math.random() * 100}%`;
-        digit.style.animationDelay = `${Math.random() * 5}s`;
-        digit.style.animationDuration = `${5 + Math.random() * 10}s`;
-        binaryRain.appendChild(digit);
+      // Create neurons
+      for (let i = 0; i < 20; i++) {
+        const neuron = document.createElement('div');
+        neuron.classList.add('neuron');
+        neuron.style.left = `${Math.random() * 100}%`;
+        neuron.style.top = `${Math.random() * 100}%`;
+        neuron.style.animationDelay = `${Math.random() * 2}s`;
+        neuralNetwork.appendChild(neuron);
       }
+      
+      // Create connections
+      const neurons = document.querySelectorAll('.neuron');
+      neurons.forEach((neuron, index) => {
+        if (index < neurons.length - 1) {
+          const nextNeuron = neurons[index + 1];
+          const x1 = parseFloat(neuron.style.left);
+          const y1 = parseFloat(neuron.style.top);
+          const x2 = parseFloat(nextNeuron.style.left);
+          const y2 = parseFloat(nextNeuron.style.top);
+          
+          const connection = document.createElement('div');
+          connection.classList.add('connection');
+          connection.style.left = `${x1}%`;
+          connection.style.top = `${y1}%`;
+          connection.style.width = `${Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2))}%`;
+          connection.style.transform = `rotate(${Math.atan2(y2-y1, x2-x1)}rad)`;
+          connection.style.animationDelay = `${Math.random() * 2}s`;
+          neuralNetwork.appendChild(connection);
+        }
+      });
     }
     
     // Page Navigation
@@ -559,59 +781,134 @@
       } else {
         document.querySelector('.main-container').style.display = 'none';
         document.getElementById(pageId).classList.add('active-page');
+        
+        // Load specific data when progress page is shown
+        if (pageId === 'ai-progress') {
+          loadProgressData();
+        }
       }
     }
     
+    // Fetch and display real progress data
+    function loadProgressData() {
+      const userId = auth.currentUser?.uid;
+      if (!userId) return;
+      
+      // Reference to user's progress data in Firebase
+      const progressRef = database.ref(`users/${userId}/progress`);
+      
+      progressRef.on('value', (snapshot) => {
+        const progressData = snapshot.val();
+        if (progressData) {
+          // Update course completion
+          document.getElementById('overall-completion').textContent = 
+            `${progressData.courseCompletion || 0}%`;
+          
+          // Update classes attended
+          document.getElementById('classes-attended').textContent = 
+            progressData.classesAttended || 0;
+          
+          // Update tests completed
+          document.getElementById('tests-completed').textContent = 
+            progressData.testsCompleted || 0;
+          
+          // Update projects submitted
+          document.getElementById('projects-submitted').textContent = 
+            progressData.projectsSubmitted || 0;
+          
+          // Update chapter progress
+          updateProgressBars(progressData.chapterProgress);
+          
+          // Update test performance
+          updateTestPerformance(progressData.testScores);
+          
+          // Update recent activity
+          updateRecentActivity(progressData.recentActivity);
+        }
+      });
+    }
+    
+    function updateProgressBars(chapterProgress) {
+      if (!chapterProgress) return;
+      
+      for (const [chapter, percent] of Object.entries(chapterProgress)) {
+        const progressElement = document.querySelector(`.chapter-progress[data-chapter="${chapter}"]`);
+        if (progressElement) {
+          progressElement.style.width = `${percent}%`;
+          progressElement.previousElementSibling.textContent = `${percent}%`;
+        }
+      }
+    }
+    
+    function updateTestPerformance(testScores) {
+      if (!testScores) return;
+      
+      for (const [testName, score] of Object.entries(testScores)) {
+        const testElement = document.querySelector(`.test-score[data-test="${testName}"]`);
+        if (testElement) {
+          testElement.style.width = `${score}%`;
+          testElement.previousElementSibling.textContent = `${score}%`;
+        }
+      }
+    }
+    
+    function updateRecentActivity(activities) {
+      if (!activities || !Array.isArray(activities)) return;
+      
+      const activityContainer = document.getElementById('recent-activity-container');
+      if (!activityContainer) return;
+      
+      // Clear existing activities
+      activityContainer.innerHTML = '';
+      
+      // Add new activities
+      activities.forEach(activity => {
+        const activityElement = document.createElement('div');
+        activityElement.className = 'activity-item';
+        activityElement.innerHTML = `
+          <div class="activity-bullet" style="background: ${getActivityColor(activity.type)};"></div>
+          <div style="flex: 1;">
+            <div style="display: flex; justify-content: space-between;">
+              <strong style="color: ${getActivityColor(activity.type)};">${activity.type}</strong>
+              <span style="opacity: 0.7;">${formatDate(activity.timestamp)}</span>
+            </div>
+            <p style="margin: 0.5rem 0 0;">${activity.description}</p>
+          </div>
+        `;
+        activityContainer.appendChild(activityElement);
+      });
+    }
+    
+    function getActivityColor(type) {
+      const colors = {
+        'Completed Test': 'var(--neon-blue)',
+        'Attended Class': 'var(--matrix-green)',
+        'Project Feedback': 'var(--neon-orange)',
+        'Note Viewed': 'var(--cyber-purple)',
+        'Doubt Asked': 'var(--neon-pink)'
+      };
+      return colors[type] || 'var(--neon-blue)';
+    }
+    
+    function formatDate(timestamp) {
+      if (!timestamp) return 'Recently';
+      const date = new Date(timestamp);
+      return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    }
+    
+    // Authentication state check
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        localStorage.setItem('returnUrl', window.location.href);
+        window.location.href = 'signup.html';
+      }
+    });
+    
     // Initialize on load
     document.addEventListener('DOMContentLoaded', () => {
-      initBinaryRain();
+      initNeuralNetwork();
       showPage('home');
     });
   </script>
-  <script>
-  auth.onAuthStateChanged((user) => {
-    if (!user) {
-      localStorage.setItem('returnUrl', 'learnif12cs.html');
-      window.location.href = 'signup.html';
-    }
-  });
-</script>
-<script>
-  // auth.js - Include this in all HTML files
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Firebase Auth
-    const auth = firebase.auth();
-    
-    // Handle auth state changes
-    auth.onAuthStateChanged(function(user) {
-        updateAuthUI(user);
-    });
-
-    function updateAuthUI(user) {
-        const loginButtons = document.querySelectorAll('.login-btn');
-        const logoutButtons = document.querySelectorAll('.logout-btn');
-        
-        if (user) {
-            // User is logged in
-            loginButtons.forEach(btn => btn.style.display = 'none');
-            logoutButtons.forEach(btn => btn.style.display = 'block');
-        } else {
-            // User is logged out
-            loginButtons.forEach(btn => btn.style.display = 'block');
-            logoutButtons.forEach(btn => btn.style.display = 'none');
-        }
-    }
-
-    // Logout functionality
-    document.querySelectorAll('.logout-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            auth.signOut().then(() => {
-                window.location.href = 'index.html'; // Redirect to home after logout
-            });
-        });
-    });
-});
-</script>
 </body>
 </html>

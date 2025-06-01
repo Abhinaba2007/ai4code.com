@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D AI Learning Portal | CLASS-12</title>
+  <title>3D Learning Portal | Class 12 AI</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
   <link rel="icon" href="ai4code logo.jpg" type="image/x-icon">
   <style>
@@ -94,6 +94,7 @@
       transform-style: preserve-3d;
       transform: translateZ(30px);
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
     }
 
     .module-card::before {
@@ -224,6 +225,68 @@
     .active-page {
       display: block;
     }
+
+    /* Progress Page Specific Styles */
+    .progress-card {
+      background: rgba(10,10,40,0.7);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transform-style: preserve-3d;
+      transform: translateZ(30px);
+    }
+
+    .progress-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      margin-top: 0;
+    }
+
+    .progress-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      transform: translateZ(30px);
+    }
+
+    .activity-item {
+      display: flex;
+      margin-bottom: 1rem;
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .activity-bullet {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: rgba(0,247,255,0.2);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      transition: width 1s ease;
+    }
+
+    .chart-container {
+      height: 300px;
+      background: rgba(0,0,0,0.3);
+      border: 1px dashed var(--neon-blue);
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
@@ -234,7 +297,7 @@
   <div class="main-container">
     <!-- Futuristic Header -->
     <header class="portal-header">
-      <h1 class="cyber-glow">3D AI LEARNING PORTAL</h1>
+      <h1 class="cyber-glow">3D LEARNING PORTAL</h1>
       <p>Immersive cyberpunk interface for Class 12 AI education</p>
     </header>
 
@@ -247,7 +310,7 @@
       <div class="module-card" onclick="showPage('live-classes')">
         <h2>📡 Live AI Classes</h2>
         <p>Attend real-time AI lectures with interactive 3D simulations.</p>
-        <button class="enter-btn" onclick="window.location.href='live-classes12ai.html'" >Enter Classroom</button>
+        <button class="enter-btn" onclick="window.location.href='live-classes12ai.html'">Enter Classroom</button>
       </div>
 
       <!-- Notes Module -->
@@ -438,27 +501,57 @@
         <p>Track your learning journey with neural analytics</p>
       </header>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; transform: translateZ(30px);">
-        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem; text-align: center;">
-          <h3 style="color: var(--neon-blue); margin-top: 0;">Overall Mastery</h3>
-          <div style="width: 150px; height: 150px; margin: 1rem auto; position: relative;">
-            <svg viewBox="0 0 100 100" style="transform: rotate(-90deg); transform-origin: 50% 50%;">
-              <circle cx="50" cy="50" r="45" style="stroke: rgba(0,247,255,0.2); stroke-width: 10; fill: none;"></circle>
-              <circle cx="50" cy="50" r="45" style="stroke: var(--neon-blue); stroke-width: 10; stroke-dasharray: 314; stroke-dashoffset: 125.6; fill: none; transition: stroke-dashoffset 1s ease;"></circle>
-            </svg>
-            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; font-weight: bold; color: var(--neon-blue);">60%</div>
+      <div class="progress-grid">
+        <!-- Overall Progress Card -->
+        <div class="progress-card" style="border: 1px solid var(--neon-blue); grid-column: span 2;">
+          <h3 style="color: var(--neon-blue);">Overall Learning Progress</h3>
+          <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
+            <div style="min-width: 150px; text-align: center;">
+              <div style="width: 100px; height: 100px; margin: 0 auto; position: relative;">
+                <svg viewBox="0 0 100 100" style="transform: rotate(-90deg); transform-origin: 50% 50%;">
+                  <circle cx="50" cy="50" r="45" style="stroke: rgba(0,247,255,0.2); stroke-width: 8; fill: none;"></circle>
+                  <circle cx="50" cy="50" r="45" style="stroke: var(--neon-blue); stroke-width: 8; stroke-dasharray: 283; stroke-dashoffset: 113; fill: none;"></circle>
+                </svg>
+                <div id="overall-completion" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; font-weight: bold; color: var(--neon-blue);">60%</div>
+              </div>
+              <p style="margin-top: 0.5rem;">Course Completion</p>
+            </div>
+            
+            <div style="min-width: 150px; text-align: center;">
+              <div id="classes-attended" style="font-size: 2.5rem; color: var(--neon-pink);">8</div>
+              <p style="margin-top: 0.5rem;">Classes Attended</p>
+            </div>
+            
+            <div style="min-width: 150px; text-align: center;">
+              <div id="tests-completed" style="font-size: 2.5rem; color: var(--matrix-green);">5</div>
+              <p style="margin-top: 0.5rem;">Tests Completed</p>
+            </div>
+            
+            <div style="min-width: 150px; text-align: center;">
+              <div id="projects-submitted" style="font-size: 2.5rem; color: var(--neon-orange);">3</div>
+              <p style="margin-top: 0.5rem;">Projects Submitted</p>
+            </div>
           </div>
         </div>
         
-        <div style="background: rgba(10,10,40,0.7); border: 1px solid var(--neon-blue); border-radius: 8px; padding: 1.5rem;">
-          <h3 style="color: var(--neon-blue); margin-top: 0;">Chapter Progress</h3>
+        <!-- Recent Activity Timeline -->
+        <div class="progress-card" style="border: 1px solid var(--neon-pink); grid-column: span 2;">
+          <h3 style="color: var(--neon-pink);">Recent Activity</h3>
+          <div id="recent-activity-container" style="margin-top: 1rem; max-height: 300px; overflow-y: auto;">
+            <!-- Activities will be dynamically inserted here -->
+          </div>
+        </div>
+        
+        <!-- Chapter Progress -->
+        <div class="progress-card" style="border: 1px solid var(--neon-blue);">
+          <h3 style="color: var(--neon-blue);">Chapter Progress</h3>
           <div style="margin-top: 1rem;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
               <span>Intro to AI</span>
               <span>75%</span>
             </div>
-            <div style="height: 6px; background: rgba(0,247,255,0.2); border-radius: 3px; overflow: hidden;">
-              <div style="height: 100%; width: 75%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));"></div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 75%;"></div>
             </div>
           </div>
           <div style="margin-top: 1rem;">
@@ -466,75 +559,179 @@
               <span>AI Project Cycle</span>
               <span>60%</span>
             </div>
-            <div style="height: 6px; background: rgba(0,247,255,0.2); border-radius: 3px; overflow: hidden;">
-              <div style="height: 100%; width: 60%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));"></div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 60%;"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Neural Networks</span>
+              <span>45%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 45%;"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Computer Vision</span>
+              <span>30%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 30%;"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Test Performance -->
+        <div class="progress-card" style="border: 1px solid var(--matrix-green);">
+          <h3 style="color: var(--matrix-green);">Test Performance</h3>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Chapter 1 Quiz</span>
+              <span>82%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 82%; background: linear-gradient(90deg, var(--matrix-green), var(--neon-blue));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Chapter 2 Quiz</span>
+              <span>78%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 78%; background: linear-gradient(90deg, var(--matrix-green), var(--neon-blue));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Chapter 3 Quiz</span>
+              <span>85%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 85%; background: linear-gradient(90deg, var(--matrix-green), var(--neon-blue));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Mid-Term Test</span>
+              <span>72%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 72%; background: linear-gradient(90deg, var(--matrix-green), var(--neon-blue));"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Class Attendance -->
+        <div class="progress-card" style="border: 1px solid var(--cyber-purple);">
+          <h3 style="color: var(--cyber-purple);">Class Attendance</h3>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Week 1</span>
+              <span>2/2</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 100%; background: linear-gradient(90deg, var(--cyber-purple), var(--neon-pink));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Week 2</span>
+              <span>1/2</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 50%; background: linear-gradient(90deg, var(--cyber-purple), var(--neon-pink));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Week 3</span>
+              <span>2/2</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 100%; background: linear-gradient(90deg, var(--cyber-purple), var(--neon-pink));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Week 4</span>
+              <span>1/2</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 50%; background: linear-gradient(90deg, var(--cyber-purple), var(--neon-pink));"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Project Grades -->
+        <div class="progress-card" style="border: 1px solid var(--neon-orange);">
+          <h3 style="color: var(--neon-orange);">Project Grades</h3>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>AI Chatbot</span>
+              <span>A</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 90%; background: linear-gradient(90deg, var(--neon-orange), var(--neon-pink));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Image Classifier</span>
+              <span>B+</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 80%; background: linear-gradient(90deg, var(--neon-orange), var(--neon-pink));"></div>
+            </div>
+          </div>
+          <div style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Recommendation System</span>
+              <span>A-</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 85%; background: linear-gradient(90deg, var(--neon-orange), var(--neon-pink));"></div>
             </div>
           </div>
         </div>
       </div>
+      
+      <!-- Performance Chart Section -->
+      <div class="progress-card" style="margin-top: 2rem;">
+        <h3 style="color: var(--neon-blue);">Performance Over Time</h3>
+        <div class="chart-container">
+          <!-- This would be replaced with a real chart library like Chart.js -->
+          <p style="color: rgba(255,255,255,0.5);">Performance chart visualization would appear here</p>
+        </div>
+      </div>
+      
       <button class="enter-btn" style="margin-top: 2rem; display: block; margin-left: auto;" onclick="showPage('home')">Back to Portal</button>
     </div>
   </div>
 
   <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
-<script>
-  // Your Firebase config (same as in other pages)
-  const firebaseConfig = {
-    apiKey: "AIzaSyBITF0Fh_vCJddNeyURWWyprLCOYB2h7Cc",
-    authDomain: "sign-up-page-fe4f7.firebaseapp.com",
-    projectId: "sign-up-page-fe4f7",
-    storageBucket: "sign-up-page-fe4f7.firebasestorage.app",
-    messagingSenderId: "339652230724",
-    appId: "1:339652230724:web:ba50630f42259219a8c611"
-  };
-  
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-</script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
 
-<!-- At the BOTTOM of the page, before closing </body> tag -->
-<!-- After Firebase initialization but before other scripts -->
-
-<script>
-  // Check authentication state on page load
-  auth.onAuthStateChanged((user) => {
-    if (!user) {
-      localStorage.setItem('returnUrl', window.location.href);
-      window.location.href = 'signup.html';
-    }
-  });
-
-  // Enroll button handler
-  document.getElementById('enrollBtn')?.addEventListener('click', function(e) {
-    e.preventDefault();
-    checkAuthBeforeAction(() => {
-      document.getElementById('purchaseModal').style.display = "block";
-    });
-  });
-
-  // Demo button handler
-  document.getElementById('demoviewBtn')?.addEventListener('click', function(e) {
-    e.preventDefault();
-    checkAuthBeforeAction(() => {
-      window.location.href = 'learnif9ai.html';
-    }, 'learnif9ai.html');
-  });
-
-  // Reusable auth check function
-  function checkAuthBeforeAction(actionCallback, specificReturnUrl) {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        actionCallback();
-      } else {
-        localStorage.setItem('returnUrl', specificReturnUrl || window.location.href);
-        window.location.href = 'signup.html';
-      }
-    });
-  }
-</script>
+  <script>
+    // Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBITF0Fh_vCJddNeyURWWyprLCOYB2h7Cc",
+      authDomain: "sign-up-page-fe4f7.firebaseapp.com",
+      projectId: "sign-up-page-fe4f7",
+      storageBucket: "sign-up-page-fe4f7.firebasestorage.app",
+      messagingSenderId: "339652230724",
+      appId: "1:339652230724:web:ba50630f42259219a8c611"
+    };
+    
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const database = firebase.database();
+  </script>
 
   <script>
     // Initialize Neural Network Visualization
@@ -584,8 +781,128 @@
       } else {
         document.querySelector('.main-container').style.display = 'none';
         document.getElementById(pageId).classList.add('active-page');
+        
+        // Load specific data when progress page is shown
+        if (pageId === 'ai-progress') {
+          loadProgressData();
+        }
       }
     }
+    
+    // Fetch and display real progress data
+    function loadProgressData() {
+      const userId = auth.currentUser?.uid;
+      if (!userId) return;
+      
+      // Reference to user's progress data in Firebase
+      const progressRef = database.ref(`users/${userId}/progress`);
+      
+      progressRef.on('value', (snapshot) => {
+        const progressData = snapshot.val();
+        if (progressData) {
+          // Update course completion
+          document.getElementById('overall-completion').textContent = 
+            `${progressData.courseCompletion || 0}%`;
+          
+          // Update classes attended
+          document.getElementById('classes-attended').textContent = 
+            progressData.classesAttended || 0;
+          
+          // Update tests completed
+          document.getElementById('tests-completed').textContent = 
+            progressData.testsCompleted || 0;
+          
+          // Update projects submitted
+          document.getElementById('projects-submitted').textContent = 
+            progressData.projectsSubmitted || 0;
+          
+          // Update chapter progress
+          updateProgressBars(progressData.chapterProgress);
+          
+          // Update test performance
+          updateTestPerformance(progressData.testScores);
+          
+          // Update recent activity
+          updateRecentActivity(progressData.recentActivity);
+        }
+      });
+    }
+    
+    function updateProgressBars(chapterProgress) {
+      if (!chapterProgress) return;
+      
+      for (const [chapter, percent] of Object.entries(chapterProgress)) {
+        const progressElement = document.querySelector(`.chapter-progress[data-chapter="${chapter}"]`);
+        if (progressElement) {
+          progressElement.style.width = `${percent}%`;
+          progressElement.previousElementSibling.textContent = `${percent}%`;
+        }
+      }
+    }
+    
+    function updateTestPerformance(testScores) {
+      if (!testScores) return;
+      
+      for (const [testName, score] of Object.entries(testScores)) {
+        const testElement = document.querySelector(`.test-score[data-test="${testName}"]`);
+        if (testElement) {
+          testElement.style.width = `${score}%`;
+          testElement.previousElementSibling.textContent = `${score}%`;
+        }
+      }
+    }
+    
+    function updateRecentActivity(activities) {
+      if (!activities || !Array.isArray(activities)) return;
+      
+      const activityContainer = document.getElementById('recent-activity-container');
+      if (!activityContainer) return;
+      
+      // Clear existing activities
+      activityContainer.innerHTML = '';
+      
+      // Add new activities
+      activities.forEach(activity => {
+        const activityElement = document.createElement('div');
+        activityElement.className = 'activity-item';
+        activityElement.innerHTML = `
+          <div class="activity-bullet" style="background: ${getActivityColor(activity.type)};"></div>
+          <div style="flex: 1;">
+            <div style="display: flex; justify-content: space-between;">
+              <strong style="color: ${getActivityColor(activity.type)};">${activity.type}</strong>
+              <span style="opacity: 0.7;">${formatDate(activity.timestamp)}</span>
+            </div>
+            <p style="margin: 0.5rem 0 0;">${activity.description}</p>
+          </div>
+        `;
+        activityContainer.appendChild(activityElement);
+      });
+    }
+    
+    function getActivityColor(type) {
+      const colors = {
+        'Completed Test': 'var(--neon-blue)',
+        'Attended Class': 'var(--matrix-green)',
+        'Project Feedback': 'var(--neon-orange)',
+        'Note Viewed': 'var(--cyber-purple)',
+        'Doubt Asked': 'var(--neon-pink)'
+      };
+      return colors[type] || 'var(--neon-blue)';
+    }
+    
+    function formatDate(timestamp) {
+      if (!timestamp) return 'Recently';
+      const date = new Date(timestamp);
+      return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    }
+    
+    // Authentication state check
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        localStorage.setItem('returnUrl', window.location.href);
+        window.location.href = 'signup.html';
+      }
+    });
     
     // Initialize on load
     document.addEventListener('DOMContentLoaded', () => {
@@ -593,50 +910,5 @@
       showPage('home');
     });
   </script>
-  <script>
-  auth.onAuthStateChanged((user) => {
-    if (!user) {
-      localStorage.setItem('returnUrl', 'learnif12ai.html');
-      window.location.href = 'signup.html';
-    }
-  });
-</script>
-<script>
-  // auth.js - Include this in all HTML files
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Firebase Auth
-    const auth = firebase.auth();
-    
-    // Handle auth state changes
-    auth.onAuthStateChanged(function(user) {
-        updateAuthUI(user);
-    });
-
-    function updateAuthUI(user) {
-        const loginButtons = document.querySelectorAll('.login-btn');
-        const logoutButtons = document.querySelectorAll('.logout-btn');
-        
-        if (user) {
-            // User is logged in
-            loginButtons.forEach(btn => btn.style.display = 'none');
-            logoutButtons.forEach(btn => btn.style.display = 'block');
-        } else {
-            // User is logged out
-            loginButtons.forEach(btn => btn.style.display = 'block');
-            logoutButtons.forEach(btn => btn.style.display = 'none');
-        }
-    }
-
-    // Logout functionality
-    document.querySelectorAll('.logout-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            auth.signOut().then(() => {
-                window.location.href = 'index.html'; // Redirect to home after logout
-            });
-        });
-    });
-});
-</script>
 </body>
 </html>
